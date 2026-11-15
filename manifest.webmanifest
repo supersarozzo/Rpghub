@@ -1,0 +1,23 @@
+{
+ "name": "RPG Hub",
+ "short_name": "RPG Hub",
+ "start_url": "index.html",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#16302e",
+ "theme_color": "#16302e",
+ "icons": [
+  {
+   "src": "rpg-icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "rpg-icon.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  }
+ ]
+}

@@ -1,7 +1,7 @@
-// Skippy hub service worker (made by make-ipad.py --site). It keeps every file below on the device.
+// RPG Hub service worker (made by make-ipad.py --site). It keeps every file below on the device.
 // VERSION changes whenever any file changes, so a phone that has the old copy picks up the new one.
-const VERSION = "f8bd8b0d8d";
-const CACHE = "skippy-hub-" + VERSION;
+const VERSION = "54cf36dfb1";
+const CACHE = "rpg-hub-" + VERSION;
 const FILES = [
  "./",
  "Skippy-combos.pdf",
@@ -19,18 +19,19 @@ const FILES = [
  "landscape/Skippy-extras-landscape.pdf",
  "landscape/Skippy-roleplay-landscape.pdf",
  "landscape/Skippy-sheet-landscape.pdf",
- "manifest-ipad.webmanifest",
- "manifest-iphone.webmanifest",
+ "manifest.webmanifest",
  "roleplay.html",
+ "rpg-icon-180.png",
+ "rpg-icon-192.png",
+ "rpg-icon.png",
  "sheet/Skippy-extra-pages.pdf",
  "sheet/skippy-extra.html",
  "sheet/skippy-portrait.png",
  "sheet/skippy-portrait.svg",
  "sheet/skippy-sheet.html",
- "skippy-icon-192.png",
- "skippy-icon.png",
  "skippy-ipad.html",
  "skippy-iphone.html",
+ "skippy.html",
  "start-here.html"
 ];
 self.addEventListener("install", function (e) {
@@ -38,7 +39,7 @@ self.addEventListener("install", function (e) {
 });
 self.addEventListener("activate", function (e) {
   e.waitUntil(caches.keys().then(function (ks) {
-    return Promise.all(ks.filter(function (k) { return k.indexOf("skippy-hub-") === 0 && k !== CACHE; }).map(function (k) { return caches.delete(k); }));
+    return Promise.all(ks.filter(function (k) { return (k.indexOf("rpg-hub-") === 0 || k.indexOf("skippy-hub-") === 0) && k !== CACHE; }).map(function (k) { return caches.delete(k); }));
   }).then(function () { return self.clients.claim(); }));
 });
 function ranged(req, res) {            // PDF viewers ask for byte ranges; answer them from the cached whole file
