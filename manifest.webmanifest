@@ -4,8 +4,8 @@
  "start_url": "index.html",
  "scope": "./",
  "display": "standalone",
- "background_color": "#16302e",
- "theme_color": "#16302e",
+ "background_color": "#10171c",
+ "theme_color": "#10171c",
  "icons": [
   {
    "src": "rpg-icon-192.png",
@@ -18,6 +18,12 @@
    "sizes": "512x512",
    "type": "image/png",
    "purpose": "any"
+  },
+  {
+   "src": "rpg-icon-maskable.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
   }
  ]
 }

@@ -52,6 +52,24 @@ header.top h1{font-size:1.35rem;line-height:1.25}
 header.top p{max-width:860px}
 @media print{nav.site{display:none!important}}
 /* ==== end shared look ==== */
+
+/* ==== Dark screen look (made by make-ipad.py; edit the page's own rules above, not this block) ==== */
+@media screen{
+:root{color-scheme:dark}
+:root{--bg:#10171c;--card:#18222a;--subtle:#212d36;--ink:#e7edf1;--muted:#97a8b4;--line:#2c3a45;--accent:#d0392f;--tint:#212d36;--accent-ink:#ffffff;--warn:#e7b65a;--warn-bg:#2b2a22}
+nav.site{background-color:#18222a}
+nav.site .brand{color:#ffffff}
+nav.site a{color:#e7edf1}
+nav.site a:hover{color:#ffffff}
+nav.site a[aria-current="page"]{background-color:#18222a;color:#f2695e}
+nav.site a:focus-visible{outline-color:#f2695e}
+html,body{background:#10171c!important;color:#e7edf1}
+input,select,textarea{background:#10171c;color:#e7edf1;border-color:#3b4c58}
+header.top{background:#18222a!important;color:#e7edf1;border-bottom:1px solid #2c3a45}
+header.top a,a{color:#f2695e}
+nav.site{background:#18222a;border-bottom:1px solid #2c3a45}nav.site a{color:#97a8b4}nav.site a[aria-current="page"]{background:#212d36;color:#e7edf1;box-shadow:inset 0 -2px 0 #d0392f}
+}
+/* ==== end dark screen look ==== */
 </style>
 </head>
 <body>
