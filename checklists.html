@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Play Checklists: Pirate Artificer</title>
+<style>html{scroll-behavior:auto;overflow-anchor:none}
+:root{
+  --bg:#f5f4f0; --card:#ffffff; --ink:#1d1d1b; --muted:#5a5a55; --line:#d8d6cf;
+  --accent:#1f5f5b; --accent-ink:#ffffff; --warn:#8a4b00; --warn-bg:#fff4e0; --ok:#1d6b3a; --ok-bg:#e8f5ec;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow-wrap:break-word}
+header.top{background:var(--accent);color:var(--accent-ink);padding:12px 16px}
+header.top h1{margin:0;font-size:1.25rem}
+header.top p{margin:2px 0 0;font-size:.9rem;opacity:.92}
+header.top a{color:#fff;font-weight:700}
+.wrap{max-width:860px;margin:0 auto;padding:12px 16px 60px}
+nav.jump{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px}
+nav.jump a{padding:7px 12px;border:1px solid var(--line);background:#fff;border-radius:18px;font-size:.9rem;color:var(--ink);text-decoration:none}
+nav.jump a:hover,nav.jump a:focus{background:var(--accent);color:#fff;border-color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:0 0 14px}
+.card h2{margin:0;font-size:1.2rem;line-height:1.25}
+.card .sub{color:var(--muted);font-size:.9rem;margin:2px 0 6px}
+.bar{height:8px;background:#e3e1da;border-radius:6px;overflow:hidden;margin:6px 0}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .2s}
+.cnt{font-size:.85rem;color:var(--muted)}
+ul.cl{list-style:none;margin:6px 0;padding:0}
+ul.cl li{margin:0;border-top:1px solid #eceae3}
+ul.cl label{display:flex;gap:10px;align-items:flex-start;padding:9px 2px;cursor:pointer}
+ul.cl input{flex:none;width:22px;height:22px;margin-top:2px;accent-color:var(--accent)}
+ul.cl .t{font-weight:600}
+ul.cl .w{display:block;color:var(--muted);font-size:.9rem}
+ul.cl input:checked + span .t{text-decoration:line-through;color:var(--muted)}
+.pg{display:inline-block;border:1px solid var(--line);border-radius:12px;padding:0 7px;font-size:.78rem;color:var(--muted);white-space:nowrap;background:#faf9f5;margin-left:4px}
+.tag{display:inline-block;border-radius:4px;padding:0 6px;font-size:.75rem;font-weight:700;margin-left:4px;color:#fff;vertical-align:1px}
+.tag.A{background:#1f5f5b}.tag.B{background:#7a4fa3}.tag.R{background:#a1262b}.tag.M{background:#555}.tag.S{background:#8a4b00}.tag.C{background:#1b5a9a}
+.btn{padding:8px 14px;border:1px solid var(--accent);background:#fff;color:var(--accent);border-radius:6px;font:inherit;font-size:.9rem;cursor:pointer}
+.btn.fill{background:var(--accent);color:#fff}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.note{background:#eef3f2;border-left:4px solid var(--accent);padding:8px 10px;margin:10px 0;font-size:.93rem}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn);padding:8px 10px;margin:10px 0;font-size:.93rem;color:var(--warn)}
+.hint{color:var(--muted);font-size:.9rem}
+@media print{header.top .nolink,nav.jump,.row,.bar{display:none}.card{break-inside:avoid;border-color:#999}body{background:#fff}}
+
+/* ==== Shared look v1: see docs/DESIGN.md (same block on every page) ==== */
+nav.site{background:#16302e;display:flex;flex-wrap:wrap;align-items:center;gap:2px 2px;padding:6px 12px;font:600 14px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+nav.site .brand{color:#fff;font-weight:700;margin-right:10px;padding:6px 0;letter-spacing:.02em;white-space:nowrap}
+nav.site a{color:#d6e6e4;text-decoration:none;padding:8px 10px;border-radius:6px;display:inline-flex;align-items:center;min-height:36px;white-space:nowrap}
+nav.site a:hover{background:rgba(255,255,255,.12);color:#fff}
+nav.site a[aria-current="page"]{background:#fff;color:#16302e}
+nav.site a:focus-visible{outline:3px solid #f5c542;outline-offset:1px}
+@media (max-width:640px){nav.site{padding:4px 8px}nav.site .brand{width:100%;padding:4px 2px 2px}nav.site a{padding:6px 8px;font-size:13px}}
+header.top{padding:14px 16px}
+header.top h1{font-size:1.35rem;line-height:1.25}
+header.top p{max-width:860px}
+@media print{nav.site{display:none!important}}
+/* ==== end shared look ==== */
+</style>
+</head>
+<body>
+<nav class="site" aria-label="All pages"><span class="brand">Skippy &middot; Artificer</span><a href="start-here.html">Start here</a><a href="guide.html">Guide</a><a href="creator.html">Creator</a><a href="exceptions.html">Exceptions</a><a href="checklists.html" aria-current="page">Checklists</a><a href="combos.html">Combos</a><a href="sheet/skippy-sheet.html">Sheet</a><a href="sheet/skippy-extra.html">Extra pages</a></nav>
+<header class="top">
+  <h1>Play checklists for your pirate artificer</h1>
+  <p>Tick boxes. They are remembered on this device. Works offline.</p>
+</header>
+<div class="wrap">
+  <div class="note"><b>Your numbers:</b> HP 24 &middot; AC 15 (14 without Enhanced Defense) &middot; spell DC 13 &middot; spell attack +5 &middot; initiative +2 &middot; speed 30 ft &middot; three 1st-level slots. <span class="hint">Page tags: PHB = Player's Handbook, T = Tasha's. Rules are in my own words.</span></div>
+  <nav class="jump" id="jump"></nav>
+  <main id="app"></main>
+  <div class="row"><button class="btn" id="clearall">Clear all lists</button></div>
+  <p class="hint">Easy to change: the lists are in the <code>LISTS</code> block near the end of this file, and your swappable choices are in <code>CONFIG</code>.</p>
+</div>
+
+<script>
+/* ===================================================================
+   Checklists page. One file, no outside links.
+   CONFIG = things the player may still change. Edit here and reload.
+   =================================================================== */
+const CONFIG = {
+  infusionA: "Enhanced Defense",   // active infusion 1 (default)
+  infusionB: "Repeating Shot",     // active infusion 2 (default)
+  intimidation: "+1"               // kept (the player's decision 18)
+};
+const KEY = "checklists.v1";
+
+/* Tags: A action, B bonus action, R reaction, M movement, S spell slot, C concentration */
+const LISTS = [
+ {id:"rest", title:"After a long rest", sub:"Do this every morning, before the day starts.", items:[
+  ["Prepare 4 spells: Cure Wounds, Faerie Fire, False Life, Detect Magic.","You can change them only after a long rest. Shield and Thunderwave are always ready.","T p.11"],
+  ["Pick 2 infusions to be active: "+CONFIG.infusionA+" and "+CONFIG.infusionB+".","You can only have 2 items infused at once. Enhanced Weapon (spear) or Mind Sharpener (armor) are the swaps.","T p.12-13"],
+  ["Touch each item and put the infusion in it.","An item holds only one infusion. Armor holds Enhanced Defense OR Mind Sharpener, not both.","T p.12-13"],
+  ["Attune to the crossbow if it has Repeating Shot.","Repeating Shot only works when you are attuned to the item.","T p.22"],
+  ["Hold thieves' tools or an artisan's kit when you cast.","They are your spell focus. No tool in hand, no spell.","T p.11"],
+  ["Check your free Eldritch Cannon is back.","One free cannon per long rest. After that it costs a spell slot.","T p.17-18"],
+  ["Count 3 spell slots (1st level).","Slots come back after a long rest. Shield and Thunderwave also use them.","T p.11"],
+  ["Do NOT cast False Life yet.","It lasts 1 hour. If you cast it at dawn, it is gone before the fight.","PHB p.239"],
+  ["Optional: cast Detect Magic as a ritual in new places.","A ritual takes 10 extra minutes but costs no slot. You keep the slot for fights.","PHB p.231, T p.12"],
+  ["Remember: Relentless Endurance is back.","Once per long rest you drop to 1 HP instead of 0.","PHB p.41"]
+ ]},
+ {id:"explore", title:"Before exploring or travelling", sub:"Before you leave town or walk into the wild.", items:[
+  ["Tell the DM your marching order (who walks first).","You have 24 HP, so you are not a front-line fighter. Stay behind the tougher friends.","PHB p.182"],
+  ["Ask who is the scout and who reads the map.","You have cartographer's tools and navigator's tools. Offer to be the map person.","PHB p.154"],
+  ["Remind yourself: passive Perception is 12.","The DM uses it to see if you notice things without rolling.","PHB p.175"],
+  ["Decide: Guidance on whoever makes the first big check.","d4 added to one ability check. It uses concentration, so cast it just before the roll.","PHB p.248"],
+  ["Cast Detect Magic (ritual) at odd doors, statues and chests.","It shows magic nearby. As a ritual it costs no slot.","PHB p.231"],
+  ["Keep thieves' tools in hand.","You can pick locks and disarm traps with them (you are trained).","T p.10"],
+  ["Know your light: you have darkvision 60 ft.","You see dim and grey in the dark. Friends may still need a torch.","PHB p.41"],
+  ["Check your slots (3) and temp HP plan.","Save at least 1 slot for Shield or Cure Wounds.","T p.11"]
+ ]},
+ {id:"dungeon", title:"Before entering a dungeon or a dark place", sub:"At the door, before you step in.", items:[
+  ["Light a torch or lantern for friends who cannot see in the dark.","Your darkvision is 60 ft, grey only. Colours and fine detail are lost.","PHB p.183"],
+  ["Cast Detect Magic if you have not (ritual, 10 minutes).","It can show magic traps and items. It needs concentration while it runs.","PHB p.231"],
+  ["Agree who checks for traps (Investigation +5, Perception +2).","Your Investigation is better. Use it to search for hidden catches and wires.","PHB p.177"],
+  ["Plan where the cannon will go if a fight starts.","Corridors are good: enemies line up for the Flamethrower cone.","T p.17-18"],
+  ["Do NOT cast Faerie Fire or Guidance early.","Both use concentration. They end when you cast another concentration spell.","PHB p.203"],
+  ["Keep 2 of your 3 slots for emergencies (Shield, Cure Wounds).","Long dungeons have many fights. Slots are your safety net.","T p.11"],
+  ["Decide the retreat: where do you run if it goes wrong?","Know the way out before you need it.","PHB p.195"],
+  ["Ask the DM if there is a short-rest spot.","A short rest (1 hour) lets you spend Hit Dice to heal.","PHB p.186"]
+ ]},
+ {id:"precombat", title:"Before a fight you can see coming", sub:"Enemies are close, but nothing has started.", items:[
+  ["Cast False Life now (1 action, 1st-level slot).","You get 1d4+4 temp HP for 1 hour. Temp HP are lost first. No concentration.","PHB p.239"],
+  ["Or keep the slot and let the cannon's Protector give temp HP later.","Temp HP do not stack. You keep the bigger pile only.","PHB p.198"],
+  ["Use Guidance only if you must pass a check (Stealth, a climb).","Guidance does NOT help attack rolls or saves. It uses concentration.","PHB p.248"],
+  ["Place your cannon (action, woodcarver's tools in hand) on flat ground within 5 ft, in cover.","AC 18 and 15 HP. If it dies, you lose the free one for the day.","T p.17-18"],
+  ["Choose its type: Force Ballista for one target, Flamethrower for a group, Protector for temporary hit points.","You choose when you create it. You cannot change it after.","T p.17-18"],
+  ["Stand behind a friend or wall.","Cover gives +2 AC (half) or +5 (three-quarters).","PHB p.196"],
+  ["Keep 1 slot free for Shield. Keep your reaction unused.","Shield is a reaction for +5 AC. Do not spend your reaction on anything else.","PHB p.275"],
+  ["Roll initiative: d20 +2.","Your Dex gives +2. You act in order from the highest.","PHB p.189"]
+ ]},
+ {id:"turn1", title:"Turn 1, and every turn after", sub:"Read this at the start of each of your turns.", items:[
+  ["Look at the battlefield first. Who is hurt? Who is close?","A free look costs nothing. A bad first step costs a lot.","PHB p.189"],
+  ["MOVEMENT (up to 30 ft): get cover or space before you act.","You can split your move around your action. Do not stop next to enemies.","PHB p.190"],
+  ["ACTION: pick one. Crossbow +5, 1d8+3. Or Shocking Grasp +5, 1d8. Or a spell.","Ranged attacks next to an enemy have disadvantage, so step away first.","PHB p.195, p.275"],
+  ["BONUS ACTION: activate the cannon. It fires, or pulses temp HP. No legs: it fires from your shoulder, or from where you set it down.","You must be within 60 ft of it. If you do not activate it, it does nothing. Do not forget it.","T p.17-18"],
+  ["Cannon: Force Ballista +5, 2d8 force. Flamethrower DC 13 Dex, 2d8 fire. Protector 1d8+3 temp HP.","These are the numbers of your build. Check no friend is in the cone (on your shoulder, the cone starts at you). To shoot the crossbow, set the cannon down first (free).","T p.18"],
+  ["REACTION: hold it for Shield (+5 AC).","If you spent your slots, remember you cannot cast Shield. Dodge or hide instead.","PHB p.275"],
+  ["Concentrating? Check what you are holding.","If you are hit, you roll a Con save (+4) against DC 10 or half the damage.","PHB p.203"],
+  ["Hurt friend at 0 HP? Cure Wounds is your action: 1d8+3.","Healing at 0 HP wakes them. Temp HP from the cannon does not.","PHB p.197, p.198"],
+  ["End of turn: say what you did, and what you still hold (slots, concentration).","A short note keeps the next turn quick.","PHB p.189"]
+ ]},
+ {id:"after", title:"After combat, and on a short rest", sub:"The fight is over. Slow down.", items:[
+  ["Check your friends first. Anyone at 0 HP or hurt?","Cure Wounds heals 1d8+3 by touch. It costs a slot. Hit Dice are free.","PHB p.230"],
+  ["Is anyone dying? Stabilise with a Medicine check (DC 10) or heal them.","Your Medicine is +0. Cure Wounds is a safer choice.","PHB p.197"],
+  ["Take a short rest if the DM allows (1 hour).","Spend Hit Dice (d8+2 each) to heal. You have 3 Hit Dice.","PHB p.186"],
+  ["Note the cannon: it vanishes after 1 hour.","If the fight is over, you do not need to keep it. Next fight, create a new one.","T p.17"],
+  ["Count your spell slots left (of 3).","Plan the next fight around the number you have.","T p.11"],
+  ["Re-check infusions and attunement.","Infusions stay until you change them after a long rest. Mind Sharpener charges come back at dawn.","T p.22"],
+  ["Search the area for loot and clues (Investigation +5).","Dead enemies and rooms often hold useful things.","PHB p.178"],
+  ["Cast Detect Magic (ritual) on odd loot.","Cheap and safe. Do not use unknown magic items before the DM says it is fine.","PHB p.231"],
+  ["Ask the DM if a long rest is possible soon.","A long rest gives back all slots, the free cannon and Relentless Endurance.","PHB p.186"]
+ ]}
+];
+
+/* ---------- storage: always in try/catch ---------- */
+let state = {};
+function load(){ try{ const s=localStorage.getItem(KEY); if(s) state=JSON.parse(s)||{}; }catch(e){ state={}; } }
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} }
+const esc = s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+function render(){
+  const app=document.getElementById("app"), jump=document.getElementById("jump");
+  jump.innerHTML=LISTS.map(l=>'<a href="#'+l.id+'">'+l.title.replace(/^Before |^After /,m=>m)+'</a>').join("");
+  app.innerHTML=LISTS.map(l=>{
+    const done=state[l.id]||{};
+    return '<section class="card" id="'+l.id+'"><h2>'+esc(l.title)+'</h2><div class="sub">'+esc(l.sub)+'</div>'+
+      '<div class="bar"><i id="b-'+l.id+'"></i></div><div class="cnt" id="c-'+l.id+'"></div>'+
+      '<ul class="cl">'+l.items.map((it,i)=>'<li><label><input type="checkbox" data-l="'+l.id+'" data-i="'+i+'"'+(done[i]?' checked':'')+'><span><span class="t">'+esc(it[0])+'</span><span class="w">'+esc(it[1])+' <span class="pg">'+esc(it[2])+'</span></span></span></label></li>').join("")+'</ul>'+
+      '<div class="row"><button class="btn" data-clear="'+l.id+'">Clear this list</button></div></section>';
+  }).join("");
+  LISTS.forEach(upd);
+}
+function upd(l){
+  const n=Object.values(state[l.id]||{}).filter(Boolean).length;
+  const b=document.getElementById("b-"+l.id), c=document.getElementById("c-"+l.id);
+  if(b) b.style.width=(100*n/l.items.length)+"%";
+  if(c) c.textContent=n+" of "+l.items.length+" done";
+}
+document.addEventListener("change",e=>{
+  const t=e.target; if(!t.dataset||!t.dataset.l) return;
+  (state[t.dataset.l]=state[t.dataset.l]||{})[t.dataset.i]=t.checked;
+  save(); upd(LISTS.find(x=>x.id===t.dataset.l));
+});
+document.addEventListener("click",e=>{
+  const t=e.target; if(!t.closest) return;
+  const b=t.closest("[data-clear]");
+  if(b){ delete state[b.dataset.clear]; save(); render(); }
+  if(t.id==="clearall"){ state={}; save(); render(); }
+});
+load(); render();
+</script>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build Exceptions: DM Questions and Answers</title>
+<style>
+:root{
+  --bg:#f5f4f0; --card:#ffffff; --subtle:#f0efe9; --ink:#1d1d1b; --muted:#5a5a55; --line:#d8d6cf;
+  --accent:#1f5f5b; --tint:#eef3f2; --accent-ink:#ffffff; --warn:#8a4b00; --warn-bg:#fff4e0;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow-wrap:break-word}
+header.top{background:var(--accent);color:var(--accent-ink);padding:12px 16px}
+header.top h1{margin:0;font-size:1.25rem}
+header.top p{margin:2px 0 0;font-size:.9rem}
+.wrap{max-width:860px;margin:0 auto;padding:12px 16px 40px}
+.note{background:var(--tint);border-left:4px solid var(--accent);padding:8px 12px;margin:0 0 12px;font-size:.9rem}
+.jump{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+.jump a{color:var(--accent);border:1px solid var(--accent);border-radius:6px;padding:6px 10px;min-height:36px;display:inline-flex;align-items:center;text-decoration:none;font-size:.9rem;font-weight:600;background:var(--card)}
+.jump a:hover{background:var(--tint)}
+section{margin:24px 0 0;scroll-margin-top:8px}
+section h2{margin:0 0 8px;font-size:1.2rem;line-height:1.3;border-bottom:1px solid var(--line);padding-bottom:4px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 16px;margin:0 0 12px;break-inside:avoid}
+.card h3{margin:0 0 6px;font-size:1.05rem;line-height:1.3}
+.card p{margin:6px 0}
+.say{border-left:4px solid var(--accent);background:var(--tint);padding:6px 10px}
+.src{font-size:.85rem;color:var(--muted);line-height:1.4}
+.no{font-size:.9rem;border-left:4px solid var(--warn);background:var(--warn-bg);color:var(--warn);padding:5px 10px}
+.good{font-size:.9rem;color:var(--ink)}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn);padding:8px 12px;margin:24px 0 0;font-size:.9rem;color:var(--warn)}
+@media print{
+  body{background:#fff;font-size:10.5pt}
+  header.top{background:#fff;color:#000;border-bottom:2px solid #000}
+  .jump{display:none}
+  .say,.no,.note{background:none}
+  section h2{break-after:avoid}
+  a{color:inherit;text-decoration:none}
+}
+
+/* ==== Shared look v1: see docs/DESIGN.md (same block on every page) ==== */
+nav.site{background:#16302e;display:flex;flex-wrap:wrap;align-items:center;gap:2px 2px;padding:6px 12px;font:600 14px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+nav.site .brand{color:#fff;font-weight:700;margin-right:10px;padding:6px 0;letter-spacing:.02em;white-space:nowrap}
+nav.site a{color:#d6e6e4;text-decoration:none;padding:8px 10px;border-radius:6px;display:inline-flex;align-items:center;min-height:36px;white-space:nowrap}
+nav.site a:hover{background:rgba(255,255,255,.12);color:#fff}
+nav.site a[aria-current="page"]{background:#fff;color:#16302e}
+nav.site a:focus-visible{outline:3px solid #f5c542;outline-offset:1px}
+@media (max-width:640px){nav.site{padding:4px 8px}nav.site .brand{width:100%;padding:4px 2px 2px}nav.site a{padding:6px 8px;font-size:13px}}
+header.top{padding:14px 16px}
+header.top h1{font-size:1.35rem;line-height:1.25}
+header.top p{max-width:860px}
+@media print{nav.site{display:none!important}}
+/* ==== end shared look ==== */
+</style>
+</head>
+<body>
+<nav class="site" aria-label="All pages"><span class="brand">Skippy &middot; Artificer</span><a href="start-here.html">Start here</a><a href="guide.html">Guide</a><a href="creator.html">Creator</a><a href="exceptions.html" aria-current="page">Exceptions</a><a href="checklists.html">Checklists</a><a href="combos.html">Combos</a><a href="sheet/skippy-sheet.html">Sheet</a><a href="sheet/skippy-extra.html">Extra pages</a></nav>
+<header class="top">
+  <h1>Why do you have this? Answers for the DM</h1>
+  <p>Skippy, the player's half-orc Artillerist pirate, level 3, 5e 2014 with Tasha's. Each card: the question, what to say, where the rule is.</p>
+</header>
+<div class="wrap">
+<div class="note"><b>How to read this.</b> Each card has the question the DM may ask, one sentence to say out loud, and the rule source in small grey text. PHB is the Player's Handbook. Tasha's is Tasha's Cauldron of Everything. Page numbers are printed pages. "Table rule" means <code>docs/TABLE-RULES.md</code>. All text is in my own words. There are 31 cards.</div>
+<nav class="jump" aria-label="Jump to a topic"><a href="#race">Race and scores</a><a href="#class">Class and subclass</a><a href="#background">Background and story</a><a href="#prof">Proficiencies and languages</a><a href="#gear">Equipment and gold</a><a href="#spells">Spells</a><a href="#infusions">Infusions</a><a href="#cannon">Eldritch Cannon</a><a href="#hpac">Hit points and AC</a></nav>
+<section id="race">
+<h2>Race and scores</h2>
+<div class="card">
+<h3>Why is your Intelligence 17 on a half-orc?</h3>
+<p class="say">I used Tasha's custom origin rule, so my half-orc gets <b>+2</b> Intelligence and <b>+1</b> Constitution instead of <b>+2</b> Strength and <b>+1</b> Constitution.</p>
+<p class="src">Tasha's p.7-8. The table allows anything official (table rule).</p>
+<p class="no"><b>If the DM says no:</b> I use the book bonuses (Str +2, Con +1). Then my Int is <b>15</b> and my Str is <b>14</b>. My spells get a little weaker.</p>
+</div>
+<div class="card">
+<h3>Isn't a half-orc a strange pick for a smart class?</h3>
+<p class="say">In the 2014 book a half-orc has <b>no</b> Intelligence penalty, and with Tasha's rule my bonus goes to Intelligence, so a half-orc inventor works fine.</p>
+<p class="src">PHB p.40-41.</p>
+</div>
+<div class="card">
+<h3>Why are your scores 12, 14, 14, 17, 10 and 8?</h3>
+<p class="say">I used the standard array (<b>15, 14, 13, 12, 10, 8</b>) and put 15 in Int, 14 in Dex, 13 in Con, 12 in Str, 10 in Wis and 8 in Cha, then added the origin bonuses.</p>
+<p class="src">PHB p.13 for the array. The table allows the standard array or rolling, and no point buy (table rule).</p>
+<p class="no"><b>If the DM says no:</b> I move the 12 to Wisdom or Charisma, because Strength is the score I need least.</p>
+</div>
+</section>
+<section id="class">
+<h2>Class and subclass</h2>
+<div class="card">
+<h3>Why are you level 3 with 900 XP?</h3>
+<p class="say">My server starts new characters at level <b>3</b>, and that means <b>900</b> experience points.</p>
+<p class="src">Table rule.</p>
+</div>
+<div class="card">
+<h3>Why are you an Artillerist?</h3>
+<p class="say">At level 3 an artificer picks a specialist, and I picked Artillerist because it gives me a cannon, <b>2</b> free spells and woodcarver's tools.</p>
+<p class="src">Tasha's p.17-18.</p>
+</div>
+</section>
+<section id="background">
+<h2>Background and story</h2>
+<div class="card">
+<h3>Why is your background Pirate if the book says Sailor?</h3>
+<p class="say">Pirate is a <b>variant</b> of Sailor in the Player's Handbook, and I take Bad Reputation instead of Ship's Passage.</p>
+<p class="src">PHB p.139.</p>
+<p class="no"><b>If the DM says no:</b> I use plain Sailor with Ship's Passage. Everything else stays the same.</p>
+<p class="good"><b>Good to know:</b> Bad Reputation means people fear me, and in towns I can get away with small crimes. Please tell me how it works in your world.</p>
+</div>
+<div class="card">
+<h3>Why is your alignment chaotic neutral?</h3>
+<p class="say">Skippy is loyal to his crew and not to laws, so I chose <b>chaotic neutral</b>.</p>
+<p class="src">Your own choice. The PHB has an alignment section (page not checked).</p>
+</div>
+<div class="card">
+<h3>Why does a half-orc know about dragons?</h3>
+<p class="say">My captain, Edwine Blackscale, was a bronze <b>dragonborn</b> (battle soot darkened her scales, hence the name), and she raised me on her ship.</p>
+<p class="src">Story only. No rule needed.</p>
+</div>
+</section>
+<section id="prof">
+<h2>Proficiencies and languages</h2>
+<div class="card">
+<h3>Why do you speak Draconic and not Orc?</h3>
+<p class="say">I swapped Orc for Draconic with Tasha's custom origin rule, because I grew up on a dragonborn captain's ship.</p>
+<p class="src">Tasha's p.7. The DM may add or remove languages from the list.</p>
+<p class="no"><b>If the DM says no:</b> I keep Orc and drop Draconic. Then my languages are Common and Orc.</p>
+</div>
+<div class="card">
+<h3>Why did you keep Intimidation?</h3>
+<p class="say">It is the half-orc <b>Menacing</b> trait, and it fits a pirate with a bad reputation, so I did not swap it.</p>
+<p class="src">PHB p.41. The optional swap is in Tasha's p.7-8, and I chose not to use it.</p>
+</div>
+<div class="card">
+<h3>Why cartographer's tools as your artisan's tools?</h3>
+<p class="say">An artificer picks <b>one</b> set of artisan's tools, and I picked cartographer's tools because Skippy draws maps to find his captain.</p>
+<p class="src">Tasha's p.10.</p>
+<p class="good"><b>Good to know:</b> I can also hold them to cast spells (see the Spells section).</p>
+</div>
+<div class="card">
+<h3>Why do you also know woodcarver's tools?</h3>
+<p class="say">The Artillerist gives me woodcarver's tools for free, and I need them in my hand to make the cannon.</p>
+<p class="src">Tasha's p.17.</p>
+</div>
+<div class="card">
+<h3>Why do you know navigator's tools and water vehicles?</h3>
+<p class="say">They come with the Sailor background, and the Pirate variant keeps them.</p>
+<p class="src">PHB p.139.</p>
+</div>
+<div class="card">
+<h3>Can you use guns? Why do you only have a crossbow?</h3>
+<p class="say">Skippy uses a light crossbow, and I am not sure the artificer firearm line works at your table.</p>
+<p class="src">DM approval needed. Tasha's p.10 has the firearm line. The table says firearms follow The Gunslinger subclass rules (table rule).</p>
+<p class="no"><b>If the DM says no:</b> I stay with the crossbow and ask the DM what rules a pistol would use.</p>
+</div>
+</section>
+<section id="gear">
+<h2>Equipment and gold</h2>
+<div class="card">
+<h3>Why 9 gold and two artisan's tools?</h3>
+<p class="say">I bought woodcarver's tools for <b>1 gp</b> before the game, and I made my cartographer's tools with The Right Tool for the Job, so my sailor pouch of <b>10 gp</b> is now <b>9 gp</b>.</p>
+<p class="src">PHB p.154 (woodcarver's tools cost 1 gp). Tasha's p.13 (The Right Tool for the Job). PHB p.139 (sailor pouch, 10 gp).</p>
+<p class="good"><b>Good to know:</b> I bought the woodcarver's tools off-scene while I made the character. The Right Tool for the Job takes <b>1</b> hour with thieves' or artisan's tools in hand. It makes one set of artisan's tools. The set is not magic, and it vanishes if I use the feature again.</p>
+</div>
+<div class="card">
+<h3>Where does the rest of your gear come from?</h3>
+<p class="say">The Sailor background gives me a belaying pin, <b>50</b> ft of silk rope, a lucky charm (mine is a red coral horn) and common clothes, and the artificer gives me two simple weapons (spear and dagger), the crossbow and 20 bolts, studded leather, thieves' tools and a dungeoneer's pack.</p>
+<p class="src">PHB p.139 (Sailor). Tasha's p.10 (artificer kit). PHB p.151 (packs).</p>
+</div>
+</section>
+<section id="spells">
+<h2>Spells</h2>
+<div class="card">
+<h3>Why do you have Shield and Thunderwave on top of your 4 spells?</h3>
+<p class="say">They are Artillerist spells, so they are always prepared and do <b>not</b> count against my <b>4</b>.</p>
+<p class="src">Tasha's p.17.</p>
+</div>
+<div class="card">
+<h3>Why those 4 prepared spells?</h3>
+<p class="say">Each day I prepare my Int modifier plus half my level, which is <b>3 + 1 = 4</b> spells, and I picked Cure Wounds, Faerie Fire, False Life and Detect Magic.</p>
+<p class="src">Tasha's p.11. Cure Wounds PHB p.230, Faerie Fire p.239, False Life p.239, Detect Magic p.231.</p>
+</div>
+<div class="card">
+<h3>Can you cast Guidance on yourself?</h3>
+<p class="say">Yes, Guidance targets one willing creature I touch, and I am a creature, so I can touch myself.</p>
+<p class="src">PHB p.248. It uses concentration and lasts up to 1 minute.</p>
+<p class="no"><b>If the DM says no:</b> I cast it on a friend before their check.</p>
+</div>
+<div class="card">
+<h3>Why do you cast spells while holding tools?</h3>
+<p class="say">Artificers cast through tools, so I hold thieves' tools or an artisan's tool such as my cartographer's tools.</p>
+<p class="src">Tasha's p.11 (Tools Required).</p>
+</div>
+<div class="card">
+<h3>Why can you cast Detect Magic with no spell slot?</h3>
+<p class="say">Detect Magic is a ritual and I have it prepared, so I can cast it with <b>10</b> extra minutes and no slot.</p>
+<p class="src">Tasha's p.12 (ritual casting). PHB p.231 (Detect Magic).</p>
+</div>
+</section>
+<section id="infusions">
+<h2>Infusions</h2>
+<div class="card">
+<h3>Why does your crossbow fire without bolts?</h3>
+<p class="say">I put the Repeating Shot infusion on it, so it has <b>+1</b> to hit and damage, it ignores loading, and it makes its own bolts, and I am attuned to it.</p>
+<p class="src">Tasha's p.22. Repeating Shot needs attunement.</p>
+<p class="no"><b>If the DM says no:</b> I carry real bolts and fire the crossbow as normal (+4, 1d8+2).</p>
+<p class="good"><b>Good to know:</b> The infusion stays on the crossbow until I change my infusions after a long rest.</p>
+</div>
+<div class="card">
+<h3>Why do you know 4 infusions but use only 2?</h3>
+<p class="say">At level 3 I know <b>4</b> infusions and can keep <b>2</b> items infused, so I use Enhanced Defense and Repeating Shot, and I keep Enhanced Weapon and Mind Sharpener ready to swap in.</p>
+<p class="src">Tasha's p.12 (Infuse Item). Tasha's p.21-22 (the infusions).</p>
+<p class="good"><b>Good to know:</b> Mind Sharpener uses a reaction, has <b>4</b> charges and gets back 1d4 at dawn.</p>
+</div>
+</section>
+<section id="cannon">
+<h2>Eldritch Cannon</h2>
+<div class="card">
+<h3>Why does your cannon look like a small black iron ship's cannon?</h3>
+<p class="say">When I make the cannon I choose its look, so mine looks like a tiny bell-shaped black iron ship's cannon with no legs, and I fire it from my shoulder like a rocket launcher. Black fits its name, Mourning Bell.</p>
+<p class="src">Tasha's p.17-18. The look is flavor only. The rules allow any look.</p>
+<p class="no"><b>If the DM says no:</b> It looks like any other cannon. The numbers stay the same.</p>
+<p class="good"><b>Good to know:</b> It is not a real ship's cannon. A real one is far too heavy to carry.</p>
+</div>
+<div class="card">
+<h3>How do you make the cannon, and when?</h3>
+<p class="say">I use an action with woodcarver's tools in my hand, and it appears in an empty spot within <b>5</b> ft, free <b>once</b> per long rest and then for a spell slot.</p>
+<p class="src">Tasha's p.17.</p>
+<p class="good"><b>Good to know:</b> It lasts <b>1</b> hour, and I can have <b>one</b> cannon at a time.</p>
+</div>
+<div class="card">
+<h3>Does the cannon act on its own?</h3>
+<p class="say">No, I use a bonus action within <b>60</b> ft to make it act. Mine has no legs, so it never moves by itself.</p>
+<p class="src">Tasha's p.17-18 (a cannon walks or climbs 15 ft only if it has legs).</p>
+</div>
+<div class="card">
+<h3>Why can you hold your cannon like a rocket launcher?</h3>
+<p class="say">My cannon is Tiny, and a Tiny cannon can be held in one hand, so I carry it on my shoulder and it fires from there.</p>
+<p class="src">Tasha's p.17 (Tiny cannon: held in one hand; you choose whether it has legs).</p>
+<p class="no"><b>If the DM says no:</b> I put it on the ground next to me. The numbers stay the same.</p>
+<p class="good"><b>Good to know:</b> While I hold it, one hand is busy: no crossbow (two hands). I set it down (free) and it keeps firing from there. On my shoulder the Flamethrower cone starts at me.</p>
+</div>
+<div class="card">
+<h3>Why is the cannon called <span class="cannon-name">Mourning Bell</span>?</h3>
+<p class="say">It is the last black iron gun of The Widow, and I named it <span class="cannon-name">Mourning Bell</span> because it tolls for the lost crew.</p>
+<p class="src">Story only. No rule needed.</p>
+</div>
+</section>
+<section id="hpac">
+<h2>Hit points and AC</h2>
+<div class="card">
+<h3>Why do you have 24 hit points?</h3>
+<p class="say">I took the fixed average each level: <b>8 + 2</b> at level 1, then <b>5 + 2</b> and <b>5 + 2</b>, which is <b>24</b> with Con +2.</p>
+<p class="src">Tasha's p.10. The table lets me reroll 1s if I roll (table rule).</p>
+<p class="no"><b>If the DM says no:</b> I roll my hit dice and reroll any 1.</p>
+</div>
+<div class="card">
+<h3>Why is your AC 15?</h3>
+<p class="say">Studded leather gives <b>12</b>, my Dex gives <b>+2</b>, and the Enhanced Defense infusion gives <b>+1</b>.</p>
+<p class="src">PHB p.145 (studded leather). Tasha's p.21 (Enhanced Defense).</p>
+</div>
+<div class="card">
+<h3>Why does AC 15 become 20 when you cast Shield?</h3>
+<p class="say">Shield is a reaction that adds <b>+5</b> AC until my next turn, so <b>15</b> becomes <b>20</b>, and it uses a 1st-level slot.</p>
+<p class="src">PHB p.275.</p>
+</div>
+<div class="card">
+<h3>Why studded leather and not scale mail?</h3>
+<p class="say">The artificer starting kit lets me choose studded leather or scale mail, and I chose studded leather because it is light armor: no disadvantage on Stealth, and my Dex bonus counts in full.</p>
+<p class="src">Tasha's p.10 (artificer kit). PHB p.145 (armor table).</p>
+</div>
+</section>
+
+<div class="warn"><b>Not checked.</b> Whether your DM allows Tasha's custom origin, and whether the artificer firearm line works at your table. Ask the DM before the game.</div>
+</div>
+<script>
+/* ONE PLACE: the cannon's name (open question 31). Change it here only. */
+var CANNON_NAME="Mourning Bell"; [].forEach.call(document.querySelectorAll('.cannon-name'),function(e){e.textContent=CANNON_NAME;});
+</script>
+</body>
+</html>

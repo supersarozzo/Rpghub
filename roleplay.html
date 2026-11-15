@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roleplay Skippy: pirates, orcs, dragons and luck</title>
+<style>html{scroll-behavior:auto;overflow-anchor:none}
+:root{
+  --bg:#f5f4f0; --card:#ffffff; --ink:#1d1d1b; --muted:#5a5a55; --line:#d8d6cf; --subtle:#f0efe9;
+  --accent:#1f5f5b; --accent-ink:#ffffff; --tint:#eef3f2; --warn:#8a4b00; --warn-bg:#fff4e0;
+  --ok:#1d6b3a; --ok-bg:#e8f5ec;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow-wrap:break-word}
+header.top{background:var(--accent);color:var(--accent-ink);padding:12px 16px}
+header.top h1{margin:0;font-size:1.25rem}
+header.top p{margin:2px 0 0;font-size:.9rem;opacity:.92}
+.wrap{max-width:860px;margin:0 auto;padding:12px 16px 60px}
+nav.jump{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 18px}
+nav.jump a{padding:8px 12px;border:1px solid var(--line);background:#fff;border-radius:999px;font-size:.9rem;color:var(--ink);text-decoration:none;min-height:36px}
+nav.jump a:hover,nav.jump a:focus{background:var(--accent);color:#fff;border-color:var(--accent)}
+.block{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 16px;scroll-margin-top:12px}
+.block h2{margin:0 0 4px;font-size:1.3rem;line-height:1.3}
+.block h3{margin:14px 0 4px;font-size:1.05rem;line-height:1.3}
+.block p{margin:6px 0}
+.block ul{margin:6px 0;padding-left:20px}
+.block li{margin:3px 0}
+.lead{color:var(--muted);margin:0 0 8px}
+.pg{display:inline-block;border:1px solid var(--line);border-radius:12px;padding:0 6px;font-size:.78rem;color:var(--muted);white-space:nowrap;background:#faf9f5;font-weight:400}
+.tag{display:inline-block;border-radius:4px;padding:1px 7px;font-size:.78rem;font-weight:700;color:#fff;vertical-align:1px}
+.tag.mine{background:#1d6b3a}.tag.out{background:#8a4b00}.tag.made{background:#7a4fa3}.tag.real{background:#1b5a9a}
+.ex{background:#fdf8e6;border-left:6px solid #c9a227;border-radius:4px;padding:8px 12px;margin:12px 0 0;font-size:.95rem;color:#3b3000}
+.ex b:first-child{color:#6b5400}
+.say{background:var(--tint);border-left:4px solid var(--accent);padding:8px 12px;margin:8px 0;font-size:.95rem;font-style:italic}
+.say b{font-style:normal;color:var(--accent)}
+.note{background:var(--tint);border-left:4px solid var(--accent);padding:8px 10px;margin:10px 0;font-size:.93rem}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn);padding:8px 10px;margin:10px 0;font-size:.93rem;color:var(--warn)}
+.good{background:var(--ok-bg);border-left:4px solid var(--ok);padding:8px 10px;margin:10px 0;font-size:.93rem;color:var(--ok)}
+.hint{color:var(--muted);font-size:.9rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
+.card{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#fff}
+.card h3,.card h4{margin:0 0 4px;font-size:1rem;line-height:1.3}
+.card p{margin:4px 0;font-size:.93rem}
+.card .use{margin-top:6px;padding-top:6px;border-top:1px dashed var(--line);font-size:.93rem}
+.card .use b{color:var(--accent)}
+.card.stack{margin:10px 0}
+.tw{overflow-x:auto;max-width:100%;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--line);padding:5px 7px;text-align:left;vertical-align:top}
+th{background:var(--subtle)}
+.moment{counter-increment:m}
+.moment h3::before{content:counter(m);display:inline-block;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:.85rem;text-align:center;line-height:24px;margin-right:8px}
+.moments{counter-reset:m}
+@media (max-width:640px){.grid{grid-template-columns:1fr}}
+@media print{header.top{background:#fff;color:#000;border-bottom:2px solid #000}nav.jump{display:none}.card,.ex,.warn,.note,.say,.good,.moment,table,.tw,h2,h3{break-inside:avoid}h2,h3{break-after:avoid}body{background:#fff}.wrap{padding-bottom:0}.card.stack{margin:7px 0}.note,.warn,.good{margin:7px 0}.block{margin-bottom:8px;border:0;border-radius:0;padding:0}.block h2{border-bottom:2px solid #1f5f5b;padding-bottom:2px;margin-bottom:6px}.lead{break-before:avoid}.hint{break-before:avoid}}
+#magic .grid{grid-template-columns:1fr 1fr 1fr}@media (max-width:640px){#magic .grid{grid-template-columns:1fr}}#magic .grid .card{padding:7px 10px}#magic .grid .card p{margin:2px 0;font-size:.88rem}#magic .grid .use{border-top:0;padding-top:0;margin-top:2px}
+@media print{#magic{break-inside:avoid}#magic .grid{gap:7px;margin:6px 0}}
+@page{size:Letter;margin:.5in}
+
+/* ==== Shared look v1: see docs/DESIGN.md (same block on every page) ==== */
+nav.site{background:#16302e;display:flex;flex-wrap:wrap;align-items:center;gap:2px 2px;padding:6px 12px;font:600 14px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+nav.site .brand{color:#fff;font-weight:700;margin-right:10px;padding:6px 0;letter-spacing:.02em;white-space:nowrap}
+nav.site a{color:#d6e6e4;text-decoration:none;padding:8px 10px;border-radius:6px;display:inline-flex;align-items:center;min-height:36px;white-space:nowrap}
+nav.site a:hover{background:rgba(255,255,255,.12);color:#fff}
+nav.site a[aria-current="page"]{background:#fff;color:#16302e}
+nav.site a:focus-visible{outline:3px solid #f5c542;outline-offset:1px}
+@media (max-width:640px){nav.site{padding:4px 8px}nav.site .brand{width:100%;padding:4px 2px 2px}nav.site a{padding:6px 8px;font-size:13px}}
+header.top{padding:14px 16px}
+header.top h1{font-size:1.35rem;line-height:1.25}
+header.top p{max-width:860px}
+@media print{nav.site{display:none!important}}
+/* ==== end shared look ==== */
+</style>
+</head>
+<body>
+<nav class="site" aria-label="All pages"><span class="brand">Skippy &middot; Artificer</span><a href="start-here.html">Start here</a><a href="guide.html">Guide</a><a href="creator.html">Creator</a><a href="exceptions.html">Exceptions</a><a href="checklists.html">Checklists</a><a href="combos.html">Combos</a><a href="sheet/skippy-sheet.html">Sheet</a><a href="sheet/skippy-extra.html">Extra pages</a></nav>
+<header class="top">
+  <h1>How to roleplay Skippy</h1>
+  <p>Pirates, half-orcs, dragonborn, sea luck, and old Sicilian and Italian luck customs, all in plain English. A guideline, not a rulebook. Works offline. Prints on paper.</p>
+</header>
+<div class="wrap">
+
+  <div class="note"><b>What this page is:</b> ideas for how Skippy talks, acts and believes. Roleplay has no wrong answers. Take what is fun and drop the rest. <span class="hint">PHB = Player's Handbook. All book facts are in my own words, with printed page numbers.</span></div>
+
+  <div class="card stack">
+    <h3>Source labels (read this first)</h3>
+    <p><span class="tag mine">Your books</span> comes from your Player's Handbook or Tasha's, with a page number.<br>
+    <span class="tag out">Not your books</span> is D&amp;D lore I know from other books (Monster Manual, Forgotten Realms, Ghosts of Saltmarsh and more) or from memory. I did not check it against a page you own. Ask your DM before you rely on it.<br>
+    <span class="tag real">Real world</span> is real history or real folk custom, checked on the web. Most web pages about folk customs are blogs, so details change from family to family.<br>
+    <span class="tag made">Made up</span> is my idea for Skippy. It is not in any book. You can change it.</p>
+  </div>
+
+  <div class="card stack">
+    <h3>Skippy in one look</h3>
+    <p>A half-orc Artillerist artificer, level 3. A former <b>powder monkey</b> (the boy who runs gunpowder to the cannons) on the pirate ship <i>The Widow</i>. His captain, <b>Edwine Blackscale</b> (a bronze dragonborn), raised him. The ship sank. He is searching for her. <b>He keeps his word like treasure. He hums the old songs of The Widow's crew.</b> His cannon, <b>Mourning Bell</b>, is a small <b>black iron</b> bell-shaped cannon. It has <b>no legs</b> and is <b>Tiny</b>. He fires it from his <b>shoulder</b> like a rocket launcher, or sets it down as a <b>turret</b>. It tolls for the lost crew. <span class="pg">STORY</span> His lucky charm is a small <b>red coral horn charm</b> on a cord around his neck.</p>
+    <p><b>His heart:</b> loyal (chaotic neutral). A crew is a family. He will break a law, but never a promise. <b>His flaw:</b> he cannot stop looking at a blank map.</p>
+    <p><b>The big idea of this page:</b> Skippy lost his ship, his captain and his crew. The old customs are how he holds on to them. His luck rituals are not silly to him. They are <b>memory</b>. Play them with a straight face and a small smile.</p>
+  </div>
+
+  <nav class="jump" aria-label="Jump to a part">
+    <a href="#pirates">1. Pirates</a><a href="#orc">2. Half-orc</a><a href="#dragon">3. Dragonborn</a><a href="#sea">4. Sea myths</a><a href="#sicily">5. Luck customs</a><a href="#play">6. Playing Skippy</a><a href="#magic">7. My magic</a><a href="#moments">Table moments</a><a href="#fun">Keep it fun</a>
+  </nav>
+
+  <!-- 1 PIRATES -->
+  <section class="block" id="pirates">
+    <h2>1. Pirates in D&amp;D 5e</h2>
+    <p class="lead">What your background gives, how ship life works, and how pirates act at the table.</p>
+
+    <h3>What the Pirate background gives you in play</h3>
+    <p><span class="tag mine">Your books</span> The Sailor background has a <b>Pirate variant</b>. Its feature is <b>Bad Reputation</b>. <span class="pg">PHB p.139</span> In my words: in towns and cities, ordinary people are scared of you. They let you get away with small crimes, and they do not want to cross you. It is made for small trouble, not for serious crimes.</p>
+    <div class="card stack">
+      <h4>How Bad Reputation shows up at the table</h4>
+      <ul>
+        <li><b>Before a scene,</b> ask the DM: "Does anyone here know The Widow?" This is the way to use the feature. It is a story tool, not a dice roll.</li>
+        <li><b>Good side:</b> a guard looks away. A shopkeeper stops haggling. A bully backs off.</li>
+        <li><b>Bad side:</b> a bounty hunter, an enemy captain, or a mother who lost a son at sea may also know the name. This gives the DM story hooks, so it is a gift.</li>
+        <li><b>Do not:</b> try to use it for theft of big things, murder, or burning a building. The feature is for <i>minor</i> trouble.</li>
+      </ul>
+      <p class="use"><b>One line:</b> "I lean on the counter and say nothing. The Widow's name does the talking."</p>
+    </div>
+
+    <h3>Ship life</h3>
+    <p><span class="tag real">Real world</span> <span class="tag out">Not your books</span> Real pirate ships of the 1700s ran in simple ways. You can borrow these for Skippy's memories.</p>
+    <div class="tw"><table>
+      <tr><th>Part of ship life</th><th>What it was</th><th>Skippy's version</th></tr>
+      <tr><td><b>Captain / skipper</b></td><td>Led in battle. On many pirate ships the crew could vote to remove a bad captain.</td><td>Edwine, "the skipper". Booming, generous, vain, told terrible jokes.</td></tr>
+      <tr><td><b>Quartermaster</b></td><td>Kept order and shared out the loot.</td><td>Ask your DM if a quartermaster of The Widow survived. A good ally.</td></tr>
+      <tr><td><b>Gunners and powder monkeys</b></td><td>Gunners fired the cannons. Boys ran powder up from the powder room.</td><td>Skippy knows every cannon by its sound. <span class="tag made">Made up</span> He can tell a gun is wrong before he sees it.</td></tr>
+      <tr><td><b>Watches and bells</b></td><td>The day was split into watches. A ship's bell marked the time.</td><td>He still counts the bells in his head. A bell ringing makes him look up.</td></tr>
+      <tr><td><b>Shares</b></td><td>Loot was split by agreed shares, not by the captain alone.</td><td>He always asks: "And the crew's share?" It is why he is fair at the party's treasure pile.</td></tr>
+    </table></div>
+
+    <h3>The pirate code</h3>
+    <p><span class="tag real">Real world</span> Real pirate crews wrote "articles" (rules) that every sailor swore to. Typical rules: fair shares, no fighting aboard, a vote for big choices, and money for a sailor hurt in a fight. This is why pirates were not just thieves in the story: they had a code. <span class="hint">Famous example: the articles of the pirate Bartholomew Roberts. I know it from memory, not checked now.</span></p>
+    <div class="card stack">
+      <h4>The Widow's Articles <span class="tag made">Made up</span></h4>
+      <p>Six short rules Skippy can quote. They fit his traits. Show them to your DM.</p>
+      <ol>
+        <li><b>No one is left behind.</b> (His ideal. He keeps this even now.)</li>
+        <li><b>A promise given is a debt owed.</b> (He keeps his word like treasure.)</li>
+        <li><b>The powder is for the guns, not for fools.</b> (He is careful with fire and powder.)</li>
+        <li><b>The skipper's word is the tide.</b> (He is loyal to Edwine.)</li>
+        <li><b>The bell is rung for every one we lose.</b> (Fits Mourning Bell.)</li>
+        <li><b>A name is not sold.</b> (She gave him "Skippy". He will never drop it.)</li>
+      </ol>
+      <p class="use"><b>One line:</b> "Article two. I said I would carry it. So I carry it."</p>
+    </div>
+
+    <h3>How pirates talk and act (without the cartoon)</h3>
+    <ul>
+      <li><b>Short words.</b> Crews shouted over wind and guns. Skippy says things plainly: "Aye." "Hold." "Fire." "Down."</li>
+      <li><b>A few sea words are enough:</b> <i>aye</i> (yes), <i>avast</i> (stop), <i>belay that</i> (forget that order), <i>shipmate</i> (crew friend), <i>landlubber</i> (someone who is not a sailor), <i>fair winds</i> (goodbye and good luck).</li>
+      <li><b>Loyal inside, wary outside.</b> Pirates trust the crew. They distrust officers, nobles and the law.</li>
+      <li><b>Stories are treasure.</b> Skippy trades a song or a tale for a favour.</li>
+      <li><b>A "yarr" now and then</b> is fun. Do not say it every sentence. It gets tiring for the table.</li>
+    </ul>
+    <div class="warn"><b>Books you do not own:</b> <i>Ghosts of Saltmarsh</i> (sea adventures and ship rules), the <i>Sword Coast Adventurer's Guide</i> and the Forgotten Realms books have pirate lore and ship fights. I know them from memory, not from your books. If your DM runs a sea game, ask them what they use.</div>
+  </section>
+
+  <!-- 2 HALF-ORC -->
+  <section class="block" id="orc">
+    <h2>2. Half-orcs as pirates</h2>
+    <p class="lead">Your looks, your gods, and how other people see you.</p>
+
+    <h3>What the book says</h3>
+    <p><span class="tag mine">Your books</span> The half-orc section is on <span class="pg">PHB p.40-41</span>. In my words: half-orcs look strong and rough. Many people fear them, or look down on them, before they know them. Some half-orcs grow up in orc tribes. Others grow up among humans. The half-orc game traits are <b>darkvision</b> (see in the dark), <b>Menacing</b> (a bonus on Intimidation), <b>Relentless Endurance</b> (stay at 1 HP once a day when you would drop to 0) and <b>Savage Attacks</b> (extra damage on a critical hit). <span class="pg">PHB p.41</span> <span class="hint">Check your sheet to see which of these Skippy kept.</span></p>
+    <div class="note"><b>Skippy is a bit different.</b> He never knew his parents. He grew up on a ship with dragonborn, so he speaks <b>Draconic</b> and has forgotten most of his Orc. He looks like an orc, talks like a dragonborn sailor, and belongs to The Widow. That mix is the best roleplay hook you have.</div>
+
+    <h3>How others see him</h3>
+    <div class="grid">
+      <div class="card"><h4>The frightened</h4><p>Villagers step back. Guards watch his hands. This is the <b>Bad Reputation</b> at work.</p><p class="use"><b>One line:</b> He smiles and says: "I only bite on Tuesdays." (Then he checks it is not Tuesday.)</p></div>
+      <div class="card"><h4>The surprised</h4><p>People expect a brute. He pulls out a chart and a spyglass. They do not know what to say.</p><p class="use"><b>One line:</b> "Ah, you thought I'd smash it. I'm going to <i>measure</i> it."</p></div>
+    </div>
+
+    <h3>Gruumsh and the orc gods</h3>
+    <p><span class="tag out">Not your books</span> In D&amp;D, orcs honour <b>Gruumsh</b>, the one-eyed god of war and storms. He has a wife, <b>Luthic</b> (hearth, caves, healing), and other gods in the orc pantheon: <b>Bahgtru</b> (his strong son), <b>Ilneval</b> (war planner), <b>Yurtrus</b> (death) and <b>Shargaas</b> (night and stealth). The gods are named in the PHB appendix of gods, but I did not check the page in your copy. The stories about them come from other books. They also say Gruumsh is cruel and hates elves.</p>
+    <p>A half-orc raised away from orcs does not have to follow Gruumsh. Here are three ways to play it. Pick one:</p>
+    <ul>
+      <li><b>He turned away.</b> He never heard the orc gods at all. The sea was his only church. (Easy. No rules to learn.)</li>
+      <li><b>He leans to Luthic.</b> The quiet one. Home, healing, a fire in a cave. He lights a small flame for the lost crew. Fits an artificer who fixes things and keeps people alive.</li>
+      <li><b>He answers to the sea.</b> He fears Umberlee (section 4) and makes a small offering before every voyage. Fear is part of his faith.</li>
+    </ul>
+    <div class="warn"><b>Ask your DM first.</b> Your world may not use these gods. Say "Skippy has heard of the orc war-god, and does not follow him." That is true in every world.</div>
+
+    <h3>Orc sayings and scars as honour</h3>
+    <p><span class="tag made">Made up</span> There are no official orc proverbs in the books I know. Here are some I invented. They sound like Skippy's orc blood talking, and he half-remembers them:</p>
+    <div class="say">"A scar is a story you survived."</div>
+    <div class="say">"Fire first, talk after. But never lie to a fire."</div>
+    <div class="say">"The strong carry the loud, the loud carry the small." (He carried the small once: it was him.)</div>
+    <p><b>Scars as honour:</b> many orcs in D&amp;D treat scars as proof of courage. <span class="tag out">Not your books</span> Skippy can wear this too. Give him one or two small burn scars from powder flash on his hands and forearms. When he is asked about them: "Powder monkey. The cannon always bites back." Do not make it a sad moment unless you want to.</p>
+  </section>
+
+  <!-- 3 DRAGONBORN -->
+  <section class="block" id="dragon">
+    <h2>3. Dragonborn and Captain Blackscale</h2>
+    <p class="lead">For Edwine, the bronze dragonborn who raised him. Skippy learned her ways.</p>
+
+    <h3>What the book says</h3>
+    <p><span class="tag mine">Your books</span> Dragonborn are on <span class="pg">PHB p.32-34</span>. In my words: dragonborn are proud. <b>Clan</b> matters more to them than life itself. They care a lot about <b>honour</b>, and they dislike showing weakness. They descend from dragons, so each one has a <b>draconic ancestry</b> (a colour of dragon). That decides their breath weapon and damage resistance. A <b>bronze</b> dragonborn has <b>lightning</b>. <span class="pg">PHB p.34</span> Edwine's breath is a line of lightning. It makes sense for a captain: it crosses a deck.</p>
+
+    <h3>Clan honour on a pirate ship</h3>
+    <p>A dragonborn is proud of her clan name. A pirate gives up the old name and takes a new one. <b>Blackscale is not her clan name. It is a ship name.</b> This is a good question for your DM: <i>what was Edwine's clan, and did she leave it, or was she cast out?</i> If she left it, she may have made The Widow's crew her new clan. That explains why she never left a crew member behind (STORY). And it explains why Skippy feels he is in her clan.</p>
+    <div class="card stack">
+      <h4>Draconic words Skippy knows <span class="tag made">Made up</span></h4>
+      <p>Skippy speaks the language of the crew. Add a Draconic touch, but do not invent a full language. The easy way: say it in English, then say "as the skipper would say" and a word like <i>honour</i>, <i>fire</i>, or <i>home</i> in a growly voice.</p>
+      <p class="use"><b>One line:</b> "The skipper said it in the old tongue. It means: <i>the clan is the sea under your feet.</i>"</p>
+    </div>
+
+    <h3>Bahamut and Tiamat</h3>
+    <p><span class="tag out">Not your books</span> In D&amp;D, dragonborn look up to two great dragon gods. <b>Bahamut</b>, the Platinum Dragon, is a god of justice and good. <b>Tiamat</b>, the five-headed Queen of Dragons, is a goddess of greed and evil. Many dragonborn pick a side. A pirate captain is in between: she wants gold (like Tiamat), but she keeps her crew safe (like Bahamut). <span class="hint">I know this from memory and web, not from your two books. The PHB appendix of gods names them. I did not check the page.</span></p>
+    <ul>
+      <li>Edwine might offer a bronze coin to Bahamut before a fight. A <b>bronze</b> coin: it matches her scales.</li>
+      <li>Skippy was not born into this faith. He has her habit, not her creed. He may say: "The skipper prayed to the silver one. I only prayed to her."</li>
+      <li>Some dragonborn sailors who knew her may be devoted to one of these two. That is a way to meet them: a believer in Tiamat blames her for the wreck. A believer in Bahamut helps him.</li>
+    </ul>
+
+    <h3>Bronze dragons love the sea</h3>
+    <p><span class="tag out">Not your books</span> In the Monster Manual (not yours) bronze dragons live by coasts. They love ships and the sea. They like to watch navies, and they are known as friendly to humans and to people who protect the coast. That fits Edwine: a bronze dragonborn who chose a ship over land. It is a good detail for her old crew: "She was never seasick. A bronze never is."</p>
+    <div class="ex"><b>Example:</b> A dragonborn sailor in a tavern sees Skippy hum. She stops: "That's an old bronze-crew song." Skippy freezes. This is how the DM can give you a clue about the captain, and it costs nothing.</div>
+  </section>
+
+  <!-- 4 SEA MYTHS -->
+  <section class="block" id="sea">
+    <h2>4. Sea myths and superstitions</h2>
+    <p class="lead">What sailors believed. Pick two or three for Skippy. More than that is too many.</p>
+    <p><span class="tag real">Real world</span> Sailors in real history lived in danger and could not control the sea, so they had many luck rules. The web sources say the details change from place to place, and some origin stories are only folk tales.</p>
+
+    <div class="grid">
+      <div class="card"><h4>No whistling on deck</h4><p>Sailors thought whistling could call up a wind, or even a storm. (The ship's cook was allowed to: if his mouth was whistling, it was not eating the crew's food.)</p><p class="use"><b>At the table:</b> Skippy <i>hums</i> but never <i>whistles</i>. If a friend whistles on a boat: "Stop. You'll wake the wind."</p></div>
+      <div class="card"><h4>Never rename a ship</h4><p>A named ship was thought to have its own spirit. Changing the name was seen as cheating the sea. (A plain reason: ships had reputations in port by name.)</p><p class="use"><b>At the table:</b> "My name is the only thing the skipper gave me. I'll never change it. And you don't rename a boat." (A link between Skippy and his ship.)</p></div>
+      <div class="card"><h4>The ship's bell and the dead</h4><p>Bells marked time, marked ceremonies, and were tied to death at sea. Accounts differ: a bell that rings by itself may warn of death, and a bell may drive away evil. Both are folk beliefs.</p><p class="use"><b>At the table:</b> When someone falls or an NPC dies, Skippy taps <b>Mourning Bell</b> once with his knuckle. A small, quiet sound. <b>One tap per person lost.</b> It fits the cannon's name.</p></div>
+      <div class="card"><h4>Coins for the drowned</h4><p>A coin is put under the mast when a ship is built, for luck. A story links it to paying the ferryman of the dead. That link is a story, not proven history.</p><p class="use"><b>At the table:</b> Skippy keeps one old coin from The Widow. Before a sea trip, he presses it to the mast. "For the ones who didn't make it to shore."</p></div>
+      <div class="card"><h4>Sailing on Friday</h4><p>Friday was an unlucky day to start a voyage. Sicilian sayings agree (section 5).</p><p class="use"><b>At the table:</b> If the party plans to leave on a Friday: "Could we go at dawn on Saturday?" A low-cost line.</p></div>
+      <div class="card"><h4>Davy Jones' locker</h4><p>A pirate name for the bottom of the sea, where the drowned go.</p><p class="use"><b>At the table:</b> "She's in Davy's locker," he says. Then: "No. She isn't. I'd feel it." (His hope, in one line.)</p></div>
+    </div>
+
+    <h3>Fantasy versions</h3>
+    <p><span class="tag out">Not your books</span> In the <b>Forgotten Realms</b> (a D&amp;D world, not in your books), the sea goddess is <b>Umberlee</b>. Sailors fear her more than love her. Her titles include "the Wavemother" and "Queen of the Sea". Sailors make offerings to her before a voyage to calm her. Her priests are few and are known to ask a price for safe passage. Most of this is on fan wikis, so details differ. Ask your DM before using her.</p>
+    <ul>
+      <li><b>If your game is in the Realms:</b> Skippy drops a small thing overboard before sailing (a coin, a crumb of ship's biscuit). "A tip for the Wavemother."</li>
+      <li><b>If it is not:</b> call her "the sea queen" or "the Drowner", or just "her". The gesture is the same.</li>
+      <li><b>Other sea fears:</b> krakens, sirens, ghost ships, sailors who never came home. The DM may put one in your path. Your fear of the sea can be funny: "I'm not afraid. I'm <i>respectful</i>."</li>
+    </ul>
+    <div class="warn"><b>One thing to watch:</b> a superstition is only fun when it is short. Do it once per scene, in a few seconds. The table should never wait for Skippy to finish his ritual.</div>
+  </section>
+
+  <!-- 5 LUCK CUSTOMS -->
+  <section class="block" id="sicily">
+    <h2>5. Luck customs from Sicily and Italy</h2>
+    <p class="lead">Old sailors' luck customs that fit a sea-going gunner. All in plain English. Each has one line you can use.</p>
+    <div class="note"><b>Where they come from:</b> <b>Sicily</b> is the big island at the toe of Italy. Its sea culture is very old: fishermen, tuna nets, saints of the sea. These customs are real. Skippy does the <i>actions</i>, and he never needs a foreign word.</div>
+    <div class="good"><b>How to bring it into your game:</b> Skippy does not say "Sicily". If someone asks, he says "an old sailors' custom" or "where I learned it". Treat these as real traditions of real people: respectful, light, never mocking. <b>UK note:</b> in the UK people knock on <i>wood</i> for luck. Skippy touches <i>iron</i> instead, and his cannon is black iron. That small difference is a nice, memorable habit.</div>
+
+    <div class="card stack">
+      <h3>Salt thrown over the shoulder</h3>
+      <p><span class="tag real">Real world</span> If salt spills, you take a pinch and throw it over your <b>left shoulder</b>. Web sources say this is Italian and wider European, not only Sicilian. They give two reasons: salt used to be costly, and the pinch is thrown at the devil who stands behind you.</p>
+      <p class="use"><b>At the table:</b> a tavern cup spills salt. Skippy takes a pinch, throws it left over his shoulder, says: "Done. He's blind for a minute."</p>
+    </div>
+
+    <div class="card stack">
+      <h3>The horns sign and the red horn charm</h3>
+      <p><span class="tag real">Real world</span> The <b>horns sign</b> is a hand sign: the index finger and little finger up, the other fingers closed. A small <b>red horn charm</b> is worn or kept in a pocket against the evil eye (next card). A web source says it should be a <b>gift</b>, not something you buy for yourself. <span class="hint">Warning: pointing the horns sign at a person can be a rude sign. Skippy only makes it down, toward the ground, or at himself.</span></p>
+      <p class="use"><b>Skippy's lucky charm:</b> The player chose it for him (Pirate background, <span class="pg">PHB p.139</span>): a small <b>red coral horn charm</b> on a cord around his neck. Red coral is a classic material for these charms. <span class="hint">That is from memory, not from my web search.</span></p>
+      <p class="use"><b>At the table:</b> he grips it when someone stares too long, praises him, or when the luck turns bad. <span class="tag made">Made up</span> Idea for where it came from: a gift from someone on The Widow when he was small. "You don't buy your own. Somebody has to love you enough to give it." Ask your DM if that fits, or choose your own story.</p>
+    </div>
+
+    <div class="card stack">
+      <h3>The evil eye and how to lift it</h3>
+      <p><span class="tag real">Real world</span> The <b>evil eye</b> is the belief that a look full of envy, or even a too-big compliment, can bring harm. Web sources describe a common way to find and lift it: put a few drops of <b>olive oil in a bowl of water</b>. If the oil spreads or breaks into small pieces, the evil eye is believed to be there. A prayer is said until the oil stays whole. Some families add salt or scissors. The water is often poured out afterwards. Prayers are often passed in secret from grandmother to a chosen family member, and they differ by place. <span class="hint">These web sources are mostly blogs and family accounts, none only about Sicily. Treat this as folk practice, not a standard rite.</span></p>
+      <p class="use"><b>At the table:</b> an NPC says "What a fine cannon!" Skippy touches iron and says "Bless it." Later, if the party has a run of bad luck, he drops three drops of oil in a cup of water and mutters. The DM may smile. Nothing more is needed. <span class="tag made">Made up</span> No game effect unless your DM adds one.</p>
+    </div>
+
+    <div class="card stack">
+      <h3>Touch iron</h3>
+      <p><span class="tag real">Real world</span> In Italy people touch <b>iron</b>, not wood, to push bad luck away. They do it right after they say something they hope will not happen. One web source says it comes from touching a horseshoe, long believed to scare off devils and witches.</p>
+      <p class="use"><b>At the table:</b> this is Skippy's best one. <b>Mourning Bell is black iron.</b> Before he fires, he says "Touch iron" and knocks twice on the barrel with a knuckle. It sounds like a tiny bell.</p>
+    </div>
+
+    <div class="card stack">
+      <h3>Unlucky days: no wedding and no voyage on Friday or Tuesday</h3>
+      <p><span class="tag real">Real world</span> An old saying goes: "Neither on Venus's day nor on Mars's day do you marry or set out." Venus's day is Friday. Mars's day is Tuesday. Both are seen as unlucky for a wedding or a journey. The exact wording changes from place to place. A Dartmouth folklore file agrees with this meaning.</p>
+      <p class="use"><b>At the table:</b> the party plans to sail on a Tuesday. "Neither Venus's day nor Mars's day. Not today." Offer a deal: "Dawn tomorrow, and I'll hold iron all the way."</p>
+    </div>
+
+    <div class="card stack">
+      <h3>Bread never upside down</h3>
+      <p><span class="tag real">Real world</span> It is bad luck to put a loaf of bread upside down. Web sources say it is Italian and European, not clearly Sicilian. Reasons given: bread is holy (a link to the body of Christ), and in fishing towns it was taken very seriously because bad luck could mean no fish. <span class="hint">One web story (an executioner) is from a French blog, so I did not use it.</span></p>
+      <p class="use"><b>At the table:</b> a friend puts the loaf on the table crust-side down. Skippy flips it quietly. "The sea knows." No speech.</p>
+    </div>
+
+    <div class="card stack">
+      <h3>The number 17</h3>
+      <p><span class="tag real">Real world</span> In Italy the unlucky number is <b>17</b>, not 13. Some hotels skip floor 17 and the Italian airline skips row 17. One web source says the Roman numerals for 17 can be re-arranged to spell "I have lived", meaning "I am dead". I found that in only one source, so it may be a modern story.</p>
+      <p class="use"><b>At the table:</b> Skippy's <b>Intelligence is 17</b>. Joke: "Seventeen is unlucky. But it is my best number. Don't tell the sea." <span class="hint">Never re-roll or ignore a real 17 on a die. The dice stay. The joke is in how you say it.</span></p>
+    </div>
+
+    <h3>Sea and fishermen's customs</h3>
+    <div class="card stack">
+      <h4>Tuna-net fishing and its work songs</h4>
+      <p><span class="tag real">Real world</span> Sicilian fishermen used a big set of nets to trap tuna near the coast. A leader ran the whole work, and the final kill was called the "slaughter". Web sources say the men sang old work songs that set the rhythm of their work and asked God, the Virgin and the saints for a good catch. Some sources say the men should not look the leader in the eye. Today only a few remain, off the Egadi islands (Favignana is the famous one), because of over-fishing.</p>
+      <p class="use"><b>At the table:</b> this is a great fit for "I hum the old songs of The Widow's crew". Skippy hums a <b>call-and-response work song</b> when he loads powder, readies the cannon, or digs. A friend may answer. <span class="tag made">Made up</span> The song is only a rhythm: "Heave ... and hold ... fire ... and fall."</p>
+    </div>
+    <div class="card stack">
+      <h4>Saints of the sea</h4>
+      <ul>
+        <li><b>Saint Rosalia</b> <span class="tag real">Real world</span> is the patron saint of Palermo, the capital of Sicily. Tradition says the plague of 1624 ended after her relics were carried through the city. Her big festival is on 10-15 July; her church feast is 4 September. She is a city and plague saint more than a sea saint, so Skippy prays to her for <b>the sick</b>, not for the wind.</li>
+        <li><b>Saint Francis of Paola</b> <span class="tag real">Real world</span> is called patron of Italian seafarers (a pope named him in 1943). A legend says he once crossed the Strait of Messina by spreading his cloak on the water. It is a legend; the details differ by source. Skippy says his name when he crosses water.</li>
+        <li><b>Our Lady, Star of the Sea</b> <span class="tag real">Real world</span> (also "Our Lady of the Safe Harbour") is the Virgin Mary as protector of sailors. Wives of sailors left offerings in her church. <span class="hint">I found this from one boating magazine, so the detail is light.</span></li>
+        <li><b>Painted eyes on the bow</b> <span class="tag real">Real world</span> A study says painted eyes on boat bows are a very old protection, as if the boat can see. Sicilian and Maltese boats still have them. <b>At the table:</b> he chalks two small eyes on the front of Mourning Bell. <span class="tag made">Made up</span> "So it sees where it's going."</li>
+      </ul>
+      <p class="use"><b>At the table:</b> a quiet, serious beat: <i>"Saint Rosalia, watch the sick. Saint Francis, watch the sea. And whoever watches captains, watch mine."</i></p>
+    </div>
+
+    <div class="card stack">
+      <h4>Two old sea sayings, in English</h4>
+      <p><span class="tag real">Real world</span> Two Sicilian sayings, given here only in English: <b>"Whoever sets out, gets there."</b> (a call to take a chance) and <b>"The sea gives and the sea takes."</b> (do not get proud when luck is good). <span class="hint">I checked these on web pages, not with a native speaker.</span></p>
+      <p class="use"><b>At the table:</b> the first before a risk. The second, said softly, when he loses something or after a win.</p>
+    </div>
+  </section>
+
+  <!-- 6 PLAY -->
+  <section class="block" id="play">
+    <h2>6. How to roleplay Skippy</h2>
+    <p class="lead">Voice, catchphrases, and a few simple rules to follow.</p>
+
+    <h3>His voice</h3>
+    <ul>
+      <li><b>Short and clear.</b> A powder monkey learned to speak so that people hear him over cannon noise.</li>
+      <li><b>Quick when he is excited,</b> slow and quiet when he talks about the captain. The change tells the table something is under the surface.</li>
+      <li><b>Clever, and he knows it.</b> A small proud smile when he explains how something works. Then he looks at a map and forgets you.</li>
+      <li><b>Plain English and a few sea words, nothing else.</b> One sea word per scene is plenty. No foreign words are needed: the luck is in what he <i>does</i>.</li>
+    </ul>
+
+    <h3>Catchphrases</h3>
+    <div class="grid">
+      <div class="card"><h4>Pirate</h4>
+        <p>"Aye, skipper." (to anyone he trusts)</p>
+        <p>"Fair winds, shipmate."</p>
+        <p>"Belay that. I've got a better idea."</p>
+        <p>"I gave my word. That's the end of it."</p>
+        <p>"Powder, shot, match. In that order."</p></div>
+      <div class="card"><h4>Luck lines</h4>
+        <p>"Touch iron." (before the cannon fires)</p>
+        <p>"Up anchor. The tide won't wait."</p>
+        <p>"Would you look at that."</p>
+        <p>"Whoever sets out, gets there." (before a risk)</p>
+        <p>"The sea gives and the sea takes." (after a loss)</p></div>
+    </div>
+  </section>
+
+  <!-- MOMENTS -->
+  <section class="block moments" id="moments">
+    <h2>Five ready-made table moments</h2>
+    <p class="lead">Each one takes about 10 seconds. Ask your DM first for the ones that need the scene to match.</p>
+
+    <div class="card stack moment">
+      <h3>Salt spilled at the tavern</h3>
+      <p><b>Set-up:</b> a salt shaker tips over, or a friend knocks it.</p>
+      <div class="say"><b>Skippy:</b> "Left shoulder. Quick." (He throws a pinch.) "Now the devil's blind. Eat."</div>
+      <p class="hint">Why it works: it is a tiny scene and nobody waits for you.</p>
+    </div>
+    <div class="card stack moment">
+      <h3>A black cat on the dock</h3>
+      <p><b>Set-up:</b> the DM describes a black cat crossing the party's path. (On a ship a cat is often lucky. In Italian luck, a black cat that crosses your path is bad.)</p>
+      <div class="say"><b>Skippy:</b> "Wait. Let the cat go first. Cats know the way off a ship before we do." (He makes the horns sign low, pointed at the ground.)</div>
+      <p class="hint">Why it works: it makes the cat important. The DM may add a clue.</p>
+    </div>
+    <div class="card stack moment">
+      <h3>Before firing Mourning Bell</h3>
+      <p><b>Set-up:</b> any fight, when you activate the cannon.</p>
+      <div class="say"><b>Skippy:</b> (swings Mourning Bell up onto his shoulder, or sets it down like a turret; knocks twice on the black iron; one hand closes on the coral horn at his neck) "Touch iron. Sing, girl." (It fires.)</div>
+      <p class="hint">Mourning Bell has no legs, so he always carries it or sets it down by hand. The knock is part of that. Keep it under three seconds. After the first time, just knock. Everyone will know.</p>
+    </div>
+    <div class="card stack moment">
+      <h3>A stranger praises him</h3>
+      <p><b>Set-up:</b> an NPC says "What a fine little cannon!" or "You're so brave, kid."</p>
+      <div class="say"><b>Skippy:</b> (grips the coral horn charm at his neck) "Don't. ... Say 'God bless it' and touch the iron. Compliments bring the eye." (The NPC does it. He nods.)</div>
+      <p class="hint">Why it works: it shows his character and costs no rules. In many folk customs, you add a blessing when you praise.</p>
+    </div>
+    <div class="card stack moment">
+      <h3>Leaving on a Tuesday</h3>
+      <p><b>Set-up:</b> the party wants to leave at once, on the wrong day.</p>
+      <div class="say"><b>Skippy:</b> "Not on Venus's day, not on Mars's day. Not to wed, not to go." (A pause.) "But the trail is warm. I'll go. I hold iron the whole road, and nobody whistles."</div>
+      <p class="hint">Why it works: he shows his luck rule <b>and</b> breaks it for the captain. That is the <i>real</i> story: his bond is stronger than his fear.</p>
+    </div>
+
+    <div class="card stack">
+      <h3>Bonus: a quiet moment <span class="tag made">Made up</span></h3>
+      <p>When a friend or NPC dies, Skippy taps <b>Mourning Bell</b> once with his knuckle and says nothing. If your DM allows, do it once, for each loss. This is the best use of the cannon's name.</p>
+    </div>
+  </section>
+
+  <!-- FUN -->
+  <section class="block" id="fun">
+    <h2>Keep it fun, not annoying</h2>
+    <div class="grid">
+      <div class="card"><h4>Do</h4>
+        <ul>
+          <li>One luck custom per scene, at most.</li>
+          <li>Ten seconds, then back to the game.</li>
+          <li>Let it make friends laugh. Invite them in ("Hold the iron. Quick!").</li>
+          <li>Let the <b>dice stand</b>. Customs are flavour, not rules.</li>
+          <li>Break a custom when it is for the captain. That shows who he is.</li>
+          <li>Tell your DM your plan. They may reward it with a clue.</li>
+        </ul></div>
+      <div class="card"><h4>Do not</h4>
+        <ul>
+          <li>Do not stop the party, or the fight, for a ritual.</li>
+          <li>Do not use a custom to refuse what the group voted to do. Make a deal instead.</li>
+          <li>Do not mock a real faith. Skippy believes. He does not joke at the saints.</li>
+          <li>Do not point the horns sign at people.</li>
+          <li>Do not speak in accent for a whole evening. It gets tiring for you and the table.</li>
+          <li>Do not turn a custom into a game advantage unless your DM says so.</li>
+        </ul></div>
+    </div>
+    <div class="note"><b>Easy check:</b> if a friend at the table is smiling, keep going. If they look at the clock, shorten it. <b>Roleplay is not acting:</b> you do not need a voice. Say, in your normal voice: "Skippy knocks on the cannon and says 'touch iron'." That is real roleplay.</div>
+  </section>
+
+  <!-- 7 MAGIC LOOK -->
+  <section class="block" id="magic">
+    <h2>7. How my magic looks</h2>
+    <p class="lead">An artificer's magic looks like <b>gadget tricks</b>. Skippy does them with his <b>tools</b> or with his <b>infused crossbow</b>, which is also his spell focus.</p>
+    <div class="note"><span class="tag mine">Your books</span> The rules leave the look of your spells to you (<span class="pg">Tasha's p.11-12</span>). <span class="tag made">Made up</span> Everything below is an <b>idea, not a rule</b>. The spell works as the rules say; only the picture changes.</div>
+    <div class="card stack">
+      <h3>His tools</h3>
+      <p>The <b>thieves' tools roll</b> holds: <b>lockpicks</b>, <b>thin pliers</b>, a <b>small file</b>, a <b>little mirror</b> and a <b>hook</b>.</p>
+      </div>
+    <div class="grid">
+      <div class="card"><h4>Shocking Grasp</h4><p>He touches the enemy with the <b>steel tip of his pliers</b>. A blue spark cracks, like a struck flint.</p><p class="use"><b>At the table:</b> "Skippy jabs the pliers into the goblin. Sparks fly!"</p></div>
+      <div class="card"><h4>Guidance</h4><p>He tightens a friend's buckle, or taps their blade with a lockpick.</p><p class="use"><b>At the table:</b> "There. Now it'll hold."</p></div>
+      <div class="card"><h4>Shield</h4><p>He snaps the <b>crossbow</b> up. Scratched marks on its stock flash, and a ring of iron light catches the hit.</p><p class="use"><b>At the table:</b> "Skippy snaps the crossbow up. The marks flash. Clang!"</p></div>
+      <div class="card"><h4>Thunderwave</h4><p>He slams a pinch of <b>black powder</b> against the deck with his heel. It goes boom, like a small cannon shot.</p><p class="use"><b>At the table:</b> "Skippy stamps his heel. Boom! Everyone back!"</p></div>
+      <div class="card"><h4>Cure Wounds</h4><p>A tar-smelling <b>salve</b> from a tin, then quick stitches with a <b>sail needle</b>.</p><p class="use"><b>At the table:</b> "Hold still. This stinks, but it works."</p></div>
+      <div class="card"><h4>Faerie Fire</h4><p>He blows glowing "sea-sparkle" dust off his palm. It sticks to the enemies and makes them glow.</p><p class="use"><b>At the table:</b> "Skippy blows on his palm. Now we can all see you!"</p></div>
+      <div class="card"><h4>False Life</h4><p>A gulp of bitter, smoky <b>tonic</b> from a hip flask, then a shiver.</p><p class="use"><b>At the table:</b> "Skippy drinks, grimaces and shivers. He stands taller."</p></div>
+      <div class="card"><h4>Detect Magic</h4><p>He tilts the <b>little mirror</b> from his roll. Magic shows in it as a faint glow.</p><p class="use"><b>At the table:</b> "He tilts the mirror. There. Something glows in that wall."</p></div>
+      <div class="card"><h4>Magical Tinkering</h4><p>He taps a coin with a lockpick. Now it shines like a candle, or whistles a tune.</p><p class="use"><b>At the table:</b> "Skippy taps the coin. It glows like a little candle."</p></div>
+    </div>
+  </section>
+
+  <div class="note"><b>Not checked:</b> PHB and Tasha's page numbers (they come from the team's notes, not your PDFs). Gruumsh, Bahamut, Tiamat, the Monster Manual, Umberlee, Saltmarsh and Sword Coast lore are from memory and web, not your books. Folk customs come from web pages, mostly blogs. The two sea sayings were checked on web pages, not with a native speaker. Mourning Bell (no legs, Tiny, shoulder or turret) is as the team told me. Orc sayings, the Widow's Articles, the magic looks and every "at the table" line are my ideas.</div>
+
+</div>
+</body>
+</html>

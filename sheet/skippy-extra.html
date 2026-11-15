@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skippy - extra pages</title>
+<style>
+  /* Skippy's mini-handbook. Follows docs/DESIGN.md. Own words only; page refs point to the player's books. */
+  :root{--ink:#1d1d1b;--muted:#5a5a55;--line:#d8d6cf;--accent:#1f5f5b;--tint:#eef3f2;--paper:#f5f4f0;--subtle:#f0efe9;--warn:#8a4b00;--warn-bg:#fff4e0}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--paper);color:var(--ink);font-family:"Segoe UI",system-ui,sans-serif;font-size:15px;line-height:1.45}
+  .bar{position:sticky;top:0;z-index:5;background:#1f5f5b;color:#fff;padding:10px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .bar button{font:inherit;font-weight:700;padding:8px 18px;border:0;border-radius:6px;background:#fff;color:#16302e;cursor:pointer}
+  .bar button:focus-visible{outline:3px solid #f5c542;outline-offset:2px}
+  .bar a{color:#fff;font-weight:600}
+  .wrap{max-width:816px;margin:0 auto;padding:20px 16px 60px;display:flex;flex-direction:column;gap:20px}
+  .page{position:relative;background:#fff;border:1px solid var(--line);border-radius:8px;padding:26px 30px 34px;box-shadow:0 2px 14px rgba(0,0,0,.12)}
+  .pno{position:absolute;right:30px;bottom:10px;font-size:12px;color:var(--muted)}
+  h1{margin:0 0 2px;font-size:26px;line-height:1.2;color:var(--accent)}
+  h2{margin:18px 0 8px;font-size:19px;line-height:1.25;color:var(--accent);border-bottom:2px solid var(--accent);padding-bottom:3px}
+  p{margin:4px 0}
+  ul{margin:4px 0;padding-left:20px}
+  li{margin:2px 0}
+  .sub{color:var(--muted);margin:0 0 10px}
+  .ref{color:var(--muted);font-size:12px;font-weight:400;white-space:nowrap}
+  small{color:var(--muted);font-size:12px}
+  .stats{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:10px 0 4px}
+  .stat{border:1px solid var(--line);border-radius:8px;padding:6px 4px;text-align:center;background:var(--tint)}
+  .stat b{display:block;font-size:22px;line-height:1.1;color:var(--accent)}
+  .stat span{display:block;font-size:12px;color:var(--muted);line-height:1.2;margin-top:2px}
+  table{border-collapse:collapse;width:100%;margin:6px 0}
+  th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+  th{background:var(--subtle);font-size:13px;white-space:nowrap}
+  td.k{width:22%;font-weight:700;color:var(--accent)}
+  td.k small{display:block;font-weight:400}
+  .num{white-space:nowrap}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .note{background:var(--warn-bg);border-left:4px solid var(--warn);padding:6px 10px;margin:8px 0;border-radius:0 6px 6px 0}
+  .where{font-size:13px}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 4px}
+  .card{border:1px solid var(--line);border-radius:8px;padding:7px 10px 8px;background:#fff;break-inside:avoid;page-break-inside:avoid}
+  .card h3{margin:0 0 3px;font-size:16px;line-height:1.25;color:var(--ink)}
+  .card p{margin:2px 0}
+  .card .tags{display:flex;flex-wrap:wrap;gap:4px;margin:5px 0 3px}
+  .tag{font-size:12px;line-height:1.3;padding:1px 7px;border-radius:6px;background:var(--subtle);border:1px solid var(--line);color:var(--ink)}
+  .card .n{color:var(--accent)}
+  .card .n b{color:var(--ink)}
+  .card .ex{margin-top:4px;padding-top:4px;border-top:1px dashed var(--line);color:var(--ink)}
+  .card .ex b{color:var(--accent)}
+  .ptr{grid-column:1/-1;margin:0;font-size:13px;color:var(--muted)}
+  .tick{display:inline-block;width:15px;height:15px;border:1.5px solid var(--ink);border-radius:3px;vertical-align:-2px;margin-right:3px}
+  @media (max-width:640px){
+    .stats{grid-template-columns:repeat(4,1fr)}
+    .cols{grid-template-columns:1fr}
+    .page{padding:18px 14px 30px}
+    th,td{padding:5px 6px}
+    td.k{width:30%}
+    .ref{white-space:normal}
+    .cards{grid-template-columns:1fr}
+    /* phones: 4-column tables become one card per row; each value shows its column name */
+    table.stack,table.stack tbody,table.stack tr,table.stack td{display:block;width:auto}
+    table.stack tr:first-child{display:none}
+    table.stack tr{border:1px solid var(--line);border-radius:6px;margin:0 0 8px;padding:6px 10px}
+    table.stack td{border:0;padding:2px 0}
+    table.stack td:first-child{font-size:16px;font-weight:700}
+    table.stack td+td::before{content:attr(data-label) ": ";color:var(--muted);font-weight:600}
+  }
+  @page{size:letter;margin:0.45in 0.5in 0.5in;@bottom-right{content:"Extra p." counter(page);font-family:"Segoe UI",Arial,sans-serif;font-size:9pt;color:#5a5a55}}
+  @media print{
+    html,body{background:#fff;font-size:10.5pt;line-height:1.38;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .bar{display:none}
+    .wrap{max-width:none;padding:0;gap:0;display:block}
+    .page{border:0;border-radius:0;box-shadow:none;padding:0 0 18px;page-break-after:always;break-after:page}
+    .page:last-child{page-break-after:auto;break-after:auto}
+    .pno{display:none}
+    .page.grp{break-before:page;page-break-before:always;break-after:auto;page-break-after:auto;padding:0 0 4px}
+    .page.grp h1{margin-top:0;break-after:avoid}
+    .ghead{break-after:avoid;page-break-after:avoid;break-inside:avoid}
+    .ghead.pb{break-before:page;page-break-before:always}
+    h2{break-after:avoid;margin:10px 0 5px}
+    tr{break-inside:avoid}
+    .card h3{font-size:12pt}
+    .tag{font-size:8.5pt}
+    .ptr,.where{font-size:9.5pt}
+    .cards{gap:5px;margin:4px 0 2px}
+    .card{padding:4px 8px 5px}
+    .card .tags{margin:3px 0 2px}
+    .card .ex{margin-top:3px;padding-top:3px}
+    html,body{line-height:1.3}
+  }
+
+/* ==== Shared look v1: see docs/DESIGN.md (same block on every page) ==== */
+nav.site{background:#16302e;display:flex;flex-wrap:wrap;align-items:center;gap:2px 2px;padding:6px 12px;font:600 14px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+nav.site .brand{color:#fff;font-weight:700;margin-right:10px;padding:6px 0;letter-spacing:.02em;white-space:nowrap}
+nav.site a{color:#d6e6e4;text-decoration:none;padding:8px 10px;border-radius:6px;display:inline-flex;align-items:center;min-height:36px;white-space:nowrap}
+nav.site a:hover{background:rgba(255,255,255,.12);color:#fff}
+nav.site a[aria-current="page"]{background:#fff;color:#16302e}
+nav.site a:focus-visible{outline:3px solid #f5c542;outline-offset:1px}
+@media (max-width:640px){nav.site{padding:4px 8px}nav.site .brand{width:100%;padding:4px 2px 2px}nav.site a{padding:6px 8px;font-size:13px}}
+header.top{padding:14px 16px}
+header.top h1{font-size:1.35rem;line-height:1.25}
+header.top p{max-width:860px}
+@media print{nav.site{display:none!important}}
+/* ==== end shared look ==== */
+</style>
+</head>
+<body>
+<nav class="site" aria-label="All pages"><span class="brand">Skippy &middot; Artificer</span><a href="../start-here.html">Start here</a><a href="../guide.html">Guide</a><a href="../creator.html">Creator</a><a href="../exceptions.html">Exceptions</a><a href="../checklists.html">Checklists</a><a href="../combos.html">Combos</a><a href="../sheet/skippy-sheet.html">Sheet</a><a href="../sheet/skippy-extra.html" aria-current="page">Extra pages</a></nav>
+<div class="bar">
+  <button type="button" id="print">Print extra pages</button>
+  <span>Page 1 is the cheat sheet. Then one card for each title on the sheet, in the same order as the sheet's boxes.</span>
+  <a href="skippy-sheet.html">Back to the sheet</a>
+</div>
+<div class="wrap">
+
+<!-- ================= PAGE 1: CHEAT SHEET ================= -->
+<section class="page" id="p1">
+  <h1>Skippy at a glance</h1>
+  <p class="sub">Half-orc Artificer 3 (Artillerist) &middot; Pirate (Sailor variant) &middot; chaotic neutral &middot; 900 XP</p>
+
+  <div class="stats">
+    <div class="stat"><b>15</b><span>Armor Class</span></div>
+    <div class="stat"><b>24</b><span>Hit points</span></div>
+    <div class="stat"><b>+2</b><span>Initiative</span></div>
+    <div class="stat"><b>30 ft</b><span>Speed</span></div>
+    <div class="stat"><b>13</b><span>Spell save DC</span></div>
+    <div class="stat"><b>+5</b><span>Spell attack</span></div>
+    <div class="stat"><b>12</b><span>Passive Perception</span></div>
+  </div>
+
+  <h2>On my turn</h2>
+  <table>
+    <tr><td class="k">Movement<small>up to 30 ft</small></td><td>Move before or after my action, or split it.<br>Stay out of reach: a ranged attack next to an enemy has disadvantage.</td></tr>
+    <tr><td class="k">Action<small>pick one</small></td><td>
+      <b>Light crossbow:</b> <b class="num">+5</b> to hit, <b class="num">1d8+3</b> piercing, 80/320 ft. My usual attack.<br>
+      <b>Shocking Grasp</b> (touch): <b class="num">+5</b>, <b class="num">1d8</b> lightning. Good next to an enemy: on a hit it cannot hit me as I walk away.<br>
+      <b>Make <span class="cannon-name">Mourning Bell</span></b>, my cannon: first turn of a fight. Woodcarver's tools in hand.<br>
+      <b>A spell:</b> Faerie Fire, Thunderwave or Cure Wounds (cards in the Spells group).</td></tr>
+    <tr><td class="k">Bonus action<small>every turn</small></td><td>
+      <b>Activate <span class="cannon-name">Mourning Bell</span></b> (I must be within 60 ft). No legs: it fires from my shoulder, or from where I set it down:<br>
+      Force Ballista <b class="num">+5, 2d8</b> force &middot; Flamethrower <b class="num">DC 13, 2d8</b> fire &middot; Protector <b class="num">1d8+3</b> temporary HP.<br>
+      If I forget, <span class="cannon-name">Mourning Bell</span> does nothing.</td></tr>
+    <tr><td class="k">Reaction<small>on others' turns</small></td><td>
+      <b>Shield</b> when an attack hits me: <b>+5 AC</b> until my next turn (15 becomes <b>20</b>). Costs 1 slot.</td></tr>
+  </table>
+
+  <h2>First turn of a fight</h2>
+  <ul>
+    <li><b>Action:</b> make <span class="cannon-name">Mourning Bell</span> at my feet and lift it to my shoulder (free object interaction). Pick Ballista, Flamethrower or Protector.</li>
+    <li><b>Bonus action:</b> <span class="cannon-name">Mourning Bell</span> acts at once.</li>
+    <li><b>Reaction:</b> keep it for Shield.</li>
+  </ul>
+
+  <h2>My resources (tick them off)</h2>
+  <table>
+    <tr><td class="k">Spell slots</td><td><span class="tick"></span><span class="tick"></span><span class="tick"></span> <b>3</b> level-1 slots. All come back after a long rest.</td></tr>
+    <tr><td class="k">Free cannon</td><td><span class="tick"></span> <b>1</b> per long rest. Another one costs a slot.</td></tr>
+    <tr><td class="k">Relentless Endurance</td><td><span class="tick"></span> <b>1</b> per long rest: I drop to 1 HP instead of 0.</td></tr>
+    <tr><td class="k">Hit dice</td><td><span class="tick"></span><span class="tick"></span><span class="tick"></span> <b>3</b> &times; d8+2, to heal on a short rest.</td></tr>
+    <tr><td class="k">Active infusions</td><td><b>Enhanced Defense</b> on the studded leather (+1 AC).<br><b>Repeating Shot</b> on the crossbow (I am attuned to it).</td></tr>
+    <tr><td class="k">Concentration</td><td>Only <b>one</b> spell at a time: Faerie Fire, Guidance or Detect Magic.</td></tr>
+  </table>
+  <div class="pno">Extra p.1</div>
+</section>
+
+<!-- ================= CARDS: FEATURES &AMP; TRAITS ================= -->
+<section class="page grp" id="g-feat">
+  <div class="ghead">
+  <h1>Features &amp; Traits</h1>
+  <p class="sub where">Sheet page 1, right column (the box FEATURES &amp; TRAITS).</p>
+  <h2>ARTIFICER 3</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Magical Tinkering <span class="ref">T p.11</span></h3>
+      <p>I touch a tiny object and give it one small magic trick: it shines light, plays a 6-second message, makes a sound or smell, or shows a picture.</p>
+      <p class="tags"><span class="tag">Action</span><span class="tag">tools in hand</span></p>
+      <p class="n">Up to <b>3</b> objects at once.</p>
+    </div>
+    <div class="card">
+      <h3>Spellcasting <span class="ref">T p.11-12</span></h3>
+      <p>I cast artificer spells with Intelligence. I must hold thieves' tools or an artisan's tool: they are my focus. Since Infuse Item, any item with one of my infusions is a focus too, so my Repeating Shot crossbow works. Enhanced Defense armor counts as infused, but it is worn, not in hand: ask your DM.</p>
+      <p class="tags"><span class="tag">slots back after a long rest</span></p>
+      <p class="n">Save DC <b>13</b> &middot; spell attack <b>+5</b> &middot; <b>3</b> level-1 slots.</p>
+      <p class="ex"><b>Example:</b> An arrow flies at me while I hold my crossbow: I cast Shield as a reaction, no tools needed.</p>
+    </div>
+    <div class="card">
+      <h3>Rituals <span class="ref">T p.12</span></h3>
+      <p>A prepared spell marked "ritual" can be cast with 10 extra minutes and no slot.</p>
+      <p class="tags"><span class="tag">+10 minutes</span><span class="tag">no slot</span></p>
+      <p class="n">My ritual: <b>Detect Magic</b>.</p>
+    </div>
+    <div class="card">
+      <h3>Infuse Item <span class="ref">T p.12-13</span></h3>
+      <p>After a long rest I turn plain items into magic items. One infusion per item. The infusion cards are in the Infusions group.</p>
+      <p class="tags"><span class="tag">long rest</span></p>
+      <p class="n"><b>4</b> known &middot; <b>2</b> active.</p>
+    </div>
+    <div class="card">
+      <h3>Right Tool for the Job <span class="ref">T p.13</span></h3>
+      <p>With thieves' or artisan's tools in hand, I spend 1 hour and make one set of artisan's tools. They vanish if I use this feature again.</p>
+      <p class="tags"><span class="tag">1 hour</span><span class="tag">can be during a rest</span></p>
+      <p class="n">This made my <b>cartographer's tools</b>.</p>
+    </div>
+  </div>
+  <div class="ghead">
+  <h2>ARTILLERIST</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Eldritch Cannon <span class="ref">T p.17-18</span></h3>
+      <p>I make a Tiny magic cannon, <span class="cannon-name">Mourning Bell</span>, within 5 ft, on the ground. It has no legs, so I pick it up and fire it from my shoulder like a rocket launcher. Only one at a time: no new one while it is here.</p>
+      <p class="tags"><span class="tag">Action to make</span><span class="tag">woodcarver's tools in hand</span><span class="tag">free 1&times; per long rest, then 1 slot</span><span class="tag">lasts 1 hour</span></p>
+      <p class="n">AC <b>18</b> &middot; <b>15</b> HP. Using it each turn: see <span class="cannon-name">Mourning Bell</span> in the Attacks group.</p>
+    </div>
+    <div class="card">
+      <h3>Always ready <span class="ref">T p.17</span></h3>
+      <p>Shield and Thunderwave are always prepared. They do not count against my 4 prepared spells. Their cards are in the Spells group.</p>
+      <p class="tags"><span class="tag">Artillerist spells</span></p>
+      <p class="n"><b>4</b> prepared + <b>2</b> always ready.</p>
+    </div>
+    <p class="ptr">&rarr; Woodcarver's tools: card in the Proficiencies group.</p>
+  </div>
+  <div class="ghead pb">
+  <p class="sub where">Features &amp; Traits, continued</p>
+  <h2>HALF-ORC</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Darkvision 60 ft <span class="ref">PHB p.41, p.183</span></h3>
+      <p>In the dark I see as if it were dim light. In dim light I see as if it were bright. In the dark I see no colors, only gray.</p>
+      <p class="tags"><span class="tag">always on</span></p>
+      <p class="n">Range <b>60 ft</b>.</p>
+    </div>
+    <div class="card">
+      <h3>Menacing <span class="ref">PHB p.41</span></h3>
+      <p>I am trained in the Intimidation skill.</p>
+      <p class="tags"><span class="tag">always on</span></p>
+      <p class="n">Intimidation <b>+1</b> (Cha &minus;1, +2 trained).</p>
+    </div>
+    <div class="card">
+      <h3>Relentless Endurance <span class="ref">PHB p.41</span></h3>
+      <p>When I drop to 0 HP and am not killed outright, I drop to 1 HP instead.</p>
+      <p class="tags"><span class="tag">1&times; per long rest</span></p>
+      <p class="n">I stay at <b>1</b> HP.</p>
+    </div>
+    <div class="card">
+      <h3>Savage Attacks <span class="ref">PHB p.41</span></h3>
+      <p>When I score a critical hit with a melee weapon, I roll one of the weapon's damage dice once more and add it.</p>
+      <p class="tags"><span class="tag">melee weapon only</span><span class="tag">not the crossbow, not thrown</span></p>
+      <p class="n">Spear critical hit: <b>3d6+1</b>.</p>
+    </div>
+  </div>
+  <div class="ghead">
+  <h2>PIRATE (SAILOR VARIANT)</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Pirate (Sailor variant) <span class="ref">PHB p.139</span></h3>
+      <p>My background. I get Athletics, Perception, navigator's tools, water vehicles and the sailor's gear. Bad Reputation replaces the Sailor's Ship's Passage.</p>
+      <p class="tags"><span class="tag">background</span></p>
+      <p class="n">Gear and <b>10 gp</b> (now <b>9 gp</b>).</p>
+    </div>
+    <div class="card">
+      <h3>Bad Reputation <span class="ref">PHB p.139</span></h3>
+      <p>People in towns fear the crew of The Widow. Small crimes, like skipping a tavern bill, usually go unreported. Serious crimes still count.</p>
+      <p class="tags"><span class="tag">always on</span><span class="tag">in towns</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CARDS: SPELLS ================= -->
+<section class="page grp" id="g-spells">
+  <div class="ghead">
+  <h1>Spells</h1>
+  <p class="sub where">Sheet page 3. Spell save DC <b>13</b>, spell attack <b>+5</b>, <b>3</b> level-1 slots, tools in hand to cast.</p>
+  <h2>CANTRIPS (free, as often as I like)</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Shocking Grasp <span class="ref">PHB p.275</span></h3>
+      <p>I touch a creature with lightning. On a hit it cannot take reactions until its next turn, so it cannot hit me as I walk away. Advantage if it wears metal armor.</p>
+      <p class="tags"><span class="tag">Action</span><span class="tag">touch</span><span class="tag">cantrip: free</span></p>
+      <p class="n"><b>+5</b> to hit &middot; <b>1d8</b> lightning.</p>
+    </div>
+    <div class="card">
+      <h3>Guidance <span class="ref">PHB p.248</span></h3>
+      <p>I touch a willing creature (I can pick myself). Once in the next minute it adds a d4 to one ability check.</p>
+      <p class="tags"><span class="tag">Action</span><span class="tag">concentration, 1 minute</span><span class="tag">cantrip: free</span></p>
+      <p class="n"><b>+1d4</b> to one check.</p>
+    </div>
+  </div>
+  <div class="ghead">
+  <h2>LEVEL 1 (each costs 1 slot)</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Shield (always prepared) <span class="ref">PHB p.275</span></h3>
+      <p>When an attack hits me, I raise a magic wall. +5 AC until my next turn, also against that attack. Magic Missile does nothing to me.</p>
+      <p class="tags"><span class="tag">Reaction</span><span class="tag">1 slot</span></p>
+      <p class="n">AC <b>15</b> becomes <b>20</b>.</p>
+    </div>
+    <div class="card">
+      <h3>Thunderwave (always prepared) <span class="ref">PHB p.282</span></h3>
+      <p>A wave of thunder fills a 15-ft cube next to me. Each creature in it makes a Con save. Fail: damage and pushed 10 ft. Success: half, no push. Very loud.</p>
+      <p class="tags"><span class="tag">Action</span><span class="tag">1 slot</span></p>
+      <p class="n">Save DC <b>13</b> &middot; <b>2d8</b> thunder.</p>
+    </div>
+    <div class="card">
+      <h3>Cure Wounds <span class="ref">PHB p.230</span></h3>
+      <p>I touch a creature and heal it. It wakes up a friend at 0 HP. It does not work on undead or constructs.</p>
+      <p class="tags"><span class="tag">Action</span><span class="tag">1 slot</span><span class="tag">touch</span></p>
+      <p class="n">Heals <b>1d8+3</b>.</p>
+    </div>
+    <div class="card">
+      <h3>Faerie Fire <span class="ref">PHB p.239</span></h3>
+      <p>A 20-ft cube within 60 ft. Each creature in it makes a Dex save. On a fail it glows for up to 1 minute: attacks against it have advantage, and it cannot be invisible.</p>
+      <p class="tags"><span class="tag">Action</span><span class="tag">1 slot</span><span class="tag">concentration, 1 minute</span></p>
+      <p class="n">Save DC <b>13</b>.</p>
+    </div>
+    <div class="card">
+      <h3>False Life <span class="ref">PHB p.239</span></h3>
+      <p>I give myself temporary hit points for 1 hour. Cast it just before a fight.</p>
+      <p class="tags"><span class="tag">Action</span><span class="tag">1 slot</span></p>
+      <p class="n"><b>1d4+4</b> temporary HP.</p>
+    </div>
+    <div class="card">
+      <h3>Detect Magic (ritual) <span class="ref">PHB p.231</span></h3>
+      <p>For up to 10 minutes I sense magic within 30 ft. With an action I see its glow and its school of magic.</p>
+      <p class="tags"><span class="tag">Action, or 10-min ritual with no slot</span><span class="tag">concentration, 10 minutes</span></p>
+      <p class="n">Range <b>30 ft</b>.</p>
+    </div>
+  </div>
+  <div class="ghead">
+  <h2>GOOD TO KNOW</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Preparing spells <span class="ref">T p.11-12, p.17</span></h3>
+      <p>After a long rest I choose 4 spells from the artificer list (Int 3 + half my level). Shield and Thunderwave are always ready on top.</p>
+      <p class="tags"><span class="tag">long rest</span></p>
+      <p class="n"><b>4</b> + <b>2</b> spells, <b>3</b> slots to share.</p>
+    </div>
+    <div class="card">
+      <h3>Concentration <span class="ref">PHB p.203</span></h3>
+      <p>Only one concentration spell at a time. When I take damage, I make a Con save: DC 10 or half the damage, whichever is higher. Fail: the spell ends.</p>
+      <p class="tags"><span class="tag">Faerie Fire, Guidance, Detect Magic</span></p>
+      <p class="n">Con save <b>+4</b>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CARDS: ATTACKS &AMP; SPELLCASTING ================= -->
+<section class="page grp" id="g-attacks">
+  <div class="ghead">
+  <h1>Attacks &amp; Spellcasting</h1>
+  <p class="sub where">Sheet page 1, middle (the box ATTACKS &amp; SPELLCASTING).</p>
+  <h2>THE THREE ROWS</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Light crossbow <span class="ref">PHB p.149, T p.22</span></h3>
+      <p>My usual attack, from far away. Thanks to Repeating Shot it needs no loading and makes its own bolts. Next to an enemy I have disadvantage. It is infused, so it is also my spellcasting focus (T p.11).</p>
+      <p class="tags"><span class="tag">Action (Attack)</span><span class="tag">two hands</span></p>
+      <p class="n"><b>+5</b> to hit &middot; <b>1d8+3</b> piercing &middot; range <b>80/320</b> ft.</p>
+    </div>
+    <div class="card">
+      <h3>Force Ballista <span class="ref">T p.18</span></h3>
+      <p>The cannon shoots a bolt of force at one creature within 120 ft. On a hit it is pushed 5 ft away. Best against one target.</p>
+      <p class="tags"><span class="tag">ranged spell attack</span></p>
+      <p class="n"><b>+5</b> to hit &middot; <b>2d8</b> force.</p>
+    </div>
+    <p class="ptr">&rarr; Shocking Grasp: card in the Spells group.</p>
+  </div>
+  <div class="ghead">
+  <h2>MOURNING BELL (the lines under the rows)</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3><span class="cannon-name">Mourning Bell</span> <span class="ref">T p.17-18</span></h3>
+      <p>Each turn, if I am within 60 ft, my bonus action makes it do its job (its type, picked when I make it). No legs: I hold it on my shoulder, or set it down and it stays. No bonus action, no shot.</p>
+      <p class="tags"><span class="tag">Bonus action</span><span class="tag">within 60 ft</span><span class="tag">1 hand while held</span></p>
+      <p class="n">Types: Force Ballista (above), Flamethrower, Protector.</p>
+      <p class="ex"><b>Example:</b> Crossbow time (two hands): I set the cannon down (free); it keeps firing from there.</p>
+    </div>
+    <div class="card">
+      <h3>Flamethrower <span class="ref">T p.18</span></h3>
+      <p>Fire in a 15-ft cone from the cannon: on my shoulder, the cone starts at me. Each creature in it makes a Dex save. Fail: full damage. Success: half. It also hits friends in the cone.</p>
+      <p class="tags"><span class="tag">Dex save</span></p>
+      <p class="n">Save DC <b>13</b> &middot; <b>2d8</b> fire.</p>
+    </div>
+    <div class="card">
+      <h3>Protector <span class="ref">T p.18</span></h3>
+      <p>The cannon and any creatures I choose within 10 ft of it get temporary hit points.</p>
+      <p class="tags"><span class="tag">no roll to hit</span></p>
+      <p class="n"><b>1d8+3</b> temporary HP.</p>
+    </div>
+  </div>
+  <div class="ghead">
+  <h2>THE OTHER NOTES</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Spear <span class="ref">PHB p.149</span></h3>
+      <p>Melee weapon. I can use it with two hands for more damage, or throw it.</p>
+      <p class="tags"><span class="tag">Action (Attack)</span><span class="tag">thrown 20/60 ft</span></p>
+      <p class="n"><b>+3</b> &middot; <b>1d6+1</b> piercing (two hands <b>1d8+1</b>). With Enhanced Weapon: <b>+4</b>, <b>1d6+2</b>.</p>
+    </div>
+    <div class="card">
+      <h3>Dagger <span class="ref">PHB p.149</span></h3>
+      <p>Light melee weapon. It uses Dex (finesse). I can throw it.</p>
+      <p class="tags"><span class="tag">Action (Attack)</span><span class="tag">thrown 20/60 ft</span></p>
+      <p class="n"><b>+4</b> &middot; <b>1d4+2</b> piercing.</p>
+    </div>
+    <div class="card">
+      <h3>Spell save DC 13, spell attack +5 <span class="ref">T p.11-12</span></h3>
+      <p>Save DC: the number a creature must reach on its save against my spell (8 + 2 + Int 3). Spell attack: I roll a d20 + 5 against its AC.</p>
+      <p class="tags"><span class="tag">for spells and the cannon</span></p>
+      <p class="n">DC <b>13</b> &middot; attack <b>+5</b>.</p>
+    </div>
+    <p class="ptr">&rarr; Shield (reaction): card in the Spells group.</p>
+  </div>
+</section>
+
+<!-- ================= CARDS: PROFICIENCIES ================= -->
+<section class="page grp" id="g-prof">
+  <div class="ghead">
+  <h1>Proficiencies</h1>
+  <p class="sub where">Sheet page 1, lower left (the box OTHER PROFICIENCIES &amp; LANGUAGES), plus the saving throws and skills.</p>
+  <h2>ARMOR, WEAPONS, LANGUAGES</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Armor: light, medium, shields <span class="ref">T p.10</span></h3>
+      <p>I can wear light and medium armor and use a shield without trouble. I wear studded leather (light).</p>
+      <p class="tags"><span class="tag">artificer</span></p>
+      <p class="n">AC <b>15</b> with my armor.</p>
+    </div>
+    <div class="card">
+      <h3>Weapons: simple weapons <span class="ref">T p.10</span></h3>
+      <p>I add +2 to hit with simple weapons: crossbow, spear, dagger, club. Martial weapons, like swords, get no +2.</p>
+      <p class="tags"><span class="tag">artificer</span></p>
+      <p class="n">Proficiency bonus <b>+2</b>.</p>
+    </div>
+    <div class="card">
+      <h3>Languages: Common, Draconic <span class="ref">T p.7</span></h3>
+      <p>I speak, read and write Common and Draconic. Draconic replaces Orc: I grew up with a dragonborn crew.</p>
+      <p class="tags"><span class="tag">custom origin</span></p>
+    </div>
+    <p class="ptr">&rarr; Senses: darkvision 60 ft: card in the Features group.</p>
+  </div>
+  <div class="ghead">
+  <h2>TOOLS (trained: +2 on checks with them)</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Thieves' tools <span class="ref">PHB p.154</span></h3>
+      <p>Pick locks and disarm traps. They are also my spellcasting focus. Owned (starting kit).</p>
+      <p class="tags"><span class="tag">owned</span></p>
+      <p class="n">Check <b>+4</b> (Dex 2 + 2).</p>
+    </div>
+    <div class="card">
+      <h3>Tinker's tools <span class="ref">PHB p.154</span></h3>
+      <p>Fix and build small gadgets. Trained only: I do not own a set.</p>
+      <p class="tags"><span class="tag">trained only</span></p>
+      <p class="n">Check: the ability the DM picks, +2.</p>
+    </div>
+    <div class="card">
+      <h3>Cartographer's tools <span class="ref">PHB p.154, T p.13</span></h3>
+      <p>Draw maps and charts. Made with The Right Tool for the Job: not magic, but they vanish if I use that feature again.</p>
+      <p class="tags"><span class="tag">owned</span><span class="tag">made by magic</span></p>
+      <p class="n">Check: the ability the DM picks, +2.</p>
+    </div>
+    <div class="card">
+      <h3>Woodcarver's tools <span class="ref">PHB p.154, T p.17</span></h3>
+      <p>Carve wood. I need them in hand to make my cannon, and they are a spellcasting focus. Bought for 1 gp before the game.</p>
+      <p class="tags"><span class="tag">owned</span><span class="tag">Artillerist</span></p>
+      <p class="n">Check: the ability the DM picks, +2.</p>
+    </div>
+    <div class="card">
+      <h3>Navigator's tools <span class="ref">PHB p.154</span></h3>
+      <p>Find the way and plan a course at sea. Trained only (Sailor).</p>
+      <p class="tags"><span class="tag">trained only</span></p>
+      <p class="n">Check: the ability the DM picks, +2.</p>
+    </div>
+    <div class="card">
+      <h3>Water vehicles <span class="ref">PHB p.139</span></h3>
+      <p>Sail and steer boats and ships. Trained only (Sailor).</p>
+      <p class="tags"><span class="tag">trained only</span></p>
+      <p class="n">Check: the ability the DM picks, +2.</p>
+    </div>
+  </div>
+  <div class="ghead">
+  <h2>SAVING THROWS AND SKILLS (the dots)</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Saving throws <span class="ref">T p.10, PHB p.179</span></h3>
+      <p>A save is a roll to resist something bad. A filled dot means trained: add +2.</p>
+      <p class="tags"><span class="tag">roll d20 + number</span></p>
+      <p class="n">Trained: Con <b>+4</b>, Int <b>+5</b>.</p>
+    </div>
+    <div class="card">
+      <h3>Skills <span class="ref">PHB p.174-178</span></h3>
+      <p>A skill check: roll d20 + the number next to the skill. A filled dot means trained (+2). My light armor does not hurt Stealth.</p>
+      <p class="tags"><span class="tag">roll d20 + number</span></p>
+      <p class="n">Arcana <b>+5</b> &middot; Investigation <b>+5</b> &middot; Athletics <b>+3</b> &middot; Perception <b>+2</b> &middot; Intimidation <b>+1</b> &middot; Stealth <b>+2</b>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CARDS: EQUIPMENT ================= -->
+<section class="page grp" id="g-equip">
+  <div class="ghead">
+  <h1>Equipment</h1>
+  <p class="sub where">Sheet page 1, lower middle (the box EQUIPMENT), and TREASURE on sheet page 2. One card per item, with an example of how Skippy can use it.</p>
+  <h2>ARMOR AND WEAPONS</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Studded leather (light armor) <span class="ref">PHB p.145, T p.10</span></h3>
+      <p>Leather armor with metal studs. It is light armor: my full Dex bonus counts, and it does not make sneaking harder.</p>
+      <p class="tags"><span class="tag">armor</span></p>
+      <p class="n">AC <b>12</b> + Dex <b>2</b> = <b>14</b>; <b>15</b> with Enhanced Defense.</p>
+      <p class="ex"><b>Example:</b> I sneak past a sleeping guard (Stealth <b>+2</b>, no disadvantage) and still have AC 15 if he wakes up.</p>
+    </div>
+    <div class="card">
+      <h3>Light crossbow, 20 bolts <span class="ref">PHB p.149, T p.22</span></h3>
+      <p>A small crossbow for two hands. With Repeating Shot it makes its own bolts, so the 20 bolts are spares for days without the infusion.</p>
+      <p class="tags"><span class="tag">Action (Attack)</span><span class="tag">two hands</span></p>
+      <p class="n"><b>+5</b> to hit &middot; <b>1d8+3</b> piercing &middot; <b>80/320</b> ft.</p>
+      <p class="ex"><b>Example:</b> From behind a barrel I shoot the archer on the roof, 60 ft away.</p>
+    </div>
+    <div class="card">
+      <h3>Spear <span class="ref">PHB p.149</span></h3>
+      <p>A simple melee weapon. Two hands hit harder. I can also throw it.</p>
+      <p class="tags"><span class="tag">Action (Attack)</span><span class="tag">thrown 20/60 ft</span></p>
+      <p class="n"><b>+3</b> &middot; <b>1d6+1</b> (two hands <b>1d8+1</b>).</p>
+      <p class="ex"><b>Example:</b> My cannon guards the door while I hold the narrow corridor with the spear in two hands.</p>
+    </div>
+    <div class="card">
+      <h3>Dagger <span class="ref">PHB p.149</span></h3>
+      <p>A small blade. It uses Dex (finesse), it is easy to hide, and I can throw it.</p>
+      <p class="tags"><span class="tag">Action (Attack)</span><span class="tag">thrown 20/60 ft</span></p>
+      <p class="n"><b>+4</b> &middot; <b>1d4+2</b> piercing.</p>
+      <p class="ex"><b>Example:</b> I cut a prisoner free, or throw it at a thief who runs away.</p>
+    </div>
+    <div class="card">
+      <h3>Belaying pin (club) <span class="ref">PHB p.139, p.149</span></h3>
+      <p>A ship's wooden pin for ropes. In a fight it works as a club: a simple, light weapon.</p>
+      <p class="tags"><span class="tag">Action (Attack)</span></p>
+      <p class="n"><b>+3</b> &middot; <b>1d4+1</b> bludgeoning.</p>
+      <p class="ex"><b>Example:</b> In a tavern brawl I use the pin instead of a blade, so nobody gets killed.</p>
+    </div>
+  </div>
+  <div class="ghead">
+  <h2>TOOLS</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Thieves' tools <span class="ref">PHB p.154</span></h3>
+      <p>Picks, a small mirror, thin pliers. For locks and traps. Also my spellcasting focus.</p>
+      <p class="tags"><span class="tag">owned</span></p>
+      <p class="n">Check <b>+4</b> (Dex 2 + 2).</p>
+      <p class="ex"><b>Example:</b> I open the lock of a captain's chest without breaking it.</p>
+    </div>
+    <div class="card">
+      <h3>Woodcarver's tools (1 gp) <span class="ref">PHB p.154, T p.17</span></h3>
+      <p>Knives and gouges for wood. I need them in hand to make my cannon. Also a spellcasting focus. Bought for 1 gp before the game.</p>
+      <p class="tags"><span class="tag">owned</span><span class="tag">Artillerist</span></p>
+      <p class="n">Check: the ability the DM picks, +2.</p>
+      <p class="ex"><b>Example:</b> I carve a wooden wedge to jam a door shut behind us.</p>
+    </div>
+    <div class="card">
+      <h3>Cartographer's tools * <span class="ref">PHB p.154, T p.13</span></h3>
+      <p>Pens, inks, parchment and rulers for maps. * Made by magic with The Right Tool for the Job: they vanish if I use that feature again.</p>
+      <p class="tags"><span class="tag">owned</span><span class="tag">made by magic</span></p>
+      <p class="n">Check: the ability the DM picks, +2.</p>
+      <p class="ex"><b>Example:</b> I draw the cave as we walk, so we can always find the way out.</p>
+    </div>
+  </div>
+  <div class="ghead">
+  <h2>GEAR AND TREASURE</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Dungeoneer's pack <span class="ref">PHB p.151</span></h3>
+      <p>Backpack, crowbar, hammer, 10 pitons, 10 torches, tinderbox, 10 days of rations, waterskin, 50 ft of hempen rope.</p>
+      <p class="tags"><span class="tag">gear</span></p>
+      <p class="ex"><b>Example:</b> Crowbar to force a stuck hatch; pitons and hammer to anchor a rope; torches for friends without darkvision.</p>
+    </div>
+    <div class="card">
+      <h3>Silk rope, 50 ft <span class="ref">PHB p.139, p.153</span></h3>
+      <p>Light, strong rope from my sailor days.</p>
+      <p class="tags"><span class="tag">gear</span></p>
+      <p class="n"><b>50 ft</b>.</p>
+      <p class="ex"><b>Example:</b> Tie a door shut, climb down a cliff, or tie up a prisoner.</p>
+    </div>
+    <div class="card">
+      <h3>Lucky charm (red coral horn) <span class="ref">PHB p.139</span></h3>
+      <p>A small red coral horn on a cord around my neck: a horn charm against the evil eye. The book only gives examples of a lucky charm, so any small charm fits. Story only: no rule effect.</p>
+      <p class="tags"><span class="tag">story</span><span class="tag">worn at the neck</span></p>
+      <p class="ex"><b>Example:</b> Someone gives me the evil eye, or I line up a risky shot: I touch the horn first. Good role-play; the DM may reward it.</p>
+    </div>
+    <div class="card">
+      <h3>Common clothes <span class="ref">PHB p.150</span></h3>
+      <p>Plain everyday clothes. No rule effect.</p>
+      <p class="tags"><span class="tag">gear</span></p>
+      <p class="ex"><b>Example:</b> In a port town I leave the armor in my room and blend in with the dock workers.</p>
+    </div>
+    <div class="card">
+      <h3><span class="cannon-name">Mourning Bell</span> (my cannon) <span class="ref">T p.17-18</span></h3>
+      <p>My Eldritch Cannon: Tiny, no legs. I make it with an action, with woodcarver's tools in hand, then I carry it on my shoulder like a rocket launcher.</p>
+      <p class="tags"><span class="tag">Action to make</span></p>
+      <p class="n">AC <b>18</b> &middot; <b>15</b> HP.</p>
+      <p class="ex"><b>Example:</b> At the first sign of a fight, I make it, swing it onto my shoulder (free object interaction) and it fires at once (bonus action).</p>
+    </div>
+    <div class="card">
+      <h3>9 gp <span class="ref">PHB p.139, p.154, p.158</span></h3>
+      <p>My money: 10 gp from the background, minus 1 gp for the woodcarver's tools.</p>
+      <p class="tags"><span class="tag">coins</span></p>
+      <p class="n"><b>9</b> gold pieces.</p>
+      <p class="ex"><b>Example:</b> A modest inn room costs about 5 sp a night: 9 gp keeps me fed and housed in port for a while.</p>
+    </div>
+    <div class="card">
+      <h3>Hand-drawn maps <span class="ref">story</span></h3>
+      <p>Maps of every coast Skippy has seen. He marks where the captain could have washed ashore.</p>
+      <p class="tags"><span class="tag">story</span></p>
+      <p class="ex"><b>Example:</b> I show the DM my coast map and ask where a hidden cove could be.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CARDS: INFUSIONS ================= -->
+<section class="page grp" id="g-inf">
+  <div class="ghead">
+  <h1>Infusions</h1>
+  <p class="sub where">Sheet page 2 (the box ADDITIONAL FEATURES &amp; TRAITS).</p>
+  <h2>ACTIVE NOW (2)</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Enhanced Defense <span class="ref">T p.21</span></h3>
+      <p>Armor or a shield gets +1 AC. No attunement needed.</p>
+      <p class="tags"><span class="tag">active: studded leather</span></p>
+      <p class="n">AC <b>14</b> becomes <b>15</b>.</p>
+    </div>
+    <div class="card">
+      <h3>Repeating Shot <span class="ref">T p.22</span></h3>
+      <p>A weapon that fires ammunition gets +1 to hit and damage. It needs no loading and makes its own bolts. I must be attuned to it.</p>
+      <p class="tags"><span class="tag">active: light crossbow</span><span class="tag">attunement</span></p>
+      <p class="n">Crossbow <b>+5</b>, <b>1d8+3</b>.</p>
+    </div>
+  </div>
+  <div class="ghead">
+  <h2>KNOWN (I can swap them in after a long rest)</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Enhanced Weapon <span class="ref">T p.21</span></h3>
+      <p>A simple or martial weapon gets +1 to hit and damage. Melee day: put it on the spear instead of Repeating Shot.</p>
+      <p class="tags"><span class="tag">known</span></p>
+      <p class="n">Spear <b>+4</b>, <b>1d6+2</b> (two hands <b>1d8+2</b>).</p>
+    </div>
+    <div class="card">
+      <h3>Mind Sharpener <span class="ref">T p.22</span></h3>
+      <p>Armor or robes with 4 charges. When the wearer fails a concentration save, they can use a reaction and 1 charge to pass instead.</p>
+      <p class="tags"><span class="tag">known</span><span class="tag">reaction</span></p>
+      <p class="n"><b>4</b> charges, <b>1d4</b> come back each dawn.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CARDS: THE NUMBER BOXES ================= -->
+<section class="page grp" id="g-boxes">
+  <div class="ghead">
+  <h1>The number boxes</h1>
+  <p class="sub where">Sheet page 1, the boxes with big numbers.</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Proficiency bonus +2 <span class="ref">PHB p.173</span></h3>
+      <p>Added to everything I am trained in: attacks, trained skills and saves, tools, spell DC.</p>
+      <p class="n"><b>+2</b> at level 3.</p>
+    </div>
+    <div class="card">
+      <h3>Armor Class 15 <span class="ref">PHB p.145, T p.21</span></h3>
+      <p>How hard I am to hit. An attack hits if its roll is 15 or more.</p>
+      <p class="n">Studded leather <b>12</b> + Dex <b>2</b> + Enhanced Defense <b>1</b> = <b>15</b>. Shield: <b>20</b>.</p>
+    </div>
+    <div class="card">
+      <h3>Initiative +2 <span class="ref">PHB p.177, p.189</span></h3>
+      <p>At the start of a fight everyone rolls d20 + initiative. High rolls go first.</p>
+      <p class="n"><b>+2</b> (Dex).</p>
+    </div>
+    <div class="card">
+      <h3>Speed 30 ft <span class="ref">PHB p.190</span></h3>
+      <p>How far I can move on my turn.</p>
+      <p class="n"><b>30 ft</b>.</p>
+    </div>
+    <div class="card">
+      <h3>Hit points 24 <span class="ref">PHB p.196-197</span></h3>
+      <p>My health. At 0 HP I fall unconscious and make death saves.</p>
+      <p class="n"><b>24</b> (8+2, then 5+2, 5+2).</p>
+    </div>
+    <div class="card">
+      <h3>Temporary hit points <span class="ref">PHB p.198</span></h3>
+      <p>Extra HP that go first. They do not add up: keep the higher amount. Write them here.</p>
+      <p class="n">From Protector or False Life.</p>
+    </div>
+    <div class="card">
+      <h3>Hit dice 3d8 <span class="ref">PHB p.186</span></h3>
+      <p>On a short rest I can roll some of them to heal. They come back after a long rest (half of them).</p>
+      <p class="tags"><span class="tag">short rest</span></p>
+      <p class="n">Each heals <b>1d8+2</b>.</p>
+    </div>
+    <div class="card">
+      <h3>Death saves <span class="ref">PHB p.197</span></h3>
+      <p>At 0 HP, each turn I roll a d20: 10 or more is a success. 3 successes: I am stable. 3 fails: I die. A natural 1 counts as 2 fails.</p>
+      <p class="n">A natural <b>20</b>: back with 1 HP.</p>
+    </div>
+    <div class="card">
+      <h3>Passive Perception 12 <span class="ref">PHB p.175</span></h3>
+      <p>What I notice without trying. The DM compares it with hidden things.</p>
+      <p class="n">10 + Perception <b>2</b> = <b>12</b>.</p>
+    </div>
+    <div class="card">
+      <h3>Inspiration <span class="ref">PHB p.125</span></h3>
+      <p>The DM may give it for good role-play. Spend it for advantage on one roll.</p>
+      <p class="n">Empty at the start.</p>
+    </div>
+  </div>
+</section>
+
+</div>
+<script>
+  /* ONE PLACE: the cannon's name (open question 31). Change it here only. */
+  var CANNON_NAME="Mourning Bell"; [].forEach.call(document.querySelectorAll('.cannon-name'),function(e){e.textContent=CANNON_NAME;});
+  document.getElementById('print').addEventListener('click',function(){window.print();});
+  // copy each column name onto its cells, for the phone card view
+  [].forEach.call(document.querySelectorAll('table.stack'),function(t){
+    var names=[].map.call(t.rows[0].cells,function(c){return c.textContent;});
+    [].forEach.call(t.rows,function(r,i){ if(i) [].forEach.call(r.cells,function(c,j){ c.setAttribute('data-label',names[j]||''); }); });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Combos: Pirate Artificer</title>
+<style>html{scroll-behavior:auto;overflow-anchor:none}
+:root{
+  --bg:#f5f4f0; --card:#ffffff; --ink:#1d1d1b; --muted:#5a5a55; --line:#d8d6cf; --subtle:#f0efe9;
+  --accent:#1f5f5b; --accent-ink:#ffffff; --tint:#eef3f2; --warn:#8a4b00; --warn-bg:#fff4e0;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow-wrap:break-word}
+header.top{background:var(--accent);color:var(--accent-ink);padding:12px 16px}
+header.top h1{margin:0;font-size:1.25rem}
+header.top p{margin:2px 0 0;font-size:.9rem;opacity:.92}
+.wrap{max-width:860px;margin:0 auto;padding:12px 16px 60px}
+nav.jump{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 18px}
+nav.jump a{padding:8px 12px;border:1px solid var(--line);background:#fff;border-radius:999px;font-size:.9rem;color:var(--ink);text-decoration:none;min-height:36px}
+nav.jump a:hover,nav.jump a:focus{background:var(--accent);color:#fff;border-color:var(--accent)}
+.block{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 16px;scroll-margin-top:12px}
+.block h2{margin:0 0 4px;font-size:1.3rem;line-height:1.3}
+.block .when{margin:0 0 10px}
+.block .when b{color:var(--accent)}
+.then{margin:0;padding-left:0;list-style:none;counter-reset:s}
+.then li{counter-increment:s;margin:7px 0;padding-left:32px;position:relative}
+.then li::before{content:counter(s);position:absolute;left:0;top:1px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:.8rem;font-weight:700;text-align:center;line-height:22px}
+.res{display:flex;flex-wrap:wrap;gap:4px;margin:10px 0 0}
+.tag{display:inline-block;border-radius:4px;padding:1px 7px;font-size:.78rem;font-weight:700;color:#fff}
+.tag.A{background:#1f5f5b}.tag.B{background:#7a4fa3}.tag.R{background:#a1262b}.tag.M{background:#555}.tag.S{background:#8a4b00}.tag.C{background:#1b5a9a}.tag.F{background:#1d6b3a}
+.pg{display:inline-block;border:1px solid var(--line);border-radius:12px;padding:0 6px;font-size:.78rem;color:var(--muted);white-space:nowrap;background:#faf9f5;font-weight:400}
+.ex{background:#fdf8e6;border-left:6px solid #c9a227;border-radius:4px;padding:8px 12px;margin:12px 0 0;font-size:.95rem;color:#3b3000}
+.ex b:first-child{color:#6b5400}
+.note{background:var(--tint);border-left:4px solid var(--accent);padding:8px 10px;margin:10px 0;font-size:.93rem}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn);padding:8px 10px;margin:10px 0;font-size:.93rem;color:var(--warn)}
+.hint{color:var(--muted);font-size:.9rem}
+.tw{overflow-x:auto;max-width:100%;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--line);padding:5px 7px;text-align:left;vertical-align:top}
+th{background:var(--subtle)}
+@media print{header.top{background:#fff;color:#000;border-bottom:2px solid #000}nav.jump{display:none}.block,.ex,.warn,.note{break-inside:avoid}body{background:#fff}.wrap{padding-bottom:0}.block{margin-bottom:12px}.hint{break-before:avoid}}
+
+/* ==== Shared look v1: see docs/DESIGN.md (same block on every page) ==== */
+nav.site{background:#16302e;display:flex;flex-wrap:wrap;align-items:center;gap:2px 2px;padding:6px 12px;font:600 14px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+nav.site .brand{color:#fff;font-weight:700;margin-right:10px;padding:6px 0;letter-spacing:.02em;white-space:nowrap}
+nav.site a{color:#d6e6e4;text-decoration:none;padding:8px 10px;border-radius:6px;display:inline-flex;align-items:center;min-height:36px;white-space:nowrap}
+nav.site a:hover{background:rgba(255,255,255,.12);color:#fff}
+nav.site a[aria-current="page"]{background:#fff;color:#16302e}
+nav.site a:focus-visible{outline:3px solid #f5c542;outline-offset:1px}
+@media (max-width:640px){nav.site{padding:4px 8px}nav.site .brand{width:100%;padding:4px 2px 2px}nav.site a{padding:6px 8px;font-size:13px}}
+header.top{padding:14px 16px}
+header.top h1{font-size:1.35rem;line-height:1.25}
+header.top p{max-width:860px}
+@media print{nav.site{display:none!important}}
+/* ==== end shared look ==== */
+</style>
+</head>
+<body>
+<nav class="site" aria-label="All pages"><span class="brand">Skippy &middot; Artificer</span><a href="start-here.html">Start here</a><a href="guide.html">Guide</a><a href="creator.html">Creator</a><a href="exceptions.html">Exceptions</a><a href="checklists.html">Checklists</a><a href="combos.html" aria-current="page">Combos</a><a href="sheet/skippy-sheet.html">Sheet</a><a href="sheet/skippy-extra.html">Extra pages</a></nav>
+<header class="top">
+  <h1>Combos: "if this, then do this"</h1>
+  <p>For your half-orc pirate Artillerist, level 3. Eight situations, one block each. Works offline. Prints on paper.</p>
+</header>
+<div class="wrap">
+  <div class="note"><b>Your numbers:</b> HP <b>24</b> &middot; AC <b>15</b> (<b>14</b> without <span data-v="infA">Enhanced Defense</span>) &middot; spell DC <b>13</b> &middot; spell attack +<b>5</b> &middot; speed 30 ft &middot; Con save +<b>4</b> &middot; only <b>3</b> spell slots (level 1). <span class="hint">PHB = Player's Handbook. T = Tasha's. Page refs are printed pages. Rules are in my own words.</span></div>
+
+  <div class="tw"><table>
+   <tr><th>Word</th><th>What it means</th></tr>
+   <tr><td><span class="tag A">Action</span></td><td>Your one action each turn.</td></tr>
+   <tr><td><span class="tag B">Bonus action</span></td><td>One per turn. For you it is mostly the cannon.</td></tr>
+   <tr><td><span class="tag R">Reaction</span></td><td>One per round. Mostly Shield.</td></tr>
+   <tr><td><span class="tag M">Movement</span></td><td>Up to 30 ft. You can split it around your action.</td></tr>
+   <tr><td><span class="tag S">Slot</span></td><td>One of your <b>3</b> spell slots. They come back after a long rest.</td></tr>
+   <tr><td><span class="tag C">Concentration</span></td><td>You can keep only <b>one</b> concentration spell. <span class="pg">PHB p.203</span></td></tr>
+   <tr><td><span class="tag F">Free</span></td><td>No slot cost: cantrip, crossbow, first cannon of the day.</td></tr>
+  </table></div>
+
+  <div class="warn"><b>Concentration:</b> Faerie Fire, Detect Magic and Guidance all use concentration. Casting one ends the other. This is true even for the Guidance cantrip.</div>
+  <div class="warn"><b>Slot budget:</b> Shield, Thunderwave, Cure Wounds, Faerie Fire and False Life each cost 1 of your <b>3</b> slots. A second cannon in one day costs one too. Plan them before the day starts. <span class="pg">T p.17-18</span> False Life (1d4+<b>4</b> temp HP for 1 hour) is best cast just before a fight you can see coming. <span class="pg">PHB p.239</span></div>
+
+  <nav class="jump" aria-label="Jump to a situation">
+    <a href="#open">Start of a fight</a><a href="#many">Many enemies</a><a href="#big">One big enemy</a><a href="#down">Friend down</a><a href="#face">Enemy in my face</a><a href="#unseen">Can't see or hit it</a><a href="#empty">Out of slots</a><a href="#social">Exploring and talking</a>
+  </nav>
+
+  <section class="block" id="open">
+    <h2>1. Start of a fight</h2>
+    <p class="when"><b>When:</b> A fight is about to begin, and you have a turn or two to get ready.</p>
+    <ol class="then"><li><b>Action:</b> build your cannon. Hold woodcarver's tools. Pick flat ground within 5 ft. It has AC <b>18</b> and <b>15</b> HP. <span class="pg">T p.17-18</span></li><li><b>Bonus action:</b> activate it (you must be within 60 ft). Mourning Bell has no legs: it fires from your shoulder (one hand), or from where you set it down. Pick its type when you build it: Ballista, Flamethrower or Protector. <span class="pg">T p.17-18</span></li><li><b>Reaction:</b> keep it for Shield. AC <b>15</b> becomes <b>20</b>. <span class="pg">PHB p.275</span></li><li><b>Movement:</b> step behind cover. <span class="pg">PHB p.196</span></li></ol>
+    <div class="res"><span class="tag F">free cannon (1st of the day)</span><span class="tag S">1 slot for a 2nd cannon</span><span class="tag M">move 30 ft</span></div>
+    <p class="ex"><b>Example:</b> Turn 1: you build <span class="cannon-name">Mourning Bell</span> (action) and it fires at once (bonus action). You step behind a crate. Turn 2: crossbow +<b>5</b>, 1d8+<b>3</b> (action). An enemy swings at you, so you cast Shield (reaction, 1 slot).</p>
+  </section>
+  <section class="block" id="many">
+    <h2>2. Many enemies</h2>
+    <p class="when"><b>When:</b> <b>3</b> or more enemies stand in a line or a clump, or crowd around you.</p>
+    <ol class="then"><li><b>Action (once):</b> build the cannon as a Flamethrower. <span class="pg">T p.18</span></li><li><b>Bonus action (every turn):</b> activate it. It sprays a 15-ft cone. Each enemy makes a DC <b>13</b> Dex save and takes 2d8 fire (half if it saves). Check that no friend stands in the cone. <span class="pg">T p.18</span></li><li><b>Action (if they crowd you):</b> cast Thunderwave. It is a 15-ft cube. DC <b>13</b> Con save, 2d8 thunder, and failures are pushed 10 ft. It also pushes friends, and it is loud. <span class="pg">PHB p.282</span></li><li><b>Movement:</b> walk away. Pushed enemies spend movement to catch up.</li></ol>
+    <div class="res"><span class="tag F">free cannon</span><span class="tag S">1 slot (Thunderwave)</span><span class="tag B">bonus action each turn</span></div>
+    <p class="ex"><b>Example:</b> Turn 1: the Flamethrower appears (action) and sprays (bonus action). Turn 2: Thunderwave (action, 1 slot) pushes the clump back. <span class="cannon-name">Mourning Bell</span> sprays them again (bonus action). Turn 3: crossbow +<b>5</b> at the weakest enemy (action).</p>
+  </section>
+  <section class="block" id="big">
+    <h2>3. One big enemy</h2>
+    <p class="when"><b>When:</b> One strong enemy is alone and tough. It may pound your friends.</p>
+    <ol class="then"><li><b>Action (once):</b> build the cannon as a Force Ballista. <span class="pg">T p.18</span></li><li><b>Bonus action (every turn):</b> activate it. Spell attack +<b>5</b>, 2d8 force, push 5 ft. The target can be up to 120 ft from the cannon. <span class="pg">T p.18</span></li><li><b>Action (every turn):</b> crossbow with Repeating Shot: +<b>5</b>, 1d8+<b>3</b>, no loading. <span class="pg">T p.22</span></li><li><b>Action (instead, 1 slot):</b> cast Faerie Fire so your whole team hits it with advantage. It can save (DC <b>13</b> Dex). <span class="pg">PHB p.239</span></li></ol>
+    <div class="res"><span class="tag F">free cannon</span><span class="tag F">free crossbow</span><span class="tag S">1 slot (Faerie Fire)</span><span class="tag C">concentration (Faerie Fire)</span></div>
+    <p class="ex"><b>Example:</b> Turn 1: the Ballista appears (action) and fires at once (bonus action). Turn 2: crossbow (action) +<b>5</b>, 1d8+<b>3</b>. <span class="cannon-name">Mourning Bell</span> fires (bonus action) for 2d8 and pushes it 5 ft. If both hit, that is about <b>16</b> damage in a round.</p>
+  </section>
+  <section class="block" id="down">
+    <h2>4. Friend down (0 HP)</h2>
+    <p class="when"><b>When:</b> A friend is at 0 HP, or several friends are hurt.</p>
+    <ol class="then"><li><b>Movement:</b> walk next to the friend, if needed.</li><li><b>Action:</b> cast Cure Wounds by touch. It heals 1d8+<b>3</b> and wakes them up. <span class="pg">PHB p.230</span> Out of slots? A Medicine check (DC <b>10</b>) only stops the dying, with no HP back, but your bonus is +<b>0</b>, so about a <b>55%</b> chance. <span class="pg">PHB p.197</span></li><li><b>Bonus action:</b> if the cannon is a Protector, it gives 1d8+<b>3</b> temp HP to friends within 10 ft. Temp HP do not wake a friend at 0 HP. <span class="pg">T p.18</span></li><li><b>Reaction:</b> keep it for Shield.</li></ol>
+    <div class="res"><span class="tag S">1 slot (Cure Wounds)</span><span class="tag F">free cannon</span><span class="tag M">move 30 ft</span></div>
+    <p class="ex"><b>Example:</b> A friend drops to 0 HP. You walk to them (movement) and cast Cure Wounds (action, 1 slot). They get up. You have only one cannon at a time. To change its type, dismiss it (action), then build a new one (action, and 1 slot if it is your 2nd today). <span class="pg">T p.17</span></p>
+  </section>
+  <section class="block" id="face">
+    <h2>5. Enemy in my face</h2>
+    <p class="when"><b>When:</b> An enemy stands next to you, or an attack roll would hit you.</p>
+    <ol class="then"><li><b>Reaction:</b> cast Shield when an attack would hit. +<b>5</b> AC until your next turn, so AC <b>15</b> becomes <b>20</b>. <span class="pg">PHB p.275</span></li><li><b>Action:</b> Shocking Grasp: +<b>5</b>, 1d8 lightning. It has advantage against a metal-armored target. The enemy cannot take reactions until its next turn. <span class="pg">PHB p.275</span></li><li><b>Movement:</b> walk away. If Shocking Grasp hit, the enemy has no reaction, so it gets no free hit as you leave. <span class="pg">PHB p.195</span></li><li><b>Bonus action:</b> activate the cannon (stay within 60 ft of it).</li></ol>
+    <div class="res"><span class="tag S">1 slot (Shield)</span><span class="tag F">free cantrip</span><span class="tag M">move 30 ft</span><span class="tag B">cannon</span></div>
+    <p class="ex"><b>Example:</b> A pirate swings at you. Shield (reaction, 1 slot) makes AC <b>20</b>, and it misses. Your turn: Shocking Grasp (action) for 1d8. You walk back (movement). <span class="cannon-name">Mourning Bell</span> fires (bonus action). Your spear is weaker: +<b>3</b>, 1d6+<b>1</b>.</p>
+  </section>
+  <section class="block" id="unseen">
+    <h2>6. Can't see or hit it</h2>
+    <p class="when"><b>When:</b> The enemy is invisible, hiding, or hard to hit (high AC).</p>
+    <ol class="then"><li><b>Action:</b> cast Faerie Fire on the area. DC <b>13</b> Dex save. Outlined creatures glow, cannot hide, and attacks against them have advantage. <span class="pg">PHB p.239</span></li><li><b>Bonus action:</b> the cannon attacks too, with advantage.</li><li><b>Action (no slot):</b> Shocking Grasp if the enemy wears metal. Or force a save with the Flamethrower (DC <b>13</b> Dex) or Thunderwave (DC <b>13</b> Con). No attack roll needed. <span class="pg">T p.18</span> <span class="pg">PHB p.282</span></li><li><b>Magical darkness or fog?</b> Your darkvision may not help. Back into light and ask the DM what you can sense. <span class="pg">PHB p.183</span></li></ol>
+    <div class="res"><span class="tag S">1 slot (Faerie Fire)</span><span class="tag C">concentration, 1 minute</span><span class="tag F">free cantrip</span></div>
+    <p class="ex"><b>Example:</b> You hear a ghost-pirate you cannot see. Faerie Fire on its area (action, 1 slot, concentration). It glows. Your friends and <span class="cannon-name">Mourning Bell</span> attack with advantage. If it hits you, roll Con +<b>4</b> against DC <b>10</b>, or half the damage if that is higher. <span class="pg">PHB p.203</span></p>
+  </section>
+  <section class="block" id="empty">
+    <h2>7. Out of slots</h2>
+    <p class="when"><b>When:</b> You have no spell slots left, or the cannon is gone.</p>
+    <ol class="then"><li><b>Action:</b> crossbow with Repeating Shot: +<b>5</b>, 1d8+<b>3</b>, no loading. <span class="pg">T p.22</span> Or Shocking Grasp if an enemy is close.</li><li><b>Bonus action:</b> activate the cannon. This costs no slot if it is already built.</li><li><b>Action (other choices):</b> Help (a friend gets advantage), Dodge, Disengage or Dash. <span class="pg">PHB p.192</span></li><li><b>Movement:</b> get behind cover. Cover gives +<b>2</b> AC. <span class="pg">PHB p.196</span></li><li>Shield is not possible now. Plan a long rest: short rests do not give slots back. <span class="pg">PHB p.186</span></li></ol>
+    <div class="res"><span class="tag F">free crossbow</span><span class="tag F">free cantrip</span><span class="tag F">free cannon</span><span class="tag M">move 30 ft</span></div>
+    <p class="ex"><b>Example:</b> Your slots are gone. You step behind a barrel (movement), shoot the crossbow (action), and <span class="cannon-name">Mourning Bell</span> fires (bonus action). Next turn a friend flanks an enemy, so you use Help (action) to give them advantage.</p>
+  </section>
+  <section class="block" id="social">
+    <h2>8. Exploring and talking</h2>
+    <p class="when"><b>When:</b> No fight now. You search, read a map, sense magic, or talk.</p>
+    <ol class="then"><li><b>Action:</b> cast Guidance on whoever rolls. They add a d4 to one ability check. It does not help attacks or saves. <span class="pg">PHB p.248</span></li><li><b>Ritual (10 extra minutes):</b> cast Detect Magic with no slot. You sense magic within 30 ft while you concentrate. Then roll Arcana +<b>5</b>. <span class="pg">PHB p.231</span> <span class="pg">T p.12</span></li><li><b>Your skills:</b> Investigation +<b>5</b> to search, Intimidation <span data-v="intim">+1</span> to scare. Cartographer's tools help with maps. <span class="pg">PHB p.154</span></li><li><b>Missing a tool?</b> "The Right Tool for the Job" makes one set of artisan's tools in 1 hour. It cannot make thieves' tools. The set vanishes when you use the feature again. <span class="pg">T p.13</span></li></ol>
+    <div class="res"><span class="tag F">no slot</span><span class="tag C">concentration (Guidance, Detect Magic)</span><span class="tag F">free cantrip</span><span class="tag M">time: 10 min or 1 hour</span></div>
+    <p class="ex"><b>Example:</b> A locked crypt door. You cast Detect Magic as a ritual (10 minutes, no slot) and sense a faint glow in the lock. Investigation +<b>5</b> finds the trap. A friend with thieves' tools gets Guidance. The door opens. Do not start this just before a fight.</p>
+  </section>
+
+  <p class="hint">The swappable bits (<span data-v="infA">Enhanced Defense</span>, Intimidation) are in <code>CONFIG</code> at the end of this file. Check numbers against your sheet. If the DM changes a rule, the DM wins.</p>
+</div>
+<script>
+/* Combos page. One file, no outside links. */
+var CONFIG = {
+  infA: "Enhanced Defense",   // active infusion 1 (default)
+  intim: "+1"                 // Intimidation bonus (Cha -1 + proficiency 2); kept, the player's decision 18
+};
+[].forEach.call(document.querySelectorAll("[data-v]"),function(el){
+  var k=el.getAttribute("data-v");
+  if(CONFIG[k]!==undefined) el.textContent=CONFIG[k];
+});
+/* ONE PLACE: the cannon's name (open question 31). Change it here only. */
+var CANNON_NAME="Mourning Bell"; [].forEach.call(document.querySelectorAll('.cannon-name'),function(e){e.textContent=CANNON_NAME;});
+</script>
+</body>
+</html>

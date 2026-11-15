@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artificer Guide</title>
+<style>
+:root{
+  --bg:#f5f4f0; --card:#ffffff; --ink:#1d1d1b; --muted:#5a5a55; --line:#d8d6cf;
+  --accent:#1f5f5b; --accent-ink:#ffffff; --warn:#8a4b00; --warn-bg:#fff4e0; --ok:#1d6b3a; --ok-bg:#e8f5ec; --hi:#fff3b0;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:120px;scroll-behavior:auto;overflow-anchor:none}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+header.top{background:var(--accent);color:var(--accent-ink);padding:12px 16px}
+header.top h1{margin:0;font-size:1.25rem}
+header.top p{margin:2px 0 0;font-size:.9rem;opacity:.92}
+.bar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding:8px 16px}
+.bar .in{max-width:960px;margin:0 auto}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.bar input[type=search]{flex:1 1 180px;min-width:0;padding:8px 10px;border:1px solid #9a9890;border-radius:6px;font:inherit}
+a.btn,button.btn{display:inline-block;padding:8px 14px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:6px;font:inherit;cursor:pointer;text-decoration:none;white-space:nowrap}
+a.btn.big{padding:12px 20px;font-size:1.05rem;font-weight:700}
+button.btn.sec,a.btn.sec{background:#fff;color:var(--accent)}
+button.btn.on{background:var(--accent);color:#fff}
+nav.toc{display:flex;gap:6px;overflow-x:auto;margin-top:8px;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+nav.toc a{flex:0 0 auto;padding:5px 10px;border:1px solid var(--line);background:#fff;border-radius:14px;color:var(--ink);text-decoration:none;font-size:.88rem}
+nav.toc a.cur{background:var(--accent);color:#fff;border-color:var(--accent)}
+.wrap{max-width:960px;margin:0 auto;padding:12px 16px 60px}
+section.sec{margin:0 0 22px}
+section.sec>h2{margin:18px 0 6px;font-size:1.45rem;border-bottom:2px solid var(--ink);padding-bottom:4px}
+h3{margin:16px 0 4px;font-size:1.1rem}
+h4{margin:10px 0 2px;font-size:1rem}
+p{margin:6px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:0 0 10px}
+.card h3,.card h4{margin-top:0}
+.hint{color:var(--muted);font-size:.93rem}
+.note{background:#eef3f2;border-left:4px solid var(--accent);padding:8px 10px;margin:8px 0;font-size:.95rem}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn);padding:8px 10px;margin:8px 0;font-size:.95rem;color:var(--warn)}
+.ok{background:var(--ok-bg);border-left:4px solid var(--ok);padding:8px 10px;margin:8px 0;font-size:.95rem;color:var(--ok)}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:12px;padding:1px 8px;font-size:.8rem;color:var(--muted);margin:0 2px}
+.pill.x{border-color:var(--warn);color:var(--warn)}
+.pill.star{border-color:var(--ok);color:var(--ok);font-weight:700}
+.pill.l3{background:var(--hi);border-color:#c9b300;color:#554a00}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.grid .card{margin:0}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{border:1px solid var(--line);padding:5px 7px;text-align:left;vertical-align:top;background:#fff}
+th{background:#f0efe9}
+.tw{overflow-x:auto;max-width:100%}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
+.tl{border-left:3px solid var(--line);margin:8px 0 8px 6px;padding-left:12px}
+.tl .it{margin:0 0 8px;position:relative}
+.tl .it::before{content:"";position:absolute;left:-18px;top:7px;width:9px;height:9px;border-radius:50%;background:var(--line)}
+.tl .it.mine{background:var(--hi);border-radius:6px;padding:4px 8px}
+.tl .it.mine::before{background:var(--accent)}
+.lv{font-weight:700}
+.term{border-bottom:1px dotted var(--accent);cursor:help}
+#tip{position:fixed;z-index:50;max-width:280px;background:#1d1d1b;color:#fff;padding:7px 10px;border-radius:6px;font-size:.88rem;display:none;pointer-events:none}
+#results{display:none;background:#fff;border:1px solid var(--line);border-radius:8px;margin-top:8px;max-height:50vh;overflow-y:auto}
+#results div{padding:7px 10px;border-bottom:1px solid #eee;cursor:pointer}
+#results div:hover{background:#f0f6f5}
+#results small{display:block;color:var(--muted)}
+.flash{animation:fl 1.6s}
+@keyframes fl{0%,60%{background:var(--hi)}100%{background:transparent}}
+.q{margin:0 0 10px}
+.q label{display:block;border:1px solid var(--line);border-radius:6px;padding:7px 10px;margin:5px 0;background:#fff;cursor:pointer}
+.q input{margin-right:8px}
+details{margin:6px 0}
+summary{cursor:pointer;font-weight:600}
+@media(max-width:600px){.card table{display:block;overflow-x:auto;max-width:100%}}
+
+/* ==== Shared look v1: see docs/DESIGN.md (same block on every page) ==== */
+nav.site{background:#16302e;display:flex;flex-wrap:wrap;align-items:center;gap:2px 2px;padding:6px 12px;font:600 14px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+nav.site .brand{color:#fff;font-weight:700;margin-right:10px;padding:6px 0;letter-spacing:.02em;white-space:nowrap}
+nav.site a{color:#d6e6e4;text-decoration:none;padding:8px 10px;border-radius:6px;display:inline-flex;align-items:center;min-height:36px;white-space:nowrap}
+nav.site a:hover{background:rgba(255,255,255,.12);color:#fff}
+nav.site a[aria-current="page"]{background:#fff;color:#16302e}
+nav.site a:focus-visible{outline:3px solid #f5c542;outline-offset:1px}
+@media (max-width:640px){nav.site{padding:4px 8px}nav.site .brand{width:100%;padding:4px 2px 2px}nav.site a{padding:6px 8px;font-size:13px}}
+header.top{padding:14px 16px}
+header.top h1{font-size:1.35rem;line-height:1.25}
+header.top p{max-width:860px}
+@media print{nav.site{display:none!important}}
+/* ==== end shared look ==== */
+</style>
+</head>
+<body>
+<nav class="site" aria-label="All pages"><span class="brand">Skippy &middot; Artificer</span><a href="start-here.html">Start here</a><a href="guide.html" aria-current="page">Guide</a><a href="creator.html">Creator</a><a href="exceptions.html">Exceptions</a><a href="checklists.html">Checklists</a><a href="combos.html">Combos</a><a href="sheet/skippy-sheet.html">Sheet</a><a href="sheet/skippy-extra.html">Extra pages</a></nav>
+<header class="top">
+  <h1>The Artificer: a beginner guide</h1>
+  <p>D&amp;D 5th edition (2014) with Tasha's Cauldron of Everything. In my own words, with page numbers. Works offline.</p>
+</header>
+<div class="bar"><div class="in">
+  <div class="row">
+    <a class="btn big" href="creator.html">Open the character creator</a>
+    <input type="search" id="q" placeholder="Search this whole guide..." aria-label="Search the guide">
+  </div>
+  <nav class="toc" id="toc" aria-label="Contents"></nav>
+  <div id="results" role="listbox"></div>
+</div></div>
+<div class="wrap" id="main"></div>
+<div id="tip" role="tooltip"></div>
+
+<script>
+/* Rules data copied from creator.html (specialists and more). Fix both files together. */
+const DATA = {
+  version: "1.0",
+  abilities: [
+    {id:"str", name:"Strength",     line:"Raw muscle. Melee attacks and carrying things. Low priority for artificers."},
+    {id:"dex", name:"Dexterity",    line:"Speed and aim. Adds to armor class (up to +2 in medium armor), ranged attacks and initiative."},
+    {id:"con", name:"Constitution", line:"Health. Adds hit points and helps you keep spells going when hit. Second most important."},
+    {id:"int", name:"Intelligence", line:"Your spellcasting score. Sets spell save DC, spell attack and how many spells you prepare. Put your best score here (T p.10)."},
+    {id:"wis", name:"Wisdom",       line:"Awareness and common sense. Perception, Insight, Survival."},
+    {id:"cha", name:"Charisma",     line:"Force of personality. Persuasion, Deception, Intimidation."}
+  ],
+  standardArray: [15,14,13,12,10,8],                     // PHB p.13
+  /* Point buy is NOT used at the player's table (docs/TABLE-RULES.md). Data kept for reference only; no screen uses it. */
+  pointBuyTotal: 27,                                     // PHB p.13
+  pointBuyCost: {8:0,9:1,10:2,11:3,12:4,13:5,14:7,15:9}, // PHB p.13
+  pointBuyMin: 8, pointBuyMax: 15,
+  manualMin: 6, manualMax: 18,                            // table rule: 4d6, reroll 1s, drop lowest => 6 to 18 (PHB p.13 for 4d6; reroll rule from docs/TABLE-RULES.md)
+  hpRollMin: 2, hpRollMax: 8,                              // table rule: reroll 1s on level-up hit point rolls
+  suggested: {
+    standard: {int:15, con:14, dex:13, wis:12, cha:10, str:8},
+    pointbuy: {int:15, con:14, dex:14, wis:10, cha:10, str:8}
+  },
+  skills: [
+    ["Acrobatics","dex"],["Animal Handling","wis"],["Arcana","int"],["Athletics","str"],["Deception","cha"],
+    ["History","int"],["Insight","wis"],["Intimidation","cha"],["Investigation","int"],["Medicine","wis"],
+    ["Nature","int"],["Perception","wis"],["Performance","cha"],["Persuasion","cha"],["Religion","int"],
+    ["Sleight of Hand","dex"],["Stealth","dex"],["Survival","wis"]
+  ],                                                      // PHB p.174-175
+  languages: ["Abyssal","Celestial","Common","Deep Speech","Draconic","Dwarvish","Elvish","Giant","Gnomish","Goblin","Halfling","Infernal","Orc","Primordial","Sylvan","Undercommon"], // T p.7 list
+  artisanTools: ["Alchemist's supplies","Brewer's supplies","Calligrapher's supplies","Carpenter's tools","Cartographer's tools","Cobbler's tools","Cook's utensils","Glassblower's tools","Jeweler's tools","Leatherworker's tools","Mason's tools","Painter's supplies","Potter's tools","Smith's tools","Tinker's tools","Weaver's tools","Woodcarver's tools"], // PHB p.154
+  gamingSets: ["Dice set","Dragonchess set","Playing card set","Three-Dragon Ante set"],
+  instruments: ["Bagpipes","Drum","Dulcimer","Flute","Lute","Lyre","Horn","Pan flute","Shawm","Viol"],
+  otherTools: ["Disguise kit","Forgery kit","Herbalism kit","Navigator's tools","Poisoner's kit","Thieves' tools","Vehicles (land)","Vehicles (water)"],
+
+  /* ---- Class: artificer (T p.10) ---- */
+  cls: {
+    name:"Artificer", hitDie:8, saves:["con","int"],
+    skillList:["Arcana","History","Investigation","Medicine","Nature","Perception","Sleight of Hand"],
+    skillCount:2,
+    fixedTools:["Thieves' tools","Tinker's tools"],
+    armor:"Light armor, medium armor, shields", weapons:"Simple weapons",
+    cantrips:{1:2,10:3,14:4},
+    slots:{1:[2],2:[2],3:[3],4:[3],5:[4,2]},
+    profBonus:function(L){return L>=17?6:L>=13?5:L>=9?4:L>=5?3:2;},
+    infusions:function(L){return L<2?{known:0,items:0}:L<6?{known:4,items:2}:{known:6,items:3};},
+    features:[
+      [1,"Magical Tinkering","Touch a Tiny plain object (tools in hand) to give it a small magic trick: light, a 6-second message, a sound or smell, or a picture. Up to your Int modifier objects at once (min 1).","T p.11"],
+      [1,"Spellcasting","Intelligence spellcasting. Your focus is your tools: hold thieves' tools or an artisan's tool you are proficient with when you cast. Change your prepared spells after each long rest. You can cast a prepared spell that has the ritual tag as a ritual: it takes 10 minutes longer and uses no spell slot.","T p.11-12"],
+      [2,"Infuse Item","After a long rest, turn plain objects into magic items with your known infusions.","T p.12-13"],
+      [3,"Artificer Specialist","Pick Alchemist, Armorer, Artillerist or Battle Smith.","T p.13"],
+      [3,"The Right Tool for the Job","With thieves' tools or artisan's tools in hand, spend 1 hour of uninterrupted work (it can be during a short or long rest) to create one set of artisan's tools next to you. They are not magic, and they vanish when you use this feature again.","T p.13"]
+    ]
+  },
+
+  /* ---- Races (PHB p.17-43) plus Tasha's Custom Lineage (T p.8) ----
+     fixed: ability increases that are set.  flex: increases you place yourself (list of amounts).
+     flexExclude: abilities flex picks may not use.  customOk: Tasha's "move the increases" option works. */
+  races: {
+    dwarf:{name:"Dwarf",page:"PHB p.18-21",size:"Medium",speed:25,fixed:{con:2},customOk:true,
+      blurb:"Tough and steady. Short, hardy folk with a love of stone and craft.",
+      langs:["Common","Dwarvish"],
+      traits:["Darkvision 60 ft. (see in dim light as bright, dark as dim).","Dwarven Resilience: advantage on saves against poison, resistance to poison damage.","Speed is not slowed by heavy armor.","Combat training: battleaxe, handaxe, light hammer, warhammer.","Stonecunning: double proficiency on History checks about stonework.","Tool proficiency: choose smith's, brewer's or mason's tools."],
+      toolPick:["Smith's tools","Brewer's supplies","Mason's tools"],
+      subraces:{
+        hill:{name:"Hill Dwarf",page:"PHB p.20",fixed:{wis:1},hpPerLevel:1,traits:["Dwarven Toughness: +1 hit point per level (including level 1)."],blurb:"+1 Wisdom, extra hit points."},
+        mountain:{name:"Mountain Dwarf",page:"PHB p.20",fixed:{str:2},traits:["Armor training: light and medium armor (you already have this as an artificer)."],blurb:"+2 Strength."}
+      }},
+    elf:{name:"Elf",page:"PHB p.21-24",size:"Medium",speed:30,fixed:{dex:2},customOk:true,
+      blurb:"Graceful and long-lived, with sharp senses.",
+      langs:["Common","Elvish"],skillsFixed:["Perception"],
+      traits:["Darkvision 60 ft.","Keen Senses: proficiency in Perception.","Fey Ancestry: advantage on saves against being charmed, and magic cannot put you to sleep.","Trance: 4 hours of meditation counts as a long rest."],
+      subraces:{
+        high:{name:"High Elf",page:"PHB p.23",fixed:{int:1},langPicks:1,wizardCantrip:true,traits:["Elf weapon training: longsword, shortsword, shortbow, longbow.","One wizard cantrip of your choice (Intelligence is its spellcasting ability).","One extra language."],blurb:"+1 Intelligence, one free wizard cantrip. A very good fit."},
+        wood:{name:"Wood Elf",page:"PHB p.24",fixed:{wis:1},speed:35,traits:["Elf weapon training: longsword, shortsword, shortbow, longbow.","Speed 35 ft.","Mask of the Wild: hide in light natural cover."],blurb:"+1 Wisdom, faster."},
+        drow:{name:"Dark Elf (Drow)",page:"PHB p.24",fixed:{cha:1},traits:["Superior darkvision 120 ft.","Sunlight Sensitivity: disadvantage on attacks and sight Perception in direct sunlight.","Drow Magic: dancing lights cantrip (Charisma). Faerie fire at level 3, darkness at level 5.","Drow weapon training: rapier, shortsword, hand crossbow."],cantripsFixed:[["Dancing lights","cha"]],blurb:"+1 Charisma, great darkvision, sun trouble."}
+      }},
+    halfling:{name:"Halfling",page:"PHB p.26-28",size:"Small",speed:25,fixed:{dex:2},customOk:true,
+      blurb:"Small, cheerful and lucky.",langs:["Common","Halfling"],
+      traits:["Lucky: when you roll a natural 1 on an attack, check or save, reroll it.","Brave: advantage on saves against being frightened.","Halfling Nimbleness: move through the space of bigger creatures."],
+      subraces:{
+        lightfoot:{name:"Lightfoot",page:"PHB p.28",fixed:{cha:1},traits:["Naturally Stealthy: hide behind creatures one size bigger than you."],blurb:"+1 Charisma."},
+        stout:{name:"Stout",page:"PHB p.28",fixed:{con:1},traits:["Stout Resilience: advantage on saves against poison, resistance to poison damage."],blurb:"+1 Constitution."}
+      }},
+    human:{name:"Human",page:"PHB p.29-31",size:"Medium",speed:30,blurb:"Adaptable. Two flavors: standard or variant (a feat).",
+      langs:["Common"],langPicks:1,traits:["One extra language."],
+      subraces:{
+        standard:{name:"Standard",page:"PHB p.29",fixed:{str:1,dex:1,con:1,int:1,wis:1,cha:1},noCustom:true,traits:["+1 to every ability score."],blurb:"+1 to all six scores."},
+        variant:{name:"Variant Human (optional rule)",page:"PHB p.31",flex:[1,1],feat:true,skillPicks:1,noCustom:true,traits:["+1 to two different scores of your choice.","One skill of your choice.","One feat of your choice."],blurb:"Choose two +1s, a skill and a feat. Strong for beginners who want a feat."}
+      }},
+    dragonborn:{name:"Dragonborn",page:"PHB p.32-34",size:"Medium",speed:30,fixed:{str:2,cha:1},customOk:true,dragon:true,
+      blurb:"Proud dragon-blooded folk with a breath weapon.",langs:["Common","Draconic"],
+      traits:["Draconic Ancestry: pick a dragon type. It sets your breath weapon and damage resistance.","Breath Weapon: 2d6 damage (at level 1) in a line or cone, once per short or long rest. Save DC = 8 + Con modifier + proficiency bonus.","Damage Resistance: to the damage type of your ancestry."]},
+    gnome:{name:"Gnome",page:"PHB p.35-37",size:"Small",speed:25,fixed:{int:2},customOk:true,
+      blurb:"Small and curious inventors. The classic artificer race.",langs:["Common","Gnomish"],
+      traits:["Darkvision 60 ft.","Gnome Cunning: advantage on Intelligence, Wisdom and Charisma saves against magic."],
+      subraces:{
+        forest:{name:"Forest Gnome",page:"PHB p.37",fixed:{dex:1},cantripsFixed:[["Minor illusion","int"]],traits:["Natural Illusionist: you know the minor illusion cantrip (Intelligence).","Speak with Small Beasts."],blurb:"+1 Dexterity, minor illusion."},
+        rock:{name:"Rock Gnome",page:"PHB p.37",fixed:{con:1},toolsFixed:["Tinker's tools"],traits:["Artificer's Lore: double proficiency on History checks about magic items, alchemical objects and technological devices.","Tinker: proficiency with tinker's tools (you already have them, so you choose another tool), and you can build tiny clockwork toys."],blurb:"+1 Constitution. Fits the artificer story."}
+      }},
+    halfelf:{name:"Half-Elf",page:"PHB p.38-39",size:"Medium",speed:30,fixed:{cha:2},flex:[1,1],flexExclude:["cha"],customOk:true,skillPicks:2,langPicks:1,
+      blurb:"Charming and adaptable. +2 Charisma and two +1s of your choice.",langs:["Common","Elvish"],
+      traits:["Darkvision 60 ft.","Fey Ancestry: advantage on saves against being charmed, and magic cannot put you to sleep.","Skill Versatility: two skills of your choice.","One extra language."]},
+    halforc:{name:"Half-Orc",page:"PHB p.40-41",size:"Medium",speed:30,fixed:{str:2,con:1},customOk:true,
+      blurb:"Strong and hard to put down.",langs:["Common","Orc"],skillsFixed:["Intimidation"],
+      traits:["Darkvision 60 ft.","Menacing: proficiency in Intimidation.","Relentless Endurance: once per long rest, drop to 1 hit point instead of 0.","Savage Attacks: on a critical hit with a melee weapon attack, roll one extra weapon damage die. A thrown dagger or spear is a ranged attack, so it does not count."]},
+    tiefling:{name:"Tiefling",page:"PHB p.42-43",size:"Medium",speed:30,fixed:{int:1,cha:2},customOk:true,
+      blurb:"Touched by the lower planes. Natural fit for Intelligence (+1).",langs:["Common","Infernal"],
+      traits:["Darkvision 60 ft.","Hellish Resistance: resistance to fire damage.","Infernal Legacy: thaumaturgy cantrip. Hellish rebuke at level 3 and darkness at level 5 (Charisma)."],
+      cantripsFixed:[["Thaumaturgy","cha"]]},
+    custom:{name:"Custom Lineage (Tasha's)",page:"T p.8",size:"Small or Medium",speed:30,flex:[2],feat:true,variableTrait:true,noCustom:true,langs:["Common"],langPicks:1,
+      blurb:"Build your own origin: +2 to one score, a feat, and darkvision or a skill.",
+      traits:["+2 to one ability score of your choice.","One feat of your choice.","Either darkvision 60 ft. or one skill of your choice.","Common plus one other language."]}
+  },
+  dragons:[["Black","acid","5x30 ft line (Dex save)"],["Blue","lightning","5x30 ft line (Dex save)"],["Brass","fire","5x30 ft line (Dex save)"],["Bronze","lightning","5x30 ft line (Dex save)"],["Copper","acid","5x30 ft line (Dex save)"],["Gold","fire","15 ft cone (Dex save)"],["Green","poison","15 ft cone (Con save)"],["Red","fire","15 ft cone (Dex save)"],["Silver","cold","15 ft cone (Con save)"],["White","cold","15 ft cone (Con save)"]], // PHB p.34
+  customizeNotes: "Tasha's optional rule (T p.7): move your race's ability increases to any scores you like (two increases cannot go on one score), replace racial languages, and swap racial skill or other proficiencies.",
+
+  /* ---- Feats (optional rule, PHB p.165-170). Only ones with simple effects. ---- */
+  feats: {
+    alert:{n:"Alert",t:"+5 to initiative. You cannot be surprised while awake.",init:5},
+    crossbow:{n:"Crossbow Expert",t:"Ignore loading with crossbows. No penalty for close shots. Good with your light crossbow."},
+    durable:{n:"Durable",asi:{con:1},t:"+1 Constitution. Healing from Hit Dice on a rest is never less than twice your Con modifier."},
+    healer:{n:"Healer",t:"A healer's kit can restore hit points to friends once per rest each."},
+    keen:{n:"Keen Mind",asi:{int:1},t:"+1 Intelligence. Perfect memory for the last month, always know north and the time."},
+    lucky:{n:"Lucky",t:"3 luck points per long rest. Spend one to roll an extra d20 for attacks, checks or saves."},
+    observant:{n:"Observant",asiChoice:["int","wis"],passive:5,t:"+1 Intelligence or Wisdom. +5 to passive Perception and Investigation."},
+    resilient:{n:"Resilient",asiChoice:["str","dex","con","int","wis","cha"],saveProf:true,t:"+1 to one score of your choice, and proficiency in saves with that score."},
+    skilled:{n:"Skilled",skilled:3,t:"Proficiency in any three skills or tools of your choice."},
+    tough:{n:"Tough",hpPerLevel:2,t:"+2 hit points per level (including level 1)."},
+    warcaster:{n:"War Caster",t:"Advantage on concentration saves. Cast with hands full. Cast a spell instead of an opportunity attack."}
+  },
+  featsPage:"PHB p.165-170",
+
+  /* ---- Backgrounds (PHB p.125-141, the main version of each) ---- */
+  backgrounds: {
+    acolyte:{name:"Acolyte",page:"PHB p.127",skills:["Insight","Religion"],langs:2,feature:"Shelter of the Faithful",equip:"Holy symbol, prayer book or wheel, 5 sticks of incense, vestments, common clothes, pouch with 15 gp.",gp:15,blurb:"You served in a temple."},
+    charlatan:{name:"Charlatan",page:"PHB p.128",skills:["Deception","Sleight of Hand"],toolsFixed:["Disguise kit","Forgery kit"],feature:"False Identity",equip:"Fine clothes, disguise kit, tools of a con of your choice, pouch with 15 gp.",gp:15,blurb:"You lie for a living."},
+    criminal:{name:"Criminal",page:"PHB p.129",skills:["Deception","Stealth"],toolsFixed:["Thieves' tools"],toolChoices:[["Gaming set","gaming"]],feature:"Criminal Contact",equip:"Crowbar, dark common clothes with a hood, pouch with 15 gp.",gp:15,blurb:"You broke the law. You already have thieves' tools, so you choose another tool."},
+    spy:{name:"Spy (Criminal variant)",page:"PHB p.130",skills:["Deception","Stealth"],toolsFixed:["Thieves' tools"],toolChoices:[["Gaming set","gaming"]],feature:"Criminal Contact",equip:"Crowbar, dark common clothes with a hood, pouch with 15 gp. (Same as Criminal.)",gp:15,ideas:"Ideas: the same skills as a Criminal, but you learned them as an agent of spies, for a crown or for the highest bidder. Same feature as Criminal.",blurb:"A secret agent. Same as Criminal. You already have thieves' tools, so you choose another tool."},
+    entertainer:{name:"Entertainer",page:"PHB p.130",skills:["Acrobatics","Performance"],toolsFixed:["Disguise kit"],toolChoices:[["Musical instrument","instrument"]],feature:"By Popular Demand",equip:"A musical instrument, a keepsake from an admirer, a costume, pouch with 15 gp.",gp:15,blurb:"You perform for crowds."},
+    gladiator:{name:"Gladiator (Entertainer variant)",page:"PHB p.131",skills:["Acrobatics","Performance"],toolsFixed:["Disguise kit"],toolChoices:[["Musical instrument","instrument"]],feature:"By Popular Demand",equip:"An unusual cheap weapon (such as a trident or net) in place of the instrument, a keepsake from an admirer, a costume, pouch with 15 gp.",gp:15,ideas:"Ideas: your show is flashy combat. Your feature lets you find a place to perform wherever fights are shown for fun, such as an arena or a secret fighting club.",blurb:"An arena fighter as entertainer. Same skills and tools as Entertainer; the weapon replaces the instrument in your gear."},
+    folkhero:{name:"Folk Hero",page:"PHB p.131",skills:["Animal Handling","Survival"],toolsFixed:["Vehicles (land)"],toolChoices:[["Artisan's tools","artisan"]],feature:"Rustic Hospitality",equip:"A set of artisan's tools (your choice), shovel, iron pot, common clothes, pouch with 10 gp.",gp:10,blurb:"A common person who stood up to something evil."},
+    guildartisan:{name:"Guild Artisan",page:"PHB p.132",skills:["Insight","Persuasion"],toolChoices:[["Artisan's tools","artisan"]],langs:1,feature:"Guild Membership",equip:"A set of artisan's tools (your choice), letter of introduction from your guild, traveler's clothes, pouch with 15 gp.",gp:15,blurb:"Recommended by the artificer Quick Build (T p.10). You are a skilled crafter."},
+    hermit:{name:"Hermit",page:"PHB p.134",skills:["Medicine","Religion"],toolsFixed:["Herbalism kit"],langs:1,feature:"Discovery",equip:"Scroll case of notes, winter blanket, common clothes, herbalism kit, 5 gp.",gp:5,blurb:"You lived alone and found a great secret."},
+    noble:{name:"Noble",page:"PHB p.135",skills:["History","Persuasion"],toolChoices:[["Gaming set","gaming"]],langs:1,feature:"Position of Privilege",equip:"Fine clothes, signet ring, scroll of pedigree, purse with 25 gp.",gp:25,blurb:"You come from wealth and title."},
+    knight:{name:"Knight (Noble variant)",page:"PHB p.136",skills:["History","Persuasion"],toolChoices:[["Gaming set","gaming"]],langs:1,feature:"Retainers",equip:"Fine clothes, signet ring, scroll of pedigree, purse with 25 gp. (Same as Noble.)",gp:25,ideas:"Ideas: knighthood is a low noble rank that can lead higher. Instead of Position of Privilege you have three loyal retainers (they do chores and errands; they do not fight or follow you into danger). One may be a squire.",blurb:"A knight. Same skills and gear as Noble. Feature: Retainers instead of Position of Privilege."},    outlander:{name:"Outlander",page:"PHB p.136",skills:["Athletics","Survival"],toolChoices:[["Musical instrument","instrument"]],langs:1,feature:"Wanderer",equip:"A staff, hunting trap, an animal trophy, traveler's clothes, pouch with 10 gp.",gp:10,blurb:"You grew up in the wild."},
+    sage:{name:"Sage",page:"PHB p.137",skills:["Arcana","History"],langs:2,feature:"Researcher",equip:"Bottle of black ink, quill, small knife, a letter from a dead colleague, common clothes, pouch with 10 gp.",gp:10,blurb:"A scholar. Arcana and History are also artificer skills (so you pick other skills from the class list)."},
+    sailor:{name:"Sailor",page:"PHB p.139",skills:["Athletics","Perception"],toolsFixed:["Navigator's tools","Vehicles (water)"],feature:"Ship's Passage",equip:"Belaying pin (club), 50 ft silk rope, a lucky charm, common clothes, pouch with 10 gp.",gp:10,blurb:"You sailed the seas."},
+    pirate:{name:"Pirate (Sailor variant)",page:"PHB p.139",skills:["Athletics","Perception"],toolsFixed:["Navigator's tools","Vehicles (water)"],feature:"Bad Reputation",equip:"Belaying pin (club), 50 ft silk rope, a lucky charm, common clothes, pouch with 10 gp. (Same as Sailor.)",gp:10,ideas:"Ideas: you sailed under a feared pirate captain. People fear your name. In a town you can usually get away with small crimes, such as skipping a tavern bill, because most people will not report you. Good for a swaggering, cool-guy sea rover.",blurb:"A sailor who chose piracy. Same skills and gear as Sailor. Feature: Bad Reputation (people fear you; small crimes in towns are overlooked) instead of Ship's Passage."},
+    soldier:{name:"Soldier",page:"PHB p.140",skills:["Athletics","Intimidation"],toolsFixed:["Vehicles (land)"],toolChoices:[["Gaming set","gaming"]],feature:"Military Rank",equip:"Insignia of rank, a trophy from a fallen enemy, dice or cards, common clothes, pouch with 10 gp.",gp:10,blurb:"You served in an army."},
+    factionagent:{name:"Faction Agent (table option)",page:"SCAG p.147-148 (web source, check with your DM)",skills:["Insight"],skillChoice:["Arcana","History","Investigation","Nature","Religion","Animal Handling","Medicine","Perception","Survival","Deception","Intimidation","Performance","Persuasion"],langs:2,feature:"Safe Haven",equip:"Faction badge or emblem, a faction text or code-book, common clothes, pouch with 15 gp.",gp:15,tableNote:"At this table it also gives 3 renown and Rank 2 in your faction (docs/TABLE-RULES.md).",blurb:"You work for a faction. Insight plus one Intelligence, Wisdom or Charisma skill. At this table: 3 renown and Rank 2."},
+    urchin:{name:"Urchin",page:"PHB p.141",skills:["Sleight of Hand","Stealth"],toolsFixed:["Disguise kit","Thieves' tools"],feature:"City Secrets",equip:"Small knife, map of your home city, pet mouse, a token of your parents, common clothes, pouch with 10 gp.",gp:10,blurb:"You grew up on the streets. You already have thieves' tools, so you choose another tool."}
+  },
+
+  /* ---- Equipment ---- */
+  simpleWeapons: [   // PHB p.149
+    {n:"Club",d:"1d4",t:"bludgeoning",ranged:false,p:"light"},
+    {n:"Dagger",d:"1d4",t:"piercing",finesse:true,p:"finesse, light, thrown 20/60"},
+    {n:"Greatclub",d:"1d8",t:"bludgeoning",p:"two-handed"},
+    {n:"Handaxe",d:"1d6",t:"slashing",p:"light, thrown 20/60"},
+    {n:"Javelin",d:"1d6",t:"piercing",p:"thrown 30/120"},
+    {n:"Light hammer",d:"1d4",t:"bludgeoning",p:"light, thrown 20/60"},
+    {n:"Mace",d:"1d6",t:"bludgeoning",p:""},
+    {n:"Quarterstaff",d:"1d6",t:"bludgeoning",p:"versatile (1d8)"},
+    {n:"Sickle",d:"1d4",t:"slashing",p:"light"},
+    {n:"Spear",d:"1d6",t:"piercing",p:"thrown 20/60, versatile (1d8)"},
+    {n:"Light crossbow",d:"1d8",t:"piercing",ranged:true,p:"ammunition 80/320, loading, two-handed"},
+    {n:"Dart",d:"1d4",t:"piercing",ranged:true,finesse:true,p:"finesse, thrown 20/60"},
+    {n:"Shortbow",d:"1d6",t:"piercing",ranged:true,p:"ammunition 80/320, two-handed"},
+    {n:"Sling",d:"1d4",t:"bludgeoning",ranged:true,p:"ammunition 30/120"}
+  ],
+  armor: {           // PHB p.145. base AC, dexCap (null = no cap, 0 = no Dex), cost in gp, stealth disadvantage
+    none:{n:"No armor",base:10,cap:null,cost:0,stealth:false},
+    padded:{n:"Padded",base:11,cap:null,cost:5,stealth:true,cat:"Light"},
+    leather:{n:"Leather",base:11,cap:null,cost:10,stealth:false,cat:"Light"},
+    studded:{n:"Studded leather",base:12,cap:null,cost:45,stealth:false,cat:"Light"},
+    hide:{n:"Hide",base:12,cap:2,cost:10,stealth:false,cat:"Medium"},
+    chainshirt:{n:"Chain shirt",base:13,cap:2,cost:50,stealth:false,cat:"Medium"},
+    scale:{n:"Scale mail",base:14,cap:2,cost:50,stealth:true,cat:"Medium"},
+    breastplate:{n:"Breastplate",base:14,cap:2,cost:400,stealth:false,cat:"Medium"},
+    halfplate:{n:"Half plate",base:15,cap:2,cost:750,stealth:true,cat:"Medium"}
+  },
+  kitArmor:["studded","scale"],           // T p.10
+  shield:{bonus:2,cost:10},                // PHB p.145
+  kitFixed:["Light crossbow and 20 bolts","Thieves' tools","Dungeoneer's pack (backpack, crowbar, hammer, 10 pitons, 10 torches, tinderbox, 10 days of rations, waterskin, 50 ft hempen rope; PHB p.151)"], // T p.10
+  goldDice:{n:5,sides:4,mult:10},          // 5d4 x 10 gp (T p.10)
+
+  /* ---- Spells (artificer list, T p.12). src: P = Player's Handbook, T = Tasha's chapter 3, X = Xanathar's (not in your books) ---- */
+  cantrips: [
+    ["Acid splash","P","PHB p.211","Hurl acid at one or two creatures next to each other. Dexterity save or 1d6 acid."],
+    ["Booming blade","T","T p.106","Melee weapon attack. If the target willingly moves away, it takes extra thunder damage."],
+    ["Create bonfire","X","XGE","Make a small fire on the ground that burns creatures in it."],
+    ["Dancing lights","P","PHB p.230","Make up to four floating torch-sized lights."],
+    ["Fire bolt","P","PHB p.242","Ranged spell attack, 120 ft, 1d10 fire damage. A simple strong attack."],
+    ["Frostbite","X","XGE","Cold damage, and the target has disadvantage on its next weapon attack."],
+    ["Green-flame blade","T","T p.107","Melee weapon attack. Fire can jump to a second creature next to the target."],
+    ["Guidance","P","PHB p.248","Touch a creature (you or a friend). It adds a d4 to one ability check."],
+    ["Light","P","PHB p.255","One object glows like a torch."],
+    ["Lightning lure","T","T p.107","Pull a creature up to 10 ft toward you (Strength save). Damage if it ends next to you."],
+    ["Mage hand","P","PHB p.256","A ghostly hand moves small objects up to 30 ft away."],
+    ["Magic stone","X","XGE","Enchant pebbles so they can be thrown as spell attacks."],
+    ["Mending","P","PHB p.259","Repair one small break or tear in an object."],
+    ["Message","P","PHB p.259","Whisper to one creature within 120 ft. Only they hear it."],
+    ["Poison spray","P","PHB p.266","1d12 poison damage within 10 ft. Constitution save."],
+    ["Prestidigitation","P","PHB p.267","Small harmless magic tricks: clean, warm, flavor, small sparks."],
+    ["Ray of frost","P","PHB p.271","Ranged spell attack, 1d8 cold, slows the target by 10 ft."],
+    ["Resistance","P","PHB p.272","Touch a creature (you or a friend). It adds a d4 to one saving throw."],
+    ["Shocking grasp","P","PHB p.275","Melee spell attack, 1d8 lightning, target cannot take reactions. Advantage against metal armor."],
+    ["Spare the dying","P","PHB p.277","Make a creature at 0 hit points stable."],
+    ["Sword burst","T","T p.115","Spinning spectral blades hit all creatures next to you. Dexterity save, 1d6 force."],
+    ["Thorn whip","P","PHB p.282","Melee spell attack, 1d6 piercing, pulls the target up to 10 ft closer."],
+    ["Thunderclap","X","XGE","Loud thunder damages creatures next to you."]
+  ],
+  spells1: [
+    ["Absorb elements","X","XGE","Reaction: take less elemental damage, and add that damage to your next melee hit."],
+    ["Alarm (ritual)","P","PHB p.211","Set a warning on a door, window or area for 8 hours."],
+    ["Catapult","X","XGE","Throw a light object at a target in a line."],
+    ["Cure wounds","P","PHB p.230","Touch: heal 1d8 + Intelligence modifier. Your main healing spell."],
+    ["Detect magic (ritual)","P","PHB p.231","Sense magic within 30 ft for 10 minutes. Cast as a ritual to save a slot."],
+    ["Disguise self","P","PHB p.233","Look different for 1 hour."],
+    ["Expeditious retreat","P","PHB p.238","Dash as a bonus action each turn for 10 minutes."],
+    ["Faerie fire","P","PHB p.239","Outline creatures in light. Attacks against them have advantage."],
+    ["False life","P","PHB p.239","Gain 1d4 + 4 temporary hit points for 1 hour."],
+    ["Feather fall","P","PHB p.239","Reaction: slow the fall of up to five creatures."],
+    ["Grease","P","PHB p.246","Make a 10-ft square slippery. Creatures may fall."],
+    ["Identify (ritual)","P","PHB p.252","Learn what a magic item does. Needs a 100 gp pearl."],
+    ["Jump","P","PHB p.254","Triple one creature's jump distance."],
+    ["Longstrider","P","PHB p.256","Touch: +10 ft speed for 1 hour."],
+    ["Purify food and drink (ritual)","P","PHB p.270","Remove poison and disease from food and drink."],
+    ["Sanctuary","P","PHB p.272","Bonus action: protect a creature from attacks."],
+    ["Snare","X","XGE","Make a hidden magic trap."],
+    ["Tasha's caustic brew","T","T p.115","A 30-ft line of acid. Damage each turn until cleaned off."]
+  ],
+  wizardCantrips:["Acid splash","Blade ward","Chill touch","Dancing lights","Fire bolt","Friends","Light","Mage hand","Mending","Message","Minor illusion","Poison spray","Prestidigitation","Ray of frost","Shocking grasp","True strike"], // PHB p.114
+
+  /* ---- Infusions (T p.20-23). Only ones with no level requirement can be chosen at level 2-3. ---- */
+  infusions: [
+    {n:"Enhanced Weapon",lv:0,page:"T p.21",star:true,item:"Simple or martial weapon",line:"+1 to attack and damage with the weapon. +2 at level 10."},
+    {n:"Enhanced Defense",lv:0,page:"T p.21",star:true,item:"Armor or shield",line:"+1 Armor Class. +2 at level 10."},
+    {n:"Enhanced Arcane Focus",lv:0,page:"T p.21",star:true,item:"Rod, staff or wand (attunement)",line:"+1 to spell attack rolls, ignore half cover. +2 at level 10."},
+    {n:"Mind Sharpener",lv:0,page:"T p.22",star:true,item:"Armor or robes",line:"4 charges. When the wearer fails a Constitution save to keep concentration on a spell, they can use their reaction and spend 1 charge to succeed instead. 1d4 charges back at dawn."},
+    {n:"Repeating Shot",lv:0,page:"T p.22",star:true,item:"Weapon with ammunition (attunement)",line:"+1 to attack and damage rolls with it. Ignores the loading property. If you load no ammunition, it makes its own. Good with a crossbow. Needs attunement: you bond with the item before its magic works for you (T p.22)."},
+    {n:"Returning Weapon",lv:0,page:"T p.23",item:"Thrown weapon",line:"+1 to attack and damage. Flies back to your hand after a throw."},
+    {n:"Armor of Magical Strength",lv:0,page:"T p.20",item:"Armor (attunement)",line:"6 charges: add Intelligence to Strength checks and saves, or avoid being knocked prone."},
+    {n:"Homunculus Servant",lv:0,page:"T p.21-22",item:"A gem or crystal worth 100 gp",line:"A tiny flying helper creature. Costs a bonus action to command."},
+    {n:"Replicate: Alchemy jug",lv:0,page:"T p.22-23",item:"Replicate Magic Item",line:"Copy an alchemy jug (makes liquids). No attunement."},
+    {n:"Replicate: Bag of holding",lv:0,page:"T p.22-23",item:"Replicate Magic Item",line:"Copy a bag of holding. A big, light storage bag. No attunement."},
+    {n:"Replicate: Cap of water breathing",lv:0,page:"T p.22-23",item:"Replicate Magic Item",line:"Copy a cap of water breathing. No attunement."},
+    {n:"Replicate: Goggles of night",lv:0,page:"T p.22-23",item:"Replicate Magic Item",line:"Copy goggles of night (darkvision). No attunement."},
+    {n:"Replicate: Rope of climbing",lv:0,page:"T p.22-23",item:"Replicate Magic Item",line:"Copy a rope of climbing. No attunement."},
+    {n:"Replicate: Sending stones",lv:0,page:"T p.22-23",item:"Replicate Magic Item",line:"Copy sending stones (short messages at distance). No attunement."},
+    {n:"Replicate: Wand of magic detection",lv:0,page:"T p.22-23",item:"Replicate Magic Item",line:"Copy a wand of magic detection. No attunement."},
+    {n:"Replicate: Wand of secrets",lv:0,page:"T p.22-23",item:"Replicate Magic Item",line:"Copy a wand of secrets (finds hidden doors and traps). No attunement."}
+  ],
+  lockedInfusions: [
+    ["Boots of the Winding Path",6,"T p.21"],["Radiant Weapon",6,"T p.22"],["Repulsion Shield",6,"T p.23"],["Resistant Armor",6,"T p.23"],
+    ["Spell-Refueling Ring",6,"T p.23"],["Helm of Awareness",10,"T p.21"],["Arcane Propulsion Armor",14,"T p.20"]
+  ],
+
+  /* ---- Specialists (T p.14-20). Features at level 3 are active in the level 3 preview. ---- */
+  specialists: {
+    alchemist:{name:"Alchemist",page:"T p.14-15",tool:"Alchemist's supplies",
+      feel:"The team's medic and chemist. You hand out elixirs that heal or help.",
+      spells:{3:["Healing word","Ray of sickness"],5:["Flaming sphere","Melf's acid arrow"],9:["Gaseous form","Mass healing word"],13:["Blight","Death ward"],17:["Cloudkill","Raise dead"]},
+      features:[[3,"Tool Proficiency","Alchemist's supplies (or another artisan's tool if you already have them).","T p.14"],
+        [3,"Experimental Elixir","After a long rest, make one elixir in an empty flask. Roll a d6 for its effect: healing (2d4 + Int), faster, +1 AC, d4 bonus, fly 10 ft, or alter self. You can spend a spell slot to make more and choose the effect.","T p.14-15"],
+        [5,"Alchemical Savant","Add your Int modifier to one healing roll, or one acid, fire, necrotic or poison damage roll, when you cast through alchemist's supplies.","T p.15"],
+        [9,"Restorative Reagents","Elixirs also give 2d6 + Int temporary hit points. Free lesser restoration (Int times per long rest).","T p.15"],
+        [15,"Chemical Mastery","Resist acid and poison, immune to poisoned. Free greater restoration and heal once each per long rest.","T p.15"]],
+      strong:"Very good at keeping people alive. Simple to run.",weak:"Low damage. Elixir effects are random unless you spend slots.",suits:"A player who likes helping friends and does not want a pet to manage."},
+    armorer:{name:"Armorer",page:"T p.15-17",tool:"Smith's tools",
+      feel:"A walking suit of magic armor. Front-line Guardian or sneaky ranged Infiltrator.",
+      spells:{3:["Magic missile","Thunderwave"],5:["Mirror image","Shatter"],9:["Hypnotic pattern","Lightning bolt"],13:["Fire shield","Greater invisibility"],17:["Passwall","Wall of force"]},
+      features:[[3,"Tools of the Trade","Heavy armor proficiency and smith's tools (or another artisan's tool if you already have them).","T p.15"],
+        [3,"Arcane Armor","Turn armor you wear into magic armor (smith's tools in hand). No Strength requirement, works as a spellcasting focus, cannot be removed against your will.","T p.15-16"],
+        [3,"Armor Model","Choose Guardian (thunder gauntlets 1d8; a creature you hit has disadvantage attacking anyone but you; temporary hit points equal to your level) or Infiltrator (lightning launcher 1d6 at range, +5 speed, advantage on Stealth). The model's weapon uses Intelligence.","T p.16"],
+        [5,"Extra Attack","Two attacks when you take the Attack action.","T p.16"],
+        [9,"Armor Modifications","Your armor counts as four items for infusions, with two extra infusion slots.","T p.17"],
+        [15,"Perfected Armor","Guardian: pull enemies to you. Infiltrator: targets glow and take extra damage.","T p.17"]],
+      strong:"The sturdiest artificer. Extra Attack at level 5. No pet to manage.",weak:"Best when you stay close. Heavy armor still has Strength limits for other armors.",suits:"A beginner who wants to fight up close and keep things simple."},
+    artillerist:{name:"Artillerist",page:"T p.17-18",tool:"Woodcarver's tools",
+      feel:"A battlefield engineer. You build a cannon that blasts enemies or shields allies.",
+      spells:{3:["Shield","Thunderwave"],5:["Scorching ray","Shatter"],9:["Fireball","Wind wall"],13:["Ice storm","Wall of fire"],17:["Cone of cold","Wall of force"]},
+      features:[[3,"Tool Proficiency","Woodcarver's tools (or another artisan's tool if you already have them).","T p.17"],
+        [3,"Eldritch Cannon","As an action, with woodcarver's or smith's tools in hand, create a Small or Tiny cannon within 5 ft. Free once per long rest; after that, spend a spell slot. One cannon at a time. AC 18, hit points = 5 x level, lasts 1 hour. On your turn, a bonus action (within 60 ft of it) makes it fire: Flamethrower (2d8 fire cone), Force Ballista (2d8 force, ranged, pushes) or Protector (temporary hit points to itself and friends). If you do not activate it, it does nothing.","T p.17-18"],
+        [5,"Arcane Firearm","A wand, staff or rod becomes a focus that adds a d8 to one damage roll of your spells.","T p.18"],
+        [9,"Explosive Cannon","Cannon damage +1d8. It can explode for 3d8 force in a 20 ft area.","T p.18"],
+        [15,"Fortified Position","You and your allies within 10 ft of your cannon get half cover. Two cannons at once.","T p.18"]],
+      strong:"Strong ranged damage from a safe spot. Flexible cannon.",weak:"The cannon costs a bonus action each turn and can be destroyed.",suits:"A player who likes ranged damage and does not mind one more thing to run."},
+    battlesmith:{name:"Battle Smith",page:"T p.18-20",tool:"Smith's tools",
+      feel:"A fighter-medic with a loyal steel defender (a robot bodyguard). You hit using Intelligence.",
+      spells:{3:["Heroism","Shield"],5:["Branding smite","Warding bond"],9:["Aura of vitality","Conjure barrage"],13:["Aura of purity","Fire shield"],17:["Banishing smite","Mass cure wounds"]},
+      features:[[3,"Tool Proficiency","Smith's tools (or another artisan's tool if you already have them).","T p.19"],
+        [3,"Battle Ready","Martial weapon proficiency. Use Intelligence for attack and damage rolls with a magic weapon (for example one with Enhanced Weapon).","T p.19"],
+        [3,"Steel Defender","A companion: AC 15, hit points 2 + Int + 5 x level, speed 40 ft. Its strike uses your spell attack bonus and deals 1d8 + proficiency bonus force damage. It only takes the Dodge action unless you spend a bonus action to command it.","T p.19"],
+        [5,"Extra Attack","Two attacks when you take the Attack action.","T p.20"],
+        [9,"Arcane Jolt","When you hit with a magic weapon or your defender hits: +2d6 force damage, or heal 2d6 to a creature within 30 ft of the target. Int modifier times per long rest, once per turn.","T p.20"],
+        [15,"Improved Defender","Arcane Jolt becomes 4d6. Defender gets +2 AC.","T p.20"]],
+      strong:"A second body in combat, good damage, and some healing. Strong use of Intelligence.",weak:"The defender costs a bonus action each turn. Battle Ready needs a magic weapon (use Enhanced Weapon).",suits:"A player who likes a loyal pet and wants a fighter-healer mix."}
+  }
+};
+
+</script>
+<script>
+/* =====================================================================
+   GUIDE DATA BLOCK (START)  -  text is in plain words, not copied from the books.
+   T = Tasha's Cauldron of Everything (printed page). PHB = Player's Handbook 2014 (printed page).
+   The specialist data comes from the DATA block above (same as creator.html).
+   ===================================================================== */
+const G = {
+  glossary: {
+    "ability score":"A number (Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma) that says how good you are at something (PHB p.12-13).",
+    "ability modifier":"The number you add to rolls. Score minus 10, divided by 2, rounded down (PHB p.13).",
+    "armor class":"AC. How hard you are to hit (PHB p.14).",
+    "attunement":"A bond with a magic item so it works. The full rules are in the Dungeon Master's Guide, which you do not own. Artificers can attune to more items later (T p.13-14).",
+    "cantrip":"A weak spell that costs no spell slot (T p.11).",
+    "concentration":"You can hold only one spell that needs concentration at a time. A new one ends the old one (T p.5, rule 7).",
+    "focus":"The object you hold to cast. For you: thieves' tools or an artisan's tool you are proficient with (T p.11).",
+    "half-caster":"A spellcaster who gets spell slots at half speed (T p.10).",
+    "hit die":"The die you roll for health when you level up. Artificers use a d8 (T p.10).",
+    "hit points":"Your health (PHB p.12).",
+    "infusion":"A power that turns a plain object into a magic item (T p.12-13).",
+    "long rest":"At least 8 hours of rest, mostly sleep. You get back spell slots and many uses (T p.11; PHB p.186).",
+    "short rest":"About 1 hour of rest. Some features come back (PHB p.186).",
+    "prepared spell":"A spell on your daily list that you can cast (T p.11).",
+    "proficiency bonus":"A number you add when you are trained in something. +2 at levels 1-4 (T p.10; PHB p.12).",
+    "ritual":"A spell with the ritual tag that you can cast without a slot, taking 10 extra minutes (T p.12; PHB p.202).",
+    "saving throw":"A roll to avoid a danger (PHB p.179).",
+    "spell slot":"A limited \"charge\" that lets you cast a spell of 1st level or higher (T p.11).",
+    "spell save DC":"The number others must beat to resist your spell. 8 + proficiency bonus + Intelligence modifier (T p.12).",
+    "spell attack":"A roll to hit with a spell. Proficiency bonus + Intelligence modifier (T p.12).",
+    "subclass":"A path inside your class. For you it is called an Artificer Specialist (T p.13).",
+    "temporary hit points":"Extra health that is lost first. They do not add together (T p.5, rule 8).",
+    "bonus action":"A small extra action you may take once per turn, if something lets you (PHB p.189).",
+    "reaction":"An action you take on someone else's turn, in answer to something. One per round (T p.4; PHB p.190).",
+    "multiclassing":"Taking levels in more than one class. Optional (PHB p.163).",
+    "xp":"Experience points. 900 XP is the start of level 3 (PHB p.15).",
+    "artisan's tools":"Craft kits such as smith's tools or alchemist's supplies (PHB p.154).",
+    "skill":"Something you are trained in. You add your proficiency bonus to checks with it (PHB p.174).",
+    "dc":"Difficulty Class. The number a roll must meet or beat (PHB p.174).",
+    "advantage":"Roll two d20 and keep the higher one (T p.4; PHB p.173)."
+  },
+  features:[
+    [1,"Magical Tinkering","Give a tiny object a small magic trick (light, message, sound, picture). Up to your Int modifier objects.","T p.11"],
+    [1,"Spellcasting","Intelligence casting with tools as your focus. 2 cantrips, prepare spells each day, rituals allowed.","T p.11-12"],
+    [2,"Infuse Item","After a long rest, turn plain items into magic items. 4 infusions known, 2 items at once.","T p.12-13"],
+    [3,"Artificer Specialist","Choose Alchemist, Armorer, Artillerist or Battle Smith. Specialist features at levels 3, 5, 9 and 15.","T p.13"],
+    [3,"The Right Tool for the Job","Spend 1 hour to create one set of artisan's tools.","T p.13"],
+    [4,"Ability Score Improvement","+2 to one score or +1 to two. Also at levels 8, 12, 16 and 19.","T p.13"],
+    [5,"Specialist feature","Your specialist gets stronger. You also gain 2nd-level spell slots (T p.10).","T p.13"],
+    [6,"Tool Expertise","Double proficiency bonus on tool checks you are trained in. 6 infusions known, 3 items.","T p.13"],
+    [7,"Flash of Genius","Reaction: add your Int modifier to an ability check or saving throw made by you or a creature you can see within 30 ft. Int modifier uses per long rest (minimum 1).","T p.13"],
+    [8,"Ability Score Improvement","Another increase.","T p.13"],
+    [9,"Specialist feature","3rd-level slots arrive.","T p.13"],
+    [10,"Magic Item Adept","Attune to 4 items. Make common or uncommon items for half the gold and a quarter of the time. 8 infusions known, 4 items.","T p.13"],
+    [11,"Spell-Storing Item","Store a 1st or 2nd-level spell in an item for others to cast.","T p.13-14"],
+    [12,"Ability Score Improvement","Another increase.","T p.13"],
+    [14,"Magic Item Savant","Attune to 5 items. Ignore class, race, spell and level limits on magic items. 10 infusions known, 5 items.","T p.14"],
+    [15,"Specialist feature","Your last specialist feature.","T p.13"],
+    [16,"Ability Score Improvement","Another increase.","T p.13"],
+    [18,"Magic Item Master","Attune to 6 items. 12 infusions known, 6 items.","T p.14"],
+    [19,"Ability Score Improvement","Last increase.","T p.13"],
+    [20,"Soul of Artifice","+1 to all saves for each attuned magic item. When you drop to 0 hit points but are not killed outright, you can use your reaction to end one of your infusions and drop to 1 hit point instead. The book sets no \"once\" limit; it costs an infusion each time.","T p.14"]
+  ],
+  infusions:[
+    {n:"Enhanced Weapon",lv:0,att:false,star:true,item:"A simple or martial weapon",line:"+1 to attack and damage. Becomes +2 at level 10.",page:"T p.21"},
+    {n:"Enhanced Defense",lv:0,att:false,star:true,item:"Armor or a shield",line:"+1 Armor Class. Becomes +2 at level 10. Easy and always useful.",page:"T p.21"},
+    {n:"Enhanced Arcane Focus",lv:0,att:true,star:true,item:"A rod, staff or wand",line:"+1 to spell attack rolls and you ignore half cover. Becomes +2 at level 10.",page:"T p.21"},
+    {n:"Mind Sharpener",lv:0,att:false,star:true,item:"Armor or robes",line:"4 charges. When the wearer fails a Constitution save to keep concentration on a spell, they can use their reaction and spend 1 charge to succeed instead. 1d4 charges back at dawn.",page:"T p.22"},
+    {n:"Repeating Shot",lv:0,att:true,star:true,item:"A weapon with the ammunition property",line:"+1 to attack and damage rolls when you shoot with it. Ignores the loading property. If you load no ammunition, it makes its own. A good match for your light crossbow.",page:"T p.22"},
+    {n:"Returning Weapon",lv:0,att:false,star:false,item:"A weapon with the thrown property",line:"+1 to attack and damage. After a throw, it flies back to your hand.",page:"T p.23"},
+    {n:"Armor of Magical Strength",lv:0,att:true,star:false,item:"A suit of armor",line:"6 charges. Add your Intelligence modifier to Strength checks and saves, or avoid being knocked prone. 1d6 charges back at dawn.",page:"T p.20"},
+    {n:"Homunculus Servant",lv:0,att:false,star:false,item:"A gem or crystal worth at least 100 gp",line:"A tiny flying construct helper with its own stat block (T p.22). It moves and uses its reaction on its own, but its only action is Dodge unless you spend a bonus action to command it. Can deliver touch spells.",page:"T p.21-22"},
+    {n:"Replicate Magic Item",lv:0,att:false,star:false,item:"Varies by item",line:"Copy one magic item from a list. Learn it again for each item. Level 2 list: alchemy jug, bag of holding, cap of water breathing, goggles of night, rope of climbing, sending stones, wand of magic detection, wand of secrets (none need attunement). Longer lists open at levels 6, 10 and 14. You may also copy a common item from the Dungeon Master's Guide (you do not own it; ask your DM).",page:"T p.22-23"},
+    {n:"Boots of the Winding Path",lv:6,att:true,star:false,item:"A pair of boots",line:"Teleport 15 feet as a bonus action to a spot you stood in this turn.",page:"T p.21"},
+    {n:"Radiant Weapon",lv:6,att:true,star:false,item:"A simple or martial weapon",line:"+1, can shed bright light (30 ft) on command, and can blind an attacker who hits you (4 charges).",page:"T p.22"},
+    {n:"Repulsion Shield",lv:6,att:true,star:false,item:"A shield",line:"+1 AC, and push away a melee attacker (4 charges).",page:"T p.23"},
+    {n:"Resistant Armor",lv:6,att:true,star:false,item:"A suit of armor",line:"Resistance to one damage type you choose.",page:"T p.23"},
+    {n:"Spell-Refueling Ring",lv:6,att:true,star:false,item:"A ring",line:"Get back one spell slot of 3rd level or lower, once a day.",page:"T p.23"},
+    {n:"Helm of Awareness",lv:10,att:true,star:false,item:"A helmet",line:"Advantage on initiative. You cannot be surprised.",page:"T p.21"},
+    {n:"Arcane Propulsion Armor",lv:14,att:true,star:false,item:"A suit of armor",line:"+5 speed, two throwable magic gauntlets (1d8 force), cannot be removed, replaces lost limbs.",page:"T p.20"}
+  ],
+  /* Spells. [name, level, src (P/T/X), page, casting time, range, duration, ritual, plain line, beginner pick] */
+  spells:[
+    ["Acid splash",0,"P","PHB p.211","1 action","60 ft","Instant",false,"Hurl acid at one or two creatures next to each other. Dexterity save or 1d6 acid damage.",false],
+    ["Booming blade",0,"T","T p.106","1 action","Self (5 ft)","1 round",false,"Make a melee weapon attack. If the target willingly moves 5 ft or more before your next turn, it takes extra thunder damage.",true],
+    ["Create bonfire",0,"X","XGE","1 action","60 ft","Concentration, 1 min",false,"Make a small fire on the ground that burns creatures in its space.",false],
+    ["Dancing lights",0,"P","PHB p.230","1 action","120 ft","Concentration, 1 min",false,"Make up to four floating torch-sized lights.",false],
+    ["Fire bolt",0,"P","PHB p.242","1 action","120 ft","Instant",false,"Ranged spell attack. 1d10 fire damage. Simple and strong.",true],
+    ["Frostbite",0,"X","XGE","1 action","60 ft","Instant",false,"Cold damage. The target has disadvantage on its next weapon attack.",false],
+    ["Green-flame blade",0,"T","T p.107","1 action","Self (5 ft)","Instant",false,"Make a melee weapon attack. Green fire can jump to a second creature next to the target.",false],
+    ["Guidance",0,"P","PHB p.248","1 action","Touch","Concentration, 1 min",false,"You or a friend adds a d4 to one ability check. Great out of combat.",true],
+    ["Light",0,"P","PHB p.255","1 action","Touch","1 hour",false,"One object glows like a torch.",false],
+    ["Lightning lure",0,"T","T p.107","1 action","Self (15 ft)","Instant",false,"Pull a creature up to 10 ft toward you (Strength save). It takes lightning damage if it ends next to you.",false],
+    ["Mage hand",0,"P","PHB p.256","1 action","30 ft","1 minute",false,"A ghostly hand moves or opens small things from a distance.",false],
+    ["Magic stone",0,"X","XGE","1 bonus action","Touch","1 minute",false,"Enchant pebbles so they can be thrown or slung as spell attacks.",false],
+    ["Mending",0,"P","PHB p.259","1 minute","Touch","Instant",false,"Repair one small break or tear in an object. Also heals your cannon or defender (T p.18-19).",true],
+    ["Message",0,"P","PHB p.259","1 action","120 ft","1 round",false,"Whisper a message to one creature. Only they hear it, and they can whisper back.",false],
+    ["Poison spray",0,"P","PHB p.266","1 action","10 ft","Instant",false,"Constitution save or 1d12 poison damage. Short range.",false],
+    ["Prestidigitation",0,"P","PHB p.267","1 action","10 ft","Up to 1 hour",false,"Small harmless tricks: clean, warm, flavor, sparks.",false],
+    ["Ray of frost",0,"P","PHB p.271","1 action","60 ft","Instant",false,"Ranged spell attack. 1d8 cold damage and the target is slowed by 10 ft.",false],
+    ["Resistance",0,"P","PHB p.272","1 action","Touch","Concentration, 1 min",false,"You or a friend adds a d4 to one saving throw.",false],
+    ["Shocking grasp",0,"P","PHB p.275","1 action","Touch","Instant",false,"Melee spell attack. 1d8 lightning, and the target cannot take reactions. Advantage against metal armor.",false],
+    ["Spare the dying",0,"P","PHB p.277","1 action","Touch","Instant",false,"A creature at 0 hit points becomes stable.",false],
+    ["Sword burst",0,"T","T p.115","1 action","Self (5 ft)","Instant",false,"Spinning blades hit every creature next to you. Dexterity save or 1d6 force damage.",false],
+    ["Thorn whip",0,"P","PHB p.282","1 action","30 ft","Instant",false,"Melee spell attack. 1d6 piercing, and you pull the target up to 10 ft closer.",false],
+    ["Thunderclap",0,"X","XGE","1 action","Self (5 ft)","Instant",false,"A loud boom damages creatures next to you (Constitution save).",false],
+    ["Absorb elements",1,"X","XGE","1 reaction","Self","1 round",false,"Take less acid, cold, fire, lightning or thunder damage, and add that damage to your next melee hit.",false],
+    ["Alarm",1,"P","PHB p.211","1 minute","30 ft","8 hours",true,"Set a warning on a door, window or area. You hear it even asleep.",false],
+    ["Catapult",1,"X","XGE","1 action","60 ft","Instant",false,"Throw a light object at a target. Dexterity save or 3d8 damage.",false],
+    ["Cure wounds",1,"P","PHB p.230","1 action","Touch","Instant",false,"Heal a creature you touch for 1d8 + your Int modifier. Your main healing spell.",true],
+    ["Detect magic",1,"P","PHB p.231","1 action","Self","Concentration, 10 min",true,"Sense magic within 30 ft and see which school it is. Cast it as a ritual to save a slot.",true],
+    ["Disguise self",1,"P","PHB p.233","1 action","Self","1 hour",false,"Change how you look, including clothes and gear. Touch can reveal it.",false],
+    ["Expeditious retreat",1,"P","PHB p.238","1 bonus action","Self","Concentration, 10 min",false,"Dash as a bonus action each turn.",false],
+    ["Faerie fire",1,"P","PHB p.239","1 action","60 ft","Concentration, 1 min",false,"Outline creatures in light (Dexterity save). Attacks against them have advantage and invisible ones are revealed.",true],
+    ["False life",1,"P","PHB p.239","1 action","Self","1 hour",false,"Gain 1d4 + 4 temporary hit points. Cast it before a fight.",true],
+    ["Feather fall",1,"P","PHB p.239","1 reaction","60 ft","1 minute",false,"Slow the fall of up to five creatures so they land safely.",false],
+    ["Grease",1,"P","PHB p.246","1 action","60 ft","1 minute",false,"Make a 10-ft square slippery. Creatures may fall.",false],
+    ["Identify",1,"P","PHB p.252","1 minute","Touch","Instant",true,"Learn what a magic item does. Needs a pearl worth 100 gp.",false],
+    ["Jump",1,"P","PHB p.254","1 action","Touch","1 minute",false,"Triple one creature's jump distance.",false],
+    ["Longstrider",1,"P","PHB p.256","1 action","Touch","1 hour",false,"+10 ft speed for one creature.",false],
+    ["Purify food and drink",1,"P","PHB p.270","1 action","10 ft","Instant",true,"Remove poison and disease from food and drink.",false],
+    ["Sanctuary",1,"P","PHB p.272","1 bonus action","30 ft","1 minute",false,"Protect a creature: enemies must pass a Wisdom save to target it.",false],
+    ["Snare",1,"X","XGE","1 minute","Touch","8 hours",false,"Make a hidden magic trap on the ground.",false],
+    ["Tasha's caustic brew",1,"T","T p.115","1 action","Self (30-ft line)","Concentration, 1 min",false,"A line of acid. Dexterity save or 2d4 acid damage each turn until cleaned off.",false],
+    ["Aid",2,"P","PHB p.211","1 action","30 ft","8 hours",false,"Raise the hit point maximum and current hit points of up to three creatures.",true],
+    ["Alter self",2,"P","PHB p.211","1 action","Self","Concentration, 1 hour",false,"Change your body: breathe underwater, change your look, or grow natural weapons.",false],
+    ["Arcane lock",2,"P","PHB p.215","1 action","Touch","Until dispelled",false,"Magically lock a door, window or chest.",false],
+    ["Blur",2,"P","PHB p.219","1 action","Self","Concentration, 1 min",false,"Attackers have disadvantage to hit you (if they rely on sight).",true],
+    ["Continual flame",2,"P","PHB p.227","1 action","Touch","Until dispelled",false,"An object makes a cold, permanent flame. Needs ruby dust worth 50 gp.",false],
+    ["Darkvision",2,"P","PHB p.230","1 action","Touch","8 hours",false,"A willing creature sees in the dark up to 60 ft.",false],
+    ["Enhance ability",2,"P","PHB p.237","1 action","Touch","Concentration, 1 hour",false,"Pick one: advantage on checks with one ability, plus a small bonus effect.",false],
+    ["Enlarge/reduce",2,"P","PHB p.237","1 action","30 ft","Concentration, 1 min",false,"Make a creature or object bigger or smaller.",false],
+    ["Heat metal",2,"P","PHB p.250","1 action","60 ft","Concentration, 1 min",false,"A metal object glows red-hot and burns whoever holds it.",false],
+    ["Invisibility",2,"P","PHB p.254","1 action","Touch","Concentration, 1 hour",false,"A creature turns invisible until it attacks or casts.",true],
+    ["Lesser restoration",2,"P","PHB p.255","1 action","Touch","Instant",false,"End one disease or one condition: blinded, deafened, paralyzed or poisoned.",true],
+    ["Levitate",2,"P","PHB p.255","1 action","60 ft","Concentration, 10 min",false,"Lift a creature or object up to 20 ft and hold it there.",false],
+    ["Magic mouth",2,"P","PHB p.257","1 minute","30 ft","Until dispelled",true,"Leave a spoken message in an object, set off by a trigger.",false],
+    ["Magic weapon",2,"P","PHB p.257","1 bonus action","Touch","Concentration, 1 hour",false,"A weapon becomes magic with +1 to attack and damage.",false],
+    ["Protection from poison",2,"P","PHB p.270","1 action","Touch","1 hour",false,"End a poison and give advantage against being poisoned.",false],
+    ["Pyrotechnics",2,"X","XGE","1 action","60 ft","Instant",false,"Turn a fire into blinding fireworks or thick smoke.",false],
+    ["Rope trick",2,"P","PHB p.272","1 action","Touch","1 hour",false,"A rope rises and leads to a hidden space for up to eight creatures.",false],
+    ["See invisibility",2,"P","PHB p.274","1 action","Self","1 hour",false,"You can see invisible creatures and the Ethereal Plane.",false],
+    ["Skywrite",2,"X","XGE","1 action","Sight","Concentration, 1 hour",true,"Write up to 10 words in the clouds.",false],
+    ["Spider climb",2,"P","PHB p.277","1 action","Touch","Concentration, 1 hour",false,"A willing creature can climb walls and ceilings.",false],
+    ["Web",2,"P","PHB p.287","1 action","60 ft","Concentration, 1 hour",false,"Fill an area with sticky webs. Creatures are restrained (Dexterity save).",false]
+  ],
+  high:[
+    [3,"Blink","P","Randomly slip in and out of the real world each turn."],[3,"Catnap","X","Up to three willing creatures get the benefit of a short rest in 10 minutes."],
+    [3,"Create food and water","P","Make enough food and water for 15 creatures."],[3,"Dispel magic","P","End a spell on a target."],
+    [3,"Elemental weapon","P","A weapon gets +1 and extra elemental damage."],[3,"Flame arrows","X","Ammunition deals extra fire damage."],
+    [3,"Fly","P","A creature gets a flying speed of 60 ft."],[3,"Glyph of warding","P","A magic trap you set on a place or object."],
+    [3,"Haste","P","Double speed, extra action and +2 AC for a willing creature."],[3,"Intellect fortress","T","Resist psychic damage, advantage on Int, Wis and Cha saves."],
+    [3,"Protection from energy","P","Resistance to one energy type."],[3,"Revivify","P","Bring back a creature that died in the last minute."],
+    [3,"Tiny servant","X","Make a tiny object come alive to serve you."],[3,"Water breathing","P","Creatures can breathe underwater."],[3,"Water walk","P","Creatures can walk on liquid."],
+    [4,"Arcane eye","P","An invisible floating eye that you see through."],[4,"Elemental bane","X","A creature loses resistance to a damage type and takes extra damage."],
+    [4,"Fabricate","P","Turn raw materials into finished goods."],[4,"Freedom of movement","P","Ignore being slowed, grappled or restrained."],
+    [4,"Leomund's secret chest","P","Hide a chest on another plane and call it back."],[4,"Mordenkainen's faithful hound","P","A guard hound only you can see watches for 8 hours."],
+    [4,"Mordenkainen's private sanctum","P","Seal a space against peeking and entry."],[4,"Otiluke's resilient sphere","P","Trap a creature in a protective sphere."],
+    [4,"Stone shape","P","Reshape a piece of stone."],[4,"Stoneskin","P","Resistance to ordinary weapon damage."],[4,"Summon construct","T","Call a construct spirit to fight for you."],
+    [5,"Animate objects","P","Bring up to ten objects to life to fight for you."],[5,"Bigby's hand","P","A giant hand that punches, shoves or grabs."],
+    [5,"Creation","P","Make a non-living object out of shadow."],[5,"Greater restoration","P","End a strong condition or curse."],
+    [5,"Skill empowerment","X","Give a creature expertise in one skill."],[5,"Transmute rock","X","Turn rock into mud or mud into rock."],[5,"Wall of stone","P","Raise a wall of stone."]
+  ],
+  skillUse:{
+    "Arcana":["Knowing about magic, spells, magic items and the planes.","Everyone. Great for spotting what a magic item or spell is."],
+    "History":["Knowing about the past, old kingdoms, wars and legends.","Armorer and Battle Smith often want to read old ruins and weapons."],
+    "Investigation":["Looking closely for clues, hidden doors, how a trap or machine works.","Artillerist and anyone who likes puzzles and gadgets."],
+    "Medicine":["Healing the sick, stabilizing a dying friend, working out what hurt someone.","Alchemist and Battle Smith (healers)."],
+    "Nature":["Knowing animals, plants, weather and the wild.","Alchemist (herbs and potions)."],
+    "Perception":["Noticing things by sight, hearing or smell. Used for passive Perception too.","Everyone; also helps scouts. Infiltrator Armorer."],
+    "Sleight of Hand":["Picking pockets, hiding small objects, careful fingerwork.","Infiltrator Armorer and tinkerers."]
+  },
+  allSkills:[["Acrobatics","Dexterity"],["Animal Handling","Wisdom"],["Arcana","Intelligence"],["Athletics","Strength"],["Deception","Charisma"],["History","Intelligence"],["Insight","Wisdom"],["Intimidation","Charisma"],["Investigation","Intelligence"],["Medicine","Wisdom"],["Nature","Intelligence"],["Perception","Wisdom"],["Performance","Charisma"],["Persuasion","Charisma"],["Religion","Intelligence"],["Sleight of Hand","Dexterity"],["Stealth","Dexterity"],["Survival","Wisdom"]],
+  routes:[
+    {key:"armorer",name:"Route 1: Armorer (simplest)",scores:"Int first, Con second. Add Dex 13-14 only if you pick the Infiltrator model.",races:"Mountain Dwarf (with Tasha's you can move the +2 to Intelligence, T p.7), Rock Gnome (PHB p.35-37), Human (PHB p.29-31).",bgs:"Guild Artisan (PHB p.132), Soldier (PHB p.140), Sage (PHB p.137).",first:"Fire bolt and Guidance or Mending. Cure wounds and False life."},
+    {key:"battlesmith",name:"Route 2: Battle Smith (fighter plus pet)",scores:"Int first, Con second, Dex third. Dex 14 (+2) lets scale mail give AC 16 (14 + Dex bonus, max +2, PHB p.145); Dex 13 gives AC 15. You do not need Strength.",races:"Rock Gnome, High Elf (PHB p.23), Variant Human (PHB p.31), Custom Lineage (T p.8).",bgs:"Guild Artisan, Soldier (PHB p.140), Folk Hero (PHB p.131).",first:"Cure wounds, Faerie fire or False life; cantrips Booming blade or Shocking grasp, plus Guidance. At level 2 take Enhanced Weapon so Battle Ready works (T p.19, p.21)."},
+    {key:"artillerist",name:"Route 3: Artillerist (ranged)",scores:"Int first, then Con, then Dex 13+ (crossbow and cantrips).",races:"Forest Gnome (PHB p.37), High Elf (PHB p.21-24), Variant Human.",bgs:"Sage (PHB p.137), Guild Artisan, Criminal (PHB p.129).",first:"Fire bolt and Guidance; Cure wounds and Faerie fire. Infusions: Enhanced Arcane Focus (on a wand, staff or rod; it can be your Arcane Firearm from level 5), Enhanced Defense."},
+    {key:"alchemist",name:"Route 4: Alchemist (healer)",scores:"Int first, then Con. Dex 12-14 if you want light armor to be good.",races:"Rock Gnome (you already own tinker's tools, so you pick another tool), Human, Half-Elf (PHB p.38-39), Hill Dwarf (PHB p.18-20).",bgs:"Guild Artisan, Hermit (PHB p.134, gives an herbalism kit), Acolyte (PHB p.127).",first:"Cure wounds, Detect magic (ritual), False life; cantrips Guidance, Mending, Prestidigitation."}
+  ],
+  quiz:[
+    {q:"Where do you want to stand in a fight?",a:[["Right in front, soaking up hits",{armorer:2,battlesmith:1}],["In the middle, helping friends",{battlesmith:1,alchemist:1}],["Behind my friends, blasting from far away",{artillerist:2,alchemist:1}]]},
+    {q:"Do you want a companion or machine that you command each turn?",a:[["Yes, I like having a pet or cannon",{battlesmith:2,artillerist:1}],["No, just me please",{armorer:1,alchemist:1}]]},
+    {q:"What do you enjoy most?",a:[["Healing and helping friends",{alchemist:2,battlesmith:1}],["Big damage and explosions",{artillerist:2}],["Being tough and hard to hurt",{armorer:2,battlesmith:1}],["Clever tricks and sneaking",{armorer:1,alchemist:1,artillerist:1}]]},
+    {q:"How much extra bookkeeping is OK?",a:[["As little as possible",{armorer:2,alchemist:1}],["A bit",{alchemist:1,battlesmith:1,artillerist:1}],["I am fine with lots of small things",{artillerist:1,battlesmith:1}]]},
+    {q:"Is this your first D&D character?",a:[["Yes",{armorer:1,alchemist:1}],["No",{battlesmith:1,artillerist:1}]]},
+    {q:"Do you like wearing heavy armor?",a:[["Yes, big and shiny",{armorer:2}],["I do not mind",{}]]}
+  ],
+  table:[
+    ["Unofficial Adventurers League, 5e 2014","Your Tasha's artificer is the 2014-rules class.","No problem"],
+    ["Anything official, no Unearthed Arcana","Artificer (Tasha's, T p.9) is official. Do not use old playtest articles.","No problem"],
+    ["Start at level 3, 900 XP","Matches the creator. XP table: PHB p.15.","No problem"],
+    ["Standard Array or roll, reroll 1s","Standard Array: PHB p.13. Rolling 4d6 drop lowest: PHB p.13. Rerolling 1s is a table rule. Point buy is not listed.","Ask the DM how to reroll 1s"],
+    ["Faction Agent background","From the Sword Coast Adventurer's Guide (web source, about pp.147-148). Insight plus one Int, Wis or Cha skill, two languages. At your table: 3 renown, Rank 2.","Check with the DM"],
+    ["Reroll 1s on hit points when levelling","Book rule: roll 1d8 or take 5 (T p.10). Table lets you reroll 1s.","No problem"],
+    ["Setting backgrounds (Eberron etc.)","Allowed, may matter little. An artificer does not need one.","No problem"],
+    ["Firearms, Gunslinger rules","The Gunslinger is a Fighter subclass by Matthew Mercer, usually called homebrew. The artificer's own line (T p.10) depends on Dungeon Master's Guide firearm rules. The Artillerist's Arcane Firearm (T p.18) is a wand, not a gun.","Ask the DM"],
+    ["Custom Lineage, feats","Custom Lineage is official (T p.8) and includes a feat. Feats are optional (PHB p.165).","Ask if feats are on"],
+    ["Xanathar's spells on the list","Official, so allowed, but you have no book for them.","Ask the DM to read them"]
+  ],
+  askDm:[
+    "Do feats work at this table, so Custom Lineage and Variant Human can take one?",
+    "Does the artificer's firearm line (T p.10) work with your table's Gunslinger firearm rules?",
+    "Are Xanathar's spells fine for you, and can the DM read them to you?",
+    "If you take Faction Agent: which faction, and may you see the Faction Document?",
+    "Rolled stats: is it 4d6, reroll any 1, drop the lowest? Reroll a 1 once, or until it is not a 1?"
+  ],
+  compare:[["Main job","Healer, support","Tank or sneaky striker","Ranged damage","Fighter with a pet"],["Where you stand","Behind allies","In front (Guardian) or middle (Infiltrator)","Back","Front or middle"],["Extra Attack (level 5)","No","Yes","No","Yes"],["Heavy armor","No","Yes","No","No (martial weapons)"],["Needs a bonus action each turn","No","No","Yes (cannon)","Yes (defender)"],["Best scores","Int, Con","Int, Con (Dex for Infiltrator)","Int, Con or Dex","Int, Con or Dex"],["Beginner ease (my view)","Easy","Easiest","Medium","Medium"]]
+};
+/* =====================================================================
+   GUIDE DATA BLOCK (END)
+   ===================================================================== */
+
+/* ---------- helpers ---------- */
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const IDX=[]; // search index
+function addIdx(el,title,sec,go){ IDX.push({el,title,sec,text:(el.textContent||"").replace(/\s+/g," ").trim(),go}); }
+const TERMS=Object.keys(G.glossary).sort((a,b)=>b.length-a.length);
+let used=new Set();
+function gl(text){ // escape + wrap first use of each glossary term in this section
+  let s=esc(text); const toks=[];
+  TERMS.forEach(t=>{
+    if(used.has(t)) return;
+    const re=new RegExp("\\b"+t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"\\b","i");
+    s=s.replace(re,m=>{ used.add(t); toks.push('<span class="term" tabindex="0" data-term="'+esc(t)+'">'+m+'</span>'); return "\u0001"+(toks.length-1)+"\u0001"; });
+  });
+  return s.replace(/\u0001(\d+)\u0001/g,(m,i)=>toks[+i]);
+}
+const P=t=>'<p>'+gl(t)+'</p>';
+const pill=(t,c)=>'<span class="pill'+(c?' '+c:'')+'">'+esc(t)+'</span>';
+const srcPill=s=>s==="X"?pill("Xanathar's - not in your books","x"):s==="T"?pill("Tasha's"):pill("Player's Handbook");
+const SECS=[["what","What it is"],["numbers","Core numbers"],["casting","Spellcasting"],["features","Levels 1-20"],["infusions","Infusions"],["paths","Paths"],["skills","Skills"],["spells","Spells"],["table","Your table"],["gloss","Glossary"]];
+const html=[]; const afterRender=[];
+function sec(id,title,body){ used=new Set(); return '<section class="sec" id="'+id+'"><h2>'+esc(title)+'</h2>'+body+'</section>'; }
+
+/* ---------- 1. what ---------- */
+function secWhat(){
+  used=new Set();
+  let h=P("An artificer is a spellcaster who uses tools. Think \"inventor\". You do not wave a wand and say magic words. You hold thieves' tools or a craft kit, and your spells work through that tool (T p.11). The spell does the same thing however you describe it (T p.11, \"The Magic of Artifice\").");
+  h+='<div class="grid"><div class="card"><h3>Infusions</h3>'+P("After a long rest you turn plain objects into magic items for yourself and your friends. A plain sword becomes a +1 sword. This starts at level 2 (T p.12-13).")+'</div><div class="card"><h3>A specialist at level 3</h3>'+P("You choose one of four paths: Alchemist, Armorer, Artillerist or Battle Smith (T p.13).")+'</div><div class="card"><h3>Good armor</h3>'+P("You wear light armor, medium armor and shields (T p.10). You can be sturdy at the front.")+'</div></div>';
+  h+='<h3>How it plays at the table</h3>'+P("My view, from the class features (T p.9-14): you are a support and utility character. You make the whole team stronger. You get healing and helper spells, a few attack cantrips, tool and skill help, and magic items. You are a half-caster, so you get fewer spell slots than a wizard and new spell levels come slowly (T p.10).");
+  h+='<h3>How hard is it for a beginner? (honest)</h3>'+P("My view: medium. A bit harder than a Fighter, easier than a Wizard.");
+  h+='<div class="grid"><div class="card"><h4>Easy parts</h4><ul><li>Good hit die (d8) and good armor.</li><li>The Quick Build tells you what to pick (T p.10).</li><li>Few spell slots to track.</li></ul></div><div class="card"><h4>Harder parts</h4><ul><li>You prepare spells each day (T p.11).</li><li>Infusions add bookkeeping: what is infused, who holds it (T p.12-13).</li><li>Some specialists have a helper that needs your bonus action each turn to act: the Battle Smith steel defender, the Artillerist cannon (T p.17-19).</li><li>You need tools in your hand to cast. Easy to forget.</li></ul></div></div>';
+  h+='<h3>One turn in a fight (example)</h3><div class="card"><p class="hint">Made-up example for a level 3 Battle Smith with Intelligence +3 (spell attack +5, spell save DC 13). It is an illustration, not a book rule.</p><ol><li><b>Start of the round.</b> Your friend the fighter is hurt and a goblin chief is 60 ft away.</li><li><b>Bonus action:</b> you command your steel defender to attack the chief (T p.19). Without this, it only Dodges.</li><li><b>Action:</b> you cast <i>Fire bolt</i> with your tools in your hand as your focus (T p.11): a spell attack against the chief, +5 to hit, 1d10 fire.</li><li><b>Move:</b> you step behind a pillar for cover.</li><li><b>Reaction, later:</b> an arrow hits you. You cast <i>Shield</i> (always prepared for Battle Smith, T p.19): +5 AC until the start of your next turn, and that can turn the hit into a miss (PHB p.275).</li></ol></div>';
+  h+='<h3>One day of adventuring (example)</h3><div class="card"><p class="hint">Also an illustration for a level 3 artificer.</p><ol><li><b>Morning, after a long rest:</b> you prepare spells (Intelligence modifier + 1, plus free specialist spells), you touch two plain items and infuse them (for example Enhanced Defense on your armor and Enhanced Weapon on a friend\'s sword), and you recreate your steel defender if you need to (T p.11-13, p.19).</li><li><b>On the road:</b> <i>Detect magic</i> as a ritual costs no slot. You use Magical Tinkering to leave a glowing marker (T p.11).</li><li><b>First fight:</b> you spend a 1st-level slot on <i>Cure wounds</i> or <i>Faerie fire</i>. You have three slots in total (T p.10).</li><li><b>Short rest:</b> you can spend Hit Dice to get hit points back (PHB p.186). At any time you can also fix your steel defender with <i>Mending</i> (2d6 hit points, T p.19).</li><li><b>Evening:</b> long rest. You get your slots back and can choose a new set of prepared spells (T p.11).</li></ol></div>';
+  return sec("what","What an artificer is and how it plays",h);
+}
+/* ---------- 2. numbers ---------- */
+function secNumbers(){
+  used=new Set();
+  const rows=[["Hit die","d8 per artificer level","T p.10"],["Hit points, level 1","8 + Constitution modifier","T p.10"],["Hit points, later levels","1d8 (or 5) + Constitution modifier per level","T p.10"],["Armor","Light armor, medium armor, shields","T p.10"],["Weapons","Simple weapons","T p.10"],["Tools","Thieves' tools, tinker's tools, and one kind of artisan's tools you choose","T p.10"],["Saving throws","Constitution and Intelligence","T p.10"],["Skills","Choose 2 from Arcana, History, Investigation, Medicine, Nature, Perception, Sleight of Hand","T p.10"],["Quick Build","Highest score in Intelligence, then Constitution or Dexterity. Background: Guild Artisan.","T p.10"],["Starting equipment","Any two simple weapons, a light crossbow and 20 bolts, studded leather or scale mail, thieves' tools, a dungeoneer's pack. Or 5d4 x 10 gp.","T p.10"],["Firearms","Proficient if your DM uses the Dungeon Master's Guide firearm rules and your artificer has seen them used","T p.10"]];
+  let h=P("These are the numbers every artificer has.")+'<div class="tw"><table><tr><th>Thing</th><th>What you get</th><th>Page</th></tr>'+rows.map(r=>'<tr data-s><td><b>'+gl(r[0])+'</b></td><td>'+gl(r[1])+'</td><td>'+esc(r[2])+'</td></tr>').join("")+'</table></div>';
+  h+='<div class="note">Scale mail gives up to 2 more Armor Class than studded leather (no gain if your Dexterity modifier is +4 or more), but it gives disadvantage on Stealth checks (PHB p.145). Studded leather: 12 + Dex modifier. Scale mail: 14 + Dex modifier, bonus capped at +2.</div>';
+  h+='<h3>Proficiency bonus, spell slots and infusions by level</h3><div class="tw"><table><tr><th>Level</th><th>Prof.</th><th>Cantrips</th><th>Slots (1st/2nd/3rd/4th/5th)</th><th>Infusions known / items</th></tr>'+
+  [[1,2,2,"2","-"],[2,2,2,"2","4 / 2"],[3,2,2,"3","4 / 2"],[4,2,2,"3","4 / 2"],[5,3,2,"4 / 2","4 / 2"],[6,3,2,"4 / 2","6 / 3"],[7,3,2,"4 / 3","6 / 3"],[9,4,2,"4 / 3 / 2","6 / 3"],[10,4,3,"4 / 3 / 2","8 / 4"],[11,4,3,"4 / 3 / 3","8 / 4"],[13,5,3,"4 / 3 / 3 / 1","8 / 4"],[14,5,4,"4 / 3 / 3 / 1","10 / 5"],[15,5,4,"4 / 3 / 3 / 2","10 / 5"],[17,6,4,"4 / 3 / 3 / 3 / 1","10 / 5"],[18,6,4,"4 / 3 / 3 / 3 / 1","12 / 6"],[19,6,4,"4 / 3 / 3 / 3 / 2","12 / 6"]].map(r=>'<tr'+(r[0]===3?' style="background:#fff3b0"':'')+'><td>'+r[0]+'</td><td>+'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td></tr>').join("")+'</table></div><p class="hint">From the Artificer table, T p.10. Levels not shown copy the row above. The PDF text of that table was scrambled; I rebuilt it from its layout and it matches the text rules. Your level 3 row is highlighted.</p>';
+  h+='<h3>Your character at level 3 (snapshot)</h3><div class="card"><ul><li>Proficiency bonus +2.</li><li>2 cantrips, 3 first-level spell slots, prepared spells = Intelligence modifier + 1 (half of level 3, rounded down), plus 2 free specialist spells (T p.11, p.14-19).</li><li>4 infusions known, 2 items infused at once (T p.10).</li><li>Features: Magical Tinkering, Spellcasting, Infuse Item, Specialist, The Right Tool for the Job (T p.10).</li><li>At your table you start at level 3 with 900 XP (docs table rules; PHB p.15).</li></ul></div>';
+  return sec("numbers","The core numbers",h);
+}
+/* ---------- 3. casting ---------- */
+function secCasting(){
+  used=new Set();
+  const steps=[["Your spellcasting ability is Intelligence.","Your Intelligence modifier sets your spell save DC and spell attack (T p.12). DC = 8 + proficiency bonus + Intelligence modifier. Attack = proficiency bonus + Intelligence modifier. With +3 Int at level 3: DC 13, attack +5."],
+  ["Tools are your focus.","You need thieves' tools or an artisan's tool in your hand, and you must be proficient with it. From level 2, an item with one of your infusions also works (T p.11-12)."],
+  ["Learn cantrips.","You know 2 cantrips at level 3 (3 at level 10, 4 at level 14). Cantrips cost nothing. When you level up you may swap one (T p.10-11)."],
+  ["Prepare spells each day.","Choose Intelligence modifier + half your artificer level (rounded down, minimum 1) spells from the artificer list. At level 3 that is Int modifier + 1. They must be of a level you have slots for (T p.11). Specialist spells are extra and always prepared (T p.14-19)."],
+  ["Spend slots to cast.","A 1st-level spell uses a slot of that level or higher. At level 3 you have three 1st-level slots. You get them all back after a long rest (T p.10-11)."],
+  ["Swap your list after a long rest.","It takes at least 1 minute per spell level, for each spell on your list (T p.11)."],
+  ["Rituals are free.","If a prepared spell has the ritual tag (like Detect magic), you can cast it as a ritual without a slot. It takes 10 minutes longer (T p.12; PHB p.202)."],
+  ["Concentration.","Some spells need concentration. Taking damage can break it; you roll a Constitution save. A new concentration spell ends the old one (T p.5, rule 7)."]];
+  let h=P("Step by step:")+'<ol>'+steps.map(s=>'<li data-s><b>'+esc(s[0])+'</b> '+gl(s[1])+'</li>').join("")+'</ol>';
+  h+='<div class="note">Example: Intelligence 17 (+3) at level 3. You prepare 4 spells (3 + 1). Say Cure wounds, Faerie fire, False life, Detect magic (this is Skippy\'s list). As an Artillerist like Skippy you also always have Shield and Thunderwave prepared for free (T p.17). A Battle Smith gets Heroism and Shield instead (T p.19).</div>';
+  return sec("casting","Spellcasting, step by step",h);
+}
+/* ---------- 4. features ---------- */
+function secFeatures(){
+  used=new Set();
+  let h=P("The class table (T p.10) lists which level gives what. Your level 3 character has the highlighted ones.");
+  h+='<div class="tl">'+G.features.map(f=>'<div class="it'+(f[0]<=3?' mine':'')+'" data-s><span class="lv">Level '+f[0]+':</span> <b>'+esc(f[1])+'</b> '+(f[0]<=3?pill("you have this","l3"):"")+'<div>'+gl(f[2])+' <span class="hint">('+esc(f[3])+')</span></div></div>').join("")+'</div>';
+  h+='<p class="hint">Levels 13 and 17 have no new class feature (T p.10).</p>';
+  return sec("features","Class features, level 1 to 20",h);
+}
+/* ---------- 5. infusions ---------- */
+let infFilter="all";
+function infList(){
+  const l=G.infusions.filter(i=>infFilter==="l3"?i.lv<=3:infFilter==="star"?i.star:true);
+  return '<div class="grid">'+l.map(i=>'<div class="card" data-inf="'+esc(i.n)+'"><h4>'+esc(i.n)+'</h4><div>'+(i.star?pill("beginner pick","star"):"")+(i.lv<=3?pill("level 3 OK","l3"):pill("needs level "+i.lv))+(i.att?pill("attunement"):"")+'</div><p class="hint">Item: '+esc(i.item)+'</p><p>'+gl(i.line)+'</p><p class="hint">'+esc(i.page)+'</p></div>').join("")+'</div>';
+}
+function secInfusions(){
+  used=new Set();
+  let h=P("An infusion is a quick process that turns a plain object into a magic item (T p.12-13, p.20). Each infusion works only on certain objects. Some need attunement.");
+  h+='<ul><li>You gain Infuse Item at level 2 with 4 infusions known (T p.12).</li><li>After a long rest, touch a plain object and put one of your infusions in it. You may attune to it at once (T p.12).</li><li>It stays in the item while you live. After you die, it fades after a number of days equal to your Intelligence modifier (minimum 1) (T p.13).</li><li>Each infusion is in one item at a time and each item has one infusion. If you go over your limit, the oldest infusion ends (T p.13).</li><li>You can swap one known infusion for another each time you level up (T p.12).</li><li>Level 3: 4 known, 2 items at once (T p.10).</li></ul>';
+  h+='<div class="note">Beginner idea (my view): take Enhanced Defense, Enhanced Weapon, Enhanced Arcane Focus, and Mind Sharpener or Repeating Shot. Give Enhanced Defense each day to whoever is most at risk.</div>';
+  h+='<div class="tabs" id="inf-f"><button class="btn sec on" data-inff="all">All</button><button class="btn sec" data-inff="l3">Available at level 3</button><button class="btn sec" data-inff="star">Beginner picks</button></div><div id="inf-list">'+infList()+'</div>';
+  return sec("infusions","Infusions",h);
+}
+/* ---------- 6. paths ---------- */
+let specKey="artillerist";
+const SP=DATA.specialists;
+const SPNAMES={alchemist:"Alchemist",armorer:"Armorer",artillerist:"Artillerist",battlesmith:"Battle Smith"};
+function specView(k){
+  used=new Set();
+  const s=SP[k];
+  let h='<div class="card"><h3>'+esc(s.name)+' '+pill(s.page)+'</h3>'+P(s.feel)+'<p><b>Strong:</b> '+gl(s.strong)+'</p><p><b>Weak:</b> '+gl(s.weak)+'</p><p><b>Suits (my opinion):</b> '+gl(s.suits)+'</p><p><b>Extra tool:</b> '+esc(s.tool)+'</p></div>';
+  h+='<h4>Always-prepared spells (they do not count against your prepared number, T p.14-19)</h4><div class="tw"><table><tr><th>Level</th><th>Spells</th></tr>'+Object.keys(s.spells).map(l=>'<tr'+(l==="3"?' style="background:#fff3b0"':'')+'><td>'+l+'</td><td>'+esc(s.spells[l].join(", "))+'</td></tr>').join("")+'</table></div>';
+  h+='<h4>Features</h4><div class="tw"><table><tr><th>Level</th><th>Feature</th><th>Page</th></tr>'+s.features.map(f=>'<tr data-s style="'+(f[0]<=3?'background:#fff3b0':'')+'"><td>'+f[0]+'</td><td><b>'+esc(f[1])+'</b>: '+gl(f[2])+'</td><td>'+esc(f[3])+'</td></tr>').join("")+'</table></div><p class="hint">Highlighted rows: what you have at level 3.</p>';
+  return h;
+}
+function quizHtml(){
+  return '<div class="card" id="quiz"><h3>Which specialist suits me?</h3><p class="hint">Six quick questions. This is only a suggestion (my view).</p>'+G.quiz.map((q,i)=>'<div class="q"><b>'+(i+1)+'. '+esc(q.q)+'</b>'+q.a.map((a,j)=>'<label><input type="radio" name="q'+i+'" value="'+j+'"> '+esc(a[0])+'</label>').join("")+'</div>').join("")+'<button class="btn" id="quizgo">Show my result</button><div id="quizout" aria-live="polite"></div></div>';
+}
+function secPaths(){
+  used=new Set();
+  let h=P("At level 3 you choose a specialist (T p.13). You can change later only with your DM's agreement (T p.8). Each one gives bonus spells and new features. The Strong, Weak and Suits lines are my view. The features are from the book.");
+  h+='<div class="tabs" id="spec-tabs">'+Object.keys(SP).map(k=>'<button class="btn sec'+(k===specKey?' on':'')+'" data-spec="'+k+'">'+esc(SP[k].name)+'</button>').join("")+'</div><div id="spec-view">'+specView(specKey)+'</div>';
+  h+='<h3>Side by side</h3><div class="tw"><table><tr><th></th>'+Object.keys(SP).map(k=>'<th>'+esc(SP[k].name)+'</th>').join("")+'</tr>'+G.compare.map(r=>'<tr data-s>'+r.map((c,i)=>i===0?'<td><b>'+esc(c)+'</b></td>':'<td>'+esc(c)+'</td>').join("")+'</tr>').join("")+'</table></div>';
+  h+=quizHtml();
+  h+='<h3>The four routes</h3>'+P("My suggestions on top of the book's Quick Build (T p.10). Ability scores can be the Standard Array 15, 14, 13, 12, 10, 8 (PHB p.13) or rolled. Races add to your scores (PHB p.17-43). Tasha's lets you move the racial bonuses anywhere (T p.7).");
+  h+='<div class="grid">'+G.routes.map(r=>'<div class="card" data-s><h4>'+esc(r.name)+'</h4><p><b>Scores:</b> '+gl(r.scores)+'</p><p><b>Races:</b> '+gl(r.races)+'</p><p><b>Backgrounds:</b> '+gl(r.bgs)+'</p><p><b>Pick first:</b> '+gl(r.first)+'</p></div>').join("")+'</div>';
+  h+='<h3>Multiclassing (short)</h3>'+P("Multiclassing means taking levels in more than one class. It is optional (T p.10; PHB p.163). To take a level in artificer you need Intelligence 13, and for another class you also need that class's minimum (T p.10). A beginner should usually skip it. It makes the rules harder and delays your best features.");
+  return sec("paths","Paths: specialists and routes",h);
+}
+/* ---------- 7. skills ---------- */
+function secSkills(){
+  used=new Set();
+  let h=P("A skill check is: roll a d20, add the ability modifier, and add your proficiency bonus if you are trained. Meet or beat the DC and you succeed (PHB p.174). At level 3 your proficiency bonus is +2.")+P("Example: Investigation uses Intelligence. With Int +3 and training, you add +5 (T p.10; PHB p.174-175).")+P("Tool checks work the same way with your proficiency bonus. At level 6, Tool Expertise doubles that bonus (T p.13).");
+  h+='<h3>Your 7 artificer skill choices (pick 2, T p.10)</h3><div class="grid">'+Object.keys(G.skillUse).map(k=>{ const a=G.allSkills.find(x=>x[0]===k)[1]; return '<div class="card" data-s><h4>'+esc(k)+' '+pill(a)+'</h4><p>'+gl(G.skillUse[k][0])+'</p><p class="hint">Who likes it (my view): '+esc(G.skillUse[k][1])+'</p></div>'; }).join("")+'</div>';
+  h+='<div class="note">Good beginner picks (my view): Arcana and Investigation (both Intelligence, your best score), or Perception.</div>';
+  h+='<h3>All 18 skills</h3><div class="tw"><table><tr><th>Skill</th><th>Ability</th><th>Artificer choice?</th></tr>'+G.allSkills.map(s=>'<tr data-s><td>'+esc(s[0])+'</td><td>'+s[1]+'</td><td>'+(G.skillUse[s[0]]?'Yes':'-')+'</td></tr>').join("")+'</table></div><p class="hint">Skill list and abilities: PHB p.174-175.</p>';
+  return sec("skills","Skills",h);
+}
+/* ---------- 8. spells ---------- */
+let spLevel="all", spBook="all", spBeg=false;
+function spellCards(){
+  const out=[];
+  G.spells.forEach(s=>{ out.push({n:s[0],lv:s[1],src:s[2],page:s[3],cast:s[4],range:s[5],dur:s[6],rit:s[7],line:s[8],beg:s[9]}); });
+  G.high.forEach(s=>out.push({n:s[1],lv:s[0],src:s[2],page:s[2]==="T"?"T p.12 list":s[2]==="X"?"XGE":"PHB",line:s[3],beg:false,high:true}));
+  return out.filter(s=>(spLevel==="all"||String(s.lv)===spLevel)&&(spBook==="all"||(spBook==="mine"?s.src!=="X":s.src==="X"))&&(!spBeg||s.beg));
+}
+function spellList(){
+  const l=spellCards(); used=new Set();
+  if(!l.length) return '<p>No spells match.</p>';
+  return '<p class="hint">Showing '+l.length+' spells.</p><div class="grid">'+l.map(s=>'<div class="card" data-spell="'+esc(s.n)+'"><h4>'+esc(s.n)+'</h4><div>'+pill(s.lv===0?"cantrip":"level "+s.lv)+srcPill(s.src)+(s.beg?pill("beginner pick","star"):"")+(s.rit?pill("ritual"):"")+((s.dur&&/^Conc/.test(s.dur))?pill("concentration"):"")+'</div>'+(s.high?'':'<p class="hint">'+esc(s.cast)+' &middot; '+esc(s.range)+' &middot; '+esc(s.dur)+'</p>')+'<p>'+gl(s.line)+'</p><p class="hint">'+esc(s.page)+'</p></div>').join("")+'</div>';
+}
+function secSpells(){
+  used=new Set();
+  let h=P("This is the artificer spell list (T p.12), sorted by spell level. At your level 3 you can cast only cantrips and 1st-level spells, but you can plan ahead. Your books contain the Player's Handbook and Tasha's spells. Spells from Xanathar's Guide are official, but you do not own that book. The book marks them with asterisks; the PDF text lost most of the marks, so I marked them from the Tasha's contents page (T p.4) and by elimination. Levels 0 to 2 have a card with all the details. Levels 3 to 5 have a short line.");
+  h+='<div class="row" style="margin:6px 0"><b>Level:</b><span id="f-lv">'+["all","0","1","2","3","4","5"].map(v=>'<button class="btn sec'+(v==="all"?' on':'')+'" data-splv="'+v+'">'+(v==="all"?"All":v==="0"?"Cantrips":v)+'</button>').join(" ")+'</span></div>';
+  h+='<div class="row" style="margin:6px 0"><b>Book:</b><span id="f-bk"><button class="btn sec on" data-spbk="all">All</button> <button class="btn sec" data-spbk="mine">In your books</button> <button class="btn sec" data-spbk="xge">Xanathar\'s only</button></span> <button class="btn sec" id="f-beg" data-spbeg="1">Beginner picks only</button></div>';
+  h+='<div id="spell-list">'+spellList()+'</div>';
+  return sec("spells","The artificer spell list",h);
+}
+/* ---------- 9. table ---------- */
+function secTable(){
+  used=new Set();
+  let h=P("Your server's rules are in docs/TABLE-RULES.md. The full check is in TABLE-CHECK.md. Here is the short version.");
+  h+='<div class="ok"><b>Verdict:</b> the artificer fits your table. Nothing is against the rules or banned. Only a few things need a quick talk with the DM.</div>';
+  h+='<h3>Question 7: Xanathar\'s spells</h3>'+P("Yes, the Xanathar's spells on the Tasha's artificer list can be used by an artificer, and \"anything official\" allows them. You need the spell text, which is not in your two books. The DM can read it to you, or you can borrow or buy Xanathar's Guide. At level 3 you only need cantrips and 1st-level spells. My view: skip them for your first character.");
+  h+='<div class="tw"><table><tr><th>Table rule</th><th>What it means for an artificer</th><th>Problem?</th></tr>'+G.table.map(r=>'<tr data-s><td>'+esc(r[0])+'</td><td>'+gl(r[1])+'</td><td>'+esc(r[2])+'</td></tr>').join("")+'</table></div>';
+  h+='<h3>Is the artificer broken at level 3? (honest)</h3>'+P("Almost certainly no. Spells are only 1st level and you have three slots. Infusions give small bonuses like +1 weapon or +1 armor (T p.21). The Steel Defender and the Eldritch Cannon are normal official features. The strong item features start at level 10 (T p.13-14).");
+  h+='<h3>Ask your DM</h3><ol>'+G.askDm.map(q=>'<li data-s>'+esc(q)+'</li>').join("")+'</ol>';
+  h+='<p class="hint">Sources for facts about books you do not own: web pages about the Faction Agent background (a fan website) and the Gunslinger subclass (dungeonmister.com, D&amp;D Beyond forums). They are not rules. Check them with your DM.</p>';
+  return sec("table","Your table's rules and the artificer",h);
+}
+/* ---------- 10. glossary ---------- */
+function secGloss(){
+  used=new Set();
+  const keys=Object.keys(G.glossary).sort();
+  const h='<div class="grid">'+keys.map(k=>'<div class="card" id="g-'+esc(k.replace(/\W+/g,"-"))+'" data-s><h4>'+esc(k)+'</h4><p>'+esc(G.glossary[k])+'</p></div>').join("")+'</div><p class="hint">In the text above, the first use of each term in a section is underlined with dots. Hover or tap it to see its meaning.</p>';
+  return sec("gloss","Glossary",h);
+}
+
+/* ---------- build ---------- */
+function build(){
+  document.getElementById("main").innerHTML=[secWhat(),secNumbers(),secCasting(),secFeatures(),secInfusions(),secPaths(),secSkills(),secSpells(),secTable(),secGloss()].join("");
+  document.getElementById("toc").innerHTML=SECS.map(s=>'<a href="#'+s[0]+'" data-toc="'+s[0]+'">'+esc(s[1])+'</a>').join("");
+  buildIndex();
+}
+function buildIndex(){
+  IDX.length=0;
+  document.querySelectorAll("section.sec").forEach(sc=>{
+    const title=sc.querySelector("h2").textContent; const id=sc.id;
+    addIdx(sc.querySelector("h2"),title,title,()=>{});
+    sc.querySelectorAll("h3,h4,[data-s]").forEach(el=>{ if(el.closest("#results")) return; addIdx(el,(el.tagName[0]==="H"?el.textContent:(el.querySelector("b,h4")||el).textContent.slice(0,60)),title,()=>{}); });
+  });
+  // dynamic content: infusions and spells (all, even if filtered out)
+  G.infusions.forEach(i=>IDX.push({el:null,title:i.n+" (infusion)",sec:"Infusions",text:(i.n+" "+i.item+" "+i.line).replace(/\s+/g," "),go:()=>{infFilter="all";refreshInf();flash('[data-inf="'+i.n+'"]');}}));
+  G.spells.forEach(s=>IDX.push({el:null,title:s[0]+" (spell)",sec:"Spells",text:(s[0]+" "+s[8]+" "+s[4]+" "+s[5]).replace(/\s+/g," "),go:()=>{spLevel="all";spBook="all";spBeg=false;refreshSp();flash('[data-spell="'+s[0]+'"]');}}));
+  G.high.forEach(s=>IDX.push({el:null,title:s[1]+" (spell, level "+s[0]+")",sec:"Spells",text:(s[1]+" "+s[3]),go:()=>{spLevel="all";spBook="all";spBeg=false;refreshSp();flash('[data-spell="'+s[1]+'"]');}}));
+  Object.keys(SP).forEach(k=>SP[k].features.forEach(f=>IDX.push({el:null,title:f[1]+" ("+SP[k].name+")",sec:"Paths",text:(f[1]+" "+f[2]+" "+SP[k].name),go:()=>{specKey=k;refreshSpec();flash("#spec-view");document.getElementById("spec-tabs").scrollIntoView({block:"center"});}})));
+}
+function flash(sel){ const el=document.querySelector(sel); if(!el) return; el.scrollIntoView({block:"center"}); el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); }
+function refreshInf(){ document.getElementById("inf-list").innerHTML=infList(); document.querySelectorAll("[data-inff]").forEach(b=>b.classList.toggle("on",b.dataset.inff===infFilter)); }
+function refreshSp(){ document.getElementById("spell-list").innerHTML=spellList(); document.querySelectorAll("[data-splv]").forEach(b=>b.classList.toggle("on",b.dataset.splv===spLevel)); document.querySelectorAll("[data-spbk]").forEach(b=>b.classList.toggle("on",b.dataset.spbk===spBook)); document.getElementById("f-beg").classList.toggle("on",spBeg); }
+function refreshSpec(){ document.getElementById("spec-view").innerHTML=specView(specKey); document.querySelectorAll("[data-spec]").forEach(b=>b.classList.toggle("on",b.dataset.spec===specKey)); }
+
+/* ---------- search ---------- */
+function search(q){
+  const box=document.getElementById("results"); q=q.trim().toLowerCase();
+  if(q.length<2){ box.style.display="none"; box.innerHTML=""; return; }
+  const words=q.split(/\s+/); const seen=new Set(); const out=[];
+  IDX.forEach(it=>{ const t=(it.title+" "+it.text).toLowerCase(); if(words.every(w=>t.includes(w))){ const key=it.title+"|"+it.sec; if(seen.has(key)) return; seen.add(key); out.push(it); } });
+  box.style.display="block";
+  window.__results=out.slice(0,40);
+  box.innerHTML=out.length?out.slice(0,40).map((it,i)=>{ const p=it.text.toLowerCase().indexOf(words[0]); const sn=it.text.slice(Math.max(0,p-30),p+80); return '<div data-res="'+i+'"><b>'+esc(it.title.slice(0,70))+'</b> <span class="pill">'+esc(it.sec)+'</span><small>...'+esc(sn)+'...</small></div>'; }).join("")+(out.length>40?'<div><small>More than 40 results. Type more letters.</small></div>':''):'<div>No results.</div>';
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click",e=>{
+  const t=e.target;
+  const res=t.closest("[data-res]");
+  if(res){ const it=window.__results[+res.dataset.res]; document.getElementById("results").style.display="none"; if(it.el){ it.el.scrollIntoView({block:"center"}); it.el.classList.remove("flash"); void it.el.offsetWidth; it.el.classList.add("flash"); } else it.go(); return; }
+  let b;
+  if(b=t.closest("[data-inff]")){ infFilter=b.dataset.inff; refreshInf(); }
+  else if(b=t.closest("[data-splv]")){ spLevel=b.dataset.splv; refreshSp(); }
+  else if(b=t.closest("[data-spbk]")){ spBook=b.dataset.spbk; refreshSp(); }
+  else if(b=t.closest("[data-spbeg]")){ spBeg=!spBeg; refreshSp(); }
+  else if(b=t.closest("[data-spec]")){ specKey=b.dataset.spec; refreshSpec(); }
+  else if(t.id==="quizgo"){ quiz(); }
+  else if(b=t.closest("[data-term]")){ showTip(b); }
+  else if(!t.closest("#results")&&!t.closest("#q")){ document.getElementById("results").style.display="none"; hideTip(); }
+});
+document.addEventListener("input",e=>{ if(e.target.id==="q") search(e.target.value); });
+function quiz(){
+  const score={alchemist:0,armorer:0,artillerist:0,battlesmith:0}; let n=0;
+  G.quiz.forEach((q,i)=>{ const c=document.querySelector('input[name="q'+i+'"]:checked'); if(c){ n++; Object.entries(q.a[+c.value][1]).forEach(([k,v])=>score[k]+=v); } });
+  const out=document.getElementById("quizout");
+  if(n<G.quiz.length){ out.innerHTML='<div class="warn">Please answer all '+G.quiz.length+' questions ('+n+' answered).</div>'; return; }
+  const max=Math.max(...Object.values(score)); const top=Object.keys(score).filter(k=>score[k]===max);
+  out.innerHTML='<div class="ok"><b>Suggestion: '+top.map(k=>esc(SPNAMES[k])).join(" or ")+'.</b> '+top.map(k=>esc(SP[k].feel)).join(" ")+' <button class="btn sec" data-spec="'+top[0]+'" style="margin-top:6px">Show '+esc(SPNAMES[top[0]])+' details</button></div><p class="hint">Scores: '+Object.keys(score).map(k=>SPNAMES[k]+" "+score[k]).join(", ")+'. This is only a suggestion; you decide.</p>';
+}
+/* tooltips */
+const tip=document.getElementById("tip");
+function showTip(el){ tip.textContent=G.glossary[el.dataset.term]||""; tip.style.display="block"; const r=el.getBoundingClientRect(); let x=Math.min(Math.max(8,r.left),window.innerWidth-tip.offsetWidth-8); let y=r.bottom+6; if(y+tip.offsetHeight>window.innerHeight-8) y=r.top-tip.offsetHeight-6; tip.style.left=x+"px"; tip.style.top=y+"px"; }
+function hideTip(){ tip.style.display="none"; }
+document.addEventListener("mouseover",e=>{ const t=e.target.closest&&e.target.closest("[data-term]"); if(t) showTip(t); });
+document.addEventListener("mouseout",e=>{ if(e.target.closest&&e.target.closest("[data-term]")) hideTip(); });
+document.addEventListener("focusin",e=>{ const t=e.target.closest&&e.target.closest("[data-term]"); if(t) showTip(t); });
+document.addEventListener("focusout",hideTip);
+/* toc highlight */
+window.addEventListener("scroll",hideTip,{passive:true});
+let tocTick=false;
+window.addEventListener("scroll",()=>{ if(tocTick) return; tocTick=true; requestAnimationFrame(()=>{ tocTick=false; let cur=SECS[0][0]; SECS.forEach(s=>{ const el=document.getElementById(s[0]); if(el&&el.getBoundingClientRect().top<140) cur=s[0]; }); document.querySelectorAll("[data-toc]").forEach(a=>a.classList.toggle("cur",a.dataset.toc===cur)); }); },{passive:true});
+build();
+</script>
+</body>
+</html>

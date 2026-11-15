@@ -1,0 +1,305 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1100" width="800" height="1100" role="img" aria-label="Skippy, a half-orc artificer, on a beach at sunset with his small brass cannon Mourning Bell">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#22334f"/>
+      <stop offset="0.38" stop-color="#7c3f4e"/>
+      <stop offset="0.66" stop-color="#d9784c"/>
+      <stop offset="0.9" stop-color="#f4bb72"/>
+      <stop offset="1" stop-color="#f8d395"/>
+    </linearGradient>
+    <radialGradient id="sunglow" cx="400" cy="470" r="380" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff0c2" stop-opacity="0.95"/>
+      <stop offset="0.35" stop-color="#ffd58c" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#f4a660" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3f5b6b"/>
+      <stop offset="1" stop-color="#22394a"/>
+    </linearGradient>
+    <linearGradient id="sand" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d59a62"/>
+      <stop offset="1" stop-color="#9a663d"/>
+    </linearGradient>
+    <linearGradient id="brass" x1="0" y1="-1" x2="0" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#f6d47a"/>
+      <stop offset="0.45" stop-color="#d29a34"/>
+      <stop offset="1" stop-color="#7f531b"/>
+    </linearGradient>
+    <linearGradient id="brassv" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6d47a"/>
+      <stop offset="0.5" stop-color="#cf9631"/>
+      <stop offset="1" stop-color="#83561c"/>
+    </linearGradient>
+    <radialGradient id="arcane" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="1"/>
+      <stop offset="0.3" stop-color="#9ff3e2" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#5fd6c4" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="coat" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2a4658"/>
+      <stop offset="0.5" stop-color="#335468"/>
+      <stop offset="1" stop-color="#243c4c"/>
+    </linearGradient>
+    <pattern id="studs" width="20" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(45 400 400)">
+      <rect width="20" height="20" fill="#7a4a2b"/>
+      <path d="M0 0 H20 M0 0 V20" stroke="#5e381f" stroke-width="1.6"/>
+      <circle cx="10" cy="10" r="2.9" fill="#4a2c18"/>
+      <circle cx="9.6" cy="9.4" r="2.4" fill="#e6c27a"/>
+    </pattern>
+  </defs>
+
+  <!-- ===== Background ===== -->
+  <rect width="800" height="680" fill="url(#sky)"/>
+  <rect width="800" height="680" fill="url(#sunglow)"/>
+  <circle cx="400" cy="470" r="200" fill="#fbd89a" opacity="0.6"/>
+  <circle cx="400" cy="470" r="150" fill="#fde6b4" opacity="0.75"/>
+  <!-- clouds -->
+  <g fill="#f0a36d" opacity="0.55">
+    <path d="M40 300 C120 288 210 292 300 300 C220 306 120 308 40 300 Z"/>
+    <path d="M520 250 C600 238 700 240 780 248 C700 256 600 258 520 250 Z"/>
+    <path d="M90 390 C170 382 240 384 290 392 C230 398 150 398 90 390 Z"/>
+  </g>
+  <g fill="#5b3550" opacity="0.5">
+    <path d="M0 170 C120 158 260 160 380 172 C260 180 120 182 0 170 Z"/>
+    <path d="M470 130 C580 118 700 122 800 132 L800 140 C700 142 580 142 470 130 Z"/>
+  </g>
+  <!-- far headland and lost ship -->
+  <path d="M0 610 C40 590 80 560 120 566 C150 570 170 600 210 620 L230 680 L0 680 Z" fill="#3b3a4f" opacity="0.8"/>
+  <g fill="#2b3042" opacity="0.85">
+    <path d="M598 664 L712 664 L700 678 L612 678 Z"/>
+    <path d="M640 664 L642 588 L646 588 L645 664 Z"/>
+    <path d="M674 664 L686 612 L690 613 L679 664 Z"/>
+    <path d="M646 594 C662 604 666 626 650 646 L646 646 Z"/>
+    <path d="M688 618 C700 626 700 640 684 652 Z"/>
+  </g>
+  <!-- sea -->
+  <rect y="672" width="800" height="170" fill="url(#sea)"/>
+  <g stroke="#f7cf8e" stroke-linecap="round" opacity="0.85">
+    <path d="M300 686 H500" stroke-width="4"/>
+    <path d="M330 702 H470" stroke-width="3.5"/>
+    <path d="M280 720 H350 M380 720 H520" stroke-width="3"/>
+    <path d="M350 742 H450" stroke-width="3"/>
+    <path d="M300 766 H360 M420 766 H500" stroke-width="2.5"/>
+  </g>
+  <g stroke="#7da0ad" stroke-linecap="round" opacity="0.5" stroke-width="2">
+    <path d="M60 700 H130 M610 708 H690 M120 750 H200 M640 760 H740 M30 800 H90 M700 810 H770"/>
+  </g>
+  <!-- beach -->
+  <path d="M0 820 C120 806 240 830 400 818 C560 806 680 826 800 814 L800 1100 L0 1100 Z" fill="url(#sand)"/>
+  <path d="M0 820 C120 806 240 830 400 818 C560 806 680 826 800 814 L800 826 C680 838 560 820 400 832 C240 842 120 820 0 834 Z" fill="#f4e4c4" opacity="0.8"/>
+  <!-- wreck plank, rope and shells -->
+  <g stroke="#2a1c18" stroke-width="3" stroke-linejoin="round">
+    <path d="M28 1046 L214 1020 L220 1046 L36 1074 Z" fill="#7b5236"/>
+    <path d="M60 1052 L190 1034" stroke="#5a3a24" stroke-width="2" fill="none"/>
+    <circle cx="70" cy="1056" r="3" fill="#3a2a20" stroke="none"/>
+    <circle cx="190" cy="1036" r="3" fill="#3a2a20" stroke="none"/>
+    <ellipse cx="128" cy="1070" rx="40" ry="12" fill="none" stroke="#c9a36a" stroke-width="6"/>
+    <ellipse cx="128" cy="1070" rx="24" ry="7" fill="none" stroke="#b08a52" stroke-width="5"/>
+    <path d="M730 1060 C736 1046 752 1046 758 1060 Z" fill="#f2d9c0" stroke-width="2"/>
+    <path d="M700 1078 C703 1070 712 1070 715 1078 Z" fill="#e9c3a6" stroke-width="2"/>
+  </g>
+
+  <!-- ground shadows -->
+  <ellipse cx="410" cy="1012" rx="190" ry="20" fill="#5e3a22" opacity="0.45"/>
+  <ellipse cx="628" cy="1010" rx="92" ry="12" fill="#5e3a22" opacity="0.45"/>
+
+  <!-- ===== Skippy ===== -->
+  <g stroke="#2a1c18" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+
+    <!-- map case on his back -->
+    <path d="M500 244 L536 254 L414 580 L380 570 Z" fill="#6e4428"/>
+    <path d="M508 214 L512 200 C516 192 530 194 532 204 L530 244 L506 240 Z" fill="#efe2c6"/>
+    <path d="M512 202 C518 198 526 200 528 206" stroke-width="2" fill="none"/>
+    <path d="M496 258 L538 268 L542 244 C530 232 512 230 500 234 Z" fill="url(#brassv)"/>
+    <path d="M491 280 L530 291" stroke="#c8902f" stroke-width="5"/>
+
+    <!-- coat back and lining -->
+    <path d="M296 312 C282 450 270 640 258 796 C330 812 470 812 546 796 C534 640 520 450 504 312 Z" fill="#203646"/>
+    <path d="M352 560 C340 640 330 720 318 796 C372 806 430 806 484 796 C472 720 460 640 448 560 Z" fill="#6b3a2e"/>
+
+    <!-- legs: loose sailor trousers -->
+    <path d="M342 566 C332 650 330 740 336 800 C338 830 334 860 330 884 L388 884 C386 840 390 800 394 760 C398 700 402 650 402 600 Z" fill="#a98c63"/>
+    <path d="M458 566 C468 650 470 740 464 800 C462 830 468 860 472 884 L414 884 C414 840 410 800 406 760 C402 700 400 650 400 600 Z" fill="#9c7f57"/>
+    <path d="M422 772 L456 768 L458 808 L424 812 Z" fill="#7a5a3c" stroke-width="2"/>
+    <path d="M426 776 L452 773 M427 806 L455 803" stroke="#e8d6b0" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
+    <path d="M366 640 C364 700 362 760 362 820" stroke="#8a6f4c" stroke-width="2" fill="none"/>
+
+    <!-- boots -->
+    <path d="M330 880 L390 880 L388 966 C390 990 386 1004 380 1010 L300 1010 C296 996 314 986 330 980 Z" fill="#3a2a20"/>
+    <path d="M324 868 L394 868 L392 900 L326 900 Z" fill="#54402f"/>
+    <path d="M412 880 L472 880 L474 980 C490 986 510 996 506 1010 L420 1010 C414 1004 410 990 412 966 Z" fill="#3a2a20"/>
+    <path d="M408 868 L478 868 L476 900 L410 900 Z" fill="#54402f"/>
+    <path d="M304 1002 L378 1002 M424 1002 L500 1002" stroke="#6b5442" stroke-width="2" fill="none"/>
+
+    <!-- torso: studded leather -->
+    <path d="M300 312 C330 302 370 296 400 296 C430 296 470 302 500 312 C492 400 470 470 462 530 L466 588 L334 588 L338 530 C330 470 308 400 300 312 Z" fill="url(#studs)"/>
+    <!-- shirt collar -->
+    <path d="M374 296 L400 340 L426 296 Z" fill="#e8dcc4"/>
+    <path d="M384 296 L400 326 L416 296 Z" fill="#7f9a77" stroke-width="2"/>
+    <!-- chart-case strap -->
+    <path d="M488 318 L508 324 L366 566 L344 556 Z" fill="#5a3620"/>
+    <circle cx="430" cy="430" r="7" fill="url(#brassv)" stroke-width="2"/>
+    <!-- belt -->
+    <path d="M334 548 C380 556 420 556 466 548 L468 576 C420 584 380 584 332 576 Z" fill="#3b2618"/>
+    <rect x="386" y="546" width="30" height="34" rx="4" fill="url(#brassv)"/>
+    <rect x="394" y="554" width="14" height="18" rx="2" fill="#3b2618" stroke-width="2"/>
+    <!-- woodcarver's tool roll -->
+    <path d="M348 552 L358 552 L358 592 L348 592 Z M362 548 L372 548 L372 592 L362 592 Z M376 554 L386 554 L386 592 L376 592 Z" fill="#c8945a" stroke-width="2"/>
+    <path d="M350 548 L356 548 L356 552 L350 552 Z M364 542 L370 542 L370 548 L364 548 Z M378 548 L384 548 L384 554 L378 554 Z" fill="#c9ced4" stroke-width="1.5"/>
+    <path d="M344 586 L394 586 L392 644 C378 652 360 652 346 644 Z" fill="#8a5a36"/>
+    <path d="M344 598 C360 606 378 606 394 598" stroke-width="2" fill="none"/>
+    <path d="M358 612 L380 612 L378 632 L360 632 Z" fill="#6e4428" stroke-width="2"/>
+    <circle cx="369" cy="622" r="3.5" fill="url(#brassv)" stroke-width="1.5"/>
+    <!-- cartographer's dividers -->
+    <circle cx="436" cy="586" r="5" fill="none" stroke="#d6a447" stroke-width="3"/>
+    <path d="M436 590 L426 648 M436 590 L448 646" stroke="#3a2a20" stroke-width="6"/>
+    <path d="M436 590 L426 648 M436 590 L448 646" stroke="#e0b356" stroke-width="3"/>
+    <circle cx="436" cy="596" r="4" fill="#e0b356" stroke-width="1.5"/>
+
+    <!-- coat front panels -->
+    <path d="M296 312 C318 300 350 296 368 298 C356 336 346 380 346 420 C348 470 352 520 352 560 C334 640 318 720 300 798 C286 798 272 796 258 792 C270 640 282 450 296 312 Z" fill="url(#coat)"/>
+    <path d="M504 312 C482 300 450 296 432 298 C444 336 454 380 454 420 C452 470 448 520 448 560 C466 640 482 720 500 798 C514 798 528 796 546 792 C530 640 518 450 504 312 Z" fill="url(#coat)"/>
+    <!-- lapels (rust lining) -->
+    <path d="M368 298 C352 320 334 340 322 352 L346 420 C346 380 356 336 368 298 Z" fill="#8a4a35"/>
+    <path d="M432 298 C448 320 466 340 478 352 L454 420 C454 380 444 336 432 298 Z" fill="#8a4a35"/>
+    <!-- popped collar -->
+    <path d="M352 302 L360 262 C374 276 386 284 398 288 L368 298 Z" fill="#2a4658"/>
+    <path d="M448 302 L440 262 C426 276 414 284 402 288 L432 298 Z" fill="#243c4c"/>
+    <!-- patches with stitches -->
+    <path d="M272 640 L308 634 L312 668 L276 674 Z" fill="#8a5a3b" stroke-width="2"/>
+    <path d="M276 644 L304 639 M279 670 L308 665" stroke="#efdcb4" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
+    <path d="M486 690 L520 694 L518 726 L484 722 Z" fill="#a8433a" stroke-width="2"/>
+    <path d="M490 696 L516 699 M488 718 L514 721" stroke="#efdcb4" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
+    <!-- brass buttons -->
+    <g fill="url(#brassv)" stroke-width="2">
+      <circle cx="462" cy="446" r="6"/>
+      <circle cx="460" cy="486" r="6"/>
+      <circle cx="458" cy="526" r="6"/>
+      <circle cx="342" cy="446" r="5"/>
+      <circle cx="344" cy="486" r="5"/>
+    </g>
+    <!-- coat hem shading -->
+    <path d="M262 770 C274 774 288 776 302 776 M498 776 C512 776 526 774 542 770" stroke="#1a2c38" stroke-width="2" fill="none"/>
+
+    <!-- light crossbow (held low in his right hand) -->
+    <path d="M284 543 L298 547 L222 776 L208 772 Z" fill="#7a4b2b"/>
+    <path d="M158 688 L244 680 M302 734 L244 680" stroke="#efe2c6" stroke-width="2" fill="none"/>
+    <path d="M158 688 Q219 749 302 734" stroke="#2a1c18" stroke-width="12" fill="none"/>
+    <path d="M158 688 Q219 749 302 734" stroke="#8b8f96" stroke-width="6" fill="none"/>
+    <path d="M206 766 C196 780 204 792 216 790 C226 788 230 778 222 770" fill="none" stroke="#5f6670" stroke-width="5"/>
+    <path d="M206 766 C196 780 204 792 216 790 C226 788 230 778 222 770" fill="none" stroke="#2a1c18" stroke-width="1.5"/>
+    <circle cx="244" cy="680" r="5" fill="url(#brassv)" stroke-width="2"/>
+
+    <!-- right arm (down, holding the crossbow) -->
+    <path d="M296 312 C278 320 268 360 264 400 C260 440 258 500 258 540 L304 548 C306 500 314 460 322 420 C328 390 332 360 330 336 Z" fill="url(#coat)"/>
+    <path d="M252 528 L312 534 L308 566 L250 560 Z" fill="#8a4a35"/>
+    <path d="M296 330 C286 360 280 400 278 440" stroke="#1a2c38" stroke-width="2" fill="none"/>
+    <!-- right hand: fist on the crossbow -->
+    <path d="M256 560 C248 572 248 600 258 614 C268 624 290 624 300 612 C308 600 308 576 304 562 Z" fill="#7f9a77"/>
+    <path d="M262 584 C274 580 290 582 302 586 M262 598 C274 594 290 596 302 600" stroke-width="2" fill="none"/>
+    <path d="M300 566 C312 572 314 592 306 604 C298 600 294 586 296 572 Z" fill="#8fab86" stroke-width="2"/>
+    <circle cx="270" cy="608" r="4" fill="#3d3a33" stroke="none" opacity="0.55"/>
+    <circle cx="290" cy="574" r="3" fill="#3d3a33" stroke="none" opacity="0.5"/>
+
+    <!-- left arm (fist on hip) -->
+    <path d="M504 312 C548 322 576 392 582 448 C585 465 578 474 568 482 L512 560 L478 530 L536 452 C528 422 506 394 484 372 C490 350 498 330 504 312 Z" fill="url(#coat)"/>
+    <path d="M492 506 L530 536 L512 562 L474 532 Z" fill="#8a4a35"/>
+    <path d="M556 400 C562 420 566 440 566 456" stroke="#1a2c38" stroke-width="2" fill="none"/>
+    <!-- left hand -->
+    <path d="M478 532 C462 538 452 554 456 568 C460 580 478 584 492 578 L512 562 Z" fill="#7f9a77"/>
+    <path d="M462 560 C470 558 480 560 488 566 M466 572 C474 570 482 572 490 576" stroke-width="2" fill="none"/>
+    <circle cx="474" cy="548" r="3.5" fill="#3d3a33" stroke="none" opacity="0.5"/>
+
+    <!-- ponytail tied with a rope end -->
+    <path d="M432 196 C462 212 478 250 476 300 C474 318 468 330 462 336 C460 300 450 262 428 232 Z" fill="#1f1c1f"/>
+    <path d="M446 232 L466 226 M448 242 L469 238 M450 252 L471 249" stroke="#c9a36a" stroke-width="5"/>
+    <path d="M462 336 L470 352 M462 336 L458 354" stroke="#c9a36a" stroke-width="3"/>
+
+    <!-- neck -->
+    <path d="M378 256 L422 256 L424 300 C410 306 390 306 376 300 Z" fill="#6f8a68"/>
+
+    <!-- ears -->
+    <path d="M358 200 C342 194 328 186 318 180 C324 200 336 226 356 240 Z" fill="#7f9a77"/>
+    <path d="M352 210 C342 204 334 198 330 194 C336 208 344 222 354 230" stroke="#5b7458" stroke-width="2" fill="none"/>
+    <path d="M442 200 C458 194 472 186 482 180 C476 200 464 226 444 240 Z" fill="#7f9a77"/>
+    <path d="M448 210 C458 204 466 198 470 194 C464 208 456 222 446 230" stroke="#5b7458" stroke-width="2" fill="none"/>
+    <circle cx="352" cy="242" r="6" fill="none" stroke="#e8b84a" stroke-width="2.5"/>
+
+    <!-- head -->
+    <path d="M356 192 C354 160 376 146 400 146 C424 146 446 160 444 192 C446 214 446 232 440 246 C434 264 418 274 400 274 C382 274 366 264 360 246 C354 232 354 214 356 192 Z" fill="#82a07a"/>
+    <!-- face shading -->
+    <path d="M360 246 C366 264 382 274 400 274 C418 274 434 264 440 246 C430 256 416 262 400 262 C384 262 370 256 360 246 Z" fill="#647e5f" stroke="none"/>
+    <path d="M357 200 C356 220 358 236 362 246 C366 230 366 214 364 200 Z" fill="#6a8564" stroke="none"/>
+    <!-- hair with a sharp widow's peak -->
+    <path d="M354 202 C348 160 372 138 400 138 C430 138 454 160 446 202 C442 186 436 176 426 170 C416 168 408 172 400 184 C392 172 384 168 374 170 C364 176 358 186 354 202 Z" fill="#1f1c1f"/>
+    <path d="M380 156 C392 150 410 150 424 156" stroke="#4a4550" stroke-width="2" fill="none"/>
+    <!-- brows -->
+    <path d="M366 198 C374 190 386 190 395 196" stroke-width="5" fill="none"/>
+    <path d="M405 196 C414 190 426 190 434 198" stroke-width="5" fill="none"/>
+    <!-- eyes (amber) -->
+    <path d="M370 208 Q381 200 392 208 Q381 214 370 208 Z" fill="#f3ead6" stroke-width="2"/>
+    <circle cx="383" cy="207" r="4" fill="#d89428" stroke="none"/>
+    <circle cx="383" cy="207" r="1.8" fill="#1a1210" stroke="none"/>
+    <path d="M408 208 Q419 200 430 208 Q419 214 408 208 Z" fill="#f3ead6" stroke-width="2"/>
+    <circle cx="420" cy="207" r="4" fill="#d89428" stroke="none"/>
+    <circle cx="420" cy="207" r="1.8" fill="#1a1210" stroke="none"/>
+    <path d="M369 207 Q381 198 393 207 M407 207 Q419 198 431 207" stroke-width="2.5" fill="none"/>
+    <!-- nose -->
+    <path d="M401 212 C400 222 394 228 392 233 C396 238 405 238 410 233" stroke-width="2.5" fill="none"/>
+    <path d="M396 232 L398 233 M405 233 L407 232" stroke-width="2.5"/>
+    <!-- grin with small tusks -->
+    <path d="M380 248 C392 258 408 258 420 248" stroke-width="2.5" fill="#3a1f1a"/>
+    <path d="M384 254 L388 241 L392 255 Z" fill="#f2e7cc" stroke-width="1.8"/>
+    <path d="M408 255 L412 241 L416 254 Z" fill="#f2e7cc" stroke-width="1.8"/>
+    <path d="M394 264 C398 266 402 266 406 264" stroke="#5b7458" stroke-width="2" fill="none"/>
+  </g>
+
+  <!-- warm rim light from the sun behind him -->
+  <g stroke="#ffd895" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.9">
+    <path d="M362 154 C374 144 390 140 404 140"/>
+    <path d="M300 318 C320 306 344 300 362 300"/>
+    <path d="M500 318 C480 306 456 300 438 300"/>
+    <path d="M512 322 C542 340 566 380 574 430"/>
+    <path d="M268 360 C264 390 262 420 262 450"/>
+  </g>
+
+  <!-- ===== Mourning Bell, the little walking cannon ===== -->
+  <g stroke="#2a1c18" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+    <!-- back legs -->
+    <path d="M590 944 L560 932 L548 1004" stroke="#5a4a3a" stroke-width="8" fill="none"/>
+    <path d="M664 944 L700 930 L712 1000" stroke="#5a4a3a" stroke-width="8" fill="none"/>
+    <!-- carriage -->
+    <path d="M578 930 L676 922 L680 952 L582 960 Z" fill="#6e4428"/>
+    <path d="M584 944 L678 936" stroke="#4e2f1c" stroke-width="2" fill="none"/>
+    <!-- bell-mouthed barrel -->
+    <g transform="translate(628 912) rotate(-14)">
+      <circle cx="-76" cy="0" r="10" fill="none" stroke="#2a1c18" stroke-width="10"/>
+      <circle cx="-76" cy="0" r="10" fill="none" stroke="#c8902f" stroke-width="5"/>
+      <path d="M-52 -24 C-64 -24 -68 -10 -68 0 C-68 10 -64 24 -52 24 L18 26 C34 28 46 36 58 44 L64 46 L64 -46 L58 -44 C46 -36 34 -28 18 -26 Z" fill="url(#brass)"/>
+      <path d="M-40 -24 L-40 24 M-28 -24.6 L-28 24.6 M8 -25.6 L8 25.6" stroke-width="2.5"/>
+      <path d="M-50 -14 C-20 -18 10 -18 30 -20" stroke="#fbe7a6" stroke-width="3" fill="none" opacity="0.9"/>
+      <text x="-22" y="6" font-family="Georgia, 'Times New Roman', serif" font-size="12" font-weight="700" letter-spacing="1.5" fill="#5a3812" stroke="none">WIDOW</text>
+      <ellipse cx="64" cy="0" rx="11" ry="46" fill="#e6b555"/>
+      <ellipse cx="65" cy="0" rx="7" ry="37" fill="#2b1a0e" stroke-width="2"/>
+    </g>
+    <!-- front legs -->
+    <path d="M600 952 L576 962 L572 1008" stroke="#2a1c18" stroke-width="11" fill="none"/>
+    <path d="M600 952 L576 962 L572 1008" stroke="#a2742f" stroke-width="6" fill="none"/>
+    <path d="M656 950 L682 960 L690 1008" stroke="#2a1c18" stroke-width="11" fill="none"/>
+    <path d="M656 950 L682 960 L690 1008" stroke="#a2742f" stroke-width="6" fill="none"/>
+    <g fill="#f0c766" stroke-width="2">
+      <circle cx="576" cy="962" r="5"/>
+      <circle cx="682" cy="960" r="5"/>
+      <circle cx="600" cy="952" r="4"/>
+      <circle cx="656" cy="950" r="4"/>
+    </g>
+    <path d="M562 1008 L582 1008 M680 1008 L700 1008" stroke-width="6"/>
+  </g>
+  <!-- arcane glow at the muzzle -->
+  <circle cx="694" cy="896" r="52" fill="url(#arcane)" opacity="0.85"/>
+  <g fill="#e9fff9">
+    <path d="M736 852 L739 862 L749 865 L739 868 L736 878 L733 868 L723 865 L733 862 Z"/>
+    <path d="M712 830 L714 836 L720 838 L714 840 L712 846 L710 840 L704 838 L710 836 Z"/>
+    <path d="M752 912 L754 918 L760 920 L754 922 L752 928 L750 922 L744 920 L750 918 Z"/>
+  </g>
+</svg>

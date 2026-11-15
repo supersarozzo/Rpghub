@@ -1,0 +1,949 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artificer Character Creator</title>
+<style>html{scroll-behavior:auto;overflow-anchor:none}
+
+:root{
+  --bg:#f5f4f0; --card:#ffffff; --ink:#1d1d1b; --muted:#5a5a55; --line:#d8d6cf;
+  --accent:#1f5f5b; --accent-ink:#ffffff; --warn:#8a4b00; --warn-bg:#fff4e0; --bad:#a1262b; --bad-bg:#fdecec; --ok:#1d6b3a; --ok-bg:#e8f5ec;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+header.top{background:var(--accent);color:var(--accent-ink);padding:12px 16px}
+header.top h1{margin:0;font-size:1.25rem}
+header.top p{margin:2px 0 0;font-size:.9rem;opacity:.9}
+.wrap{max-width:900px;margin:0 auto;padding:12px 16px 80px}
+nav.steps{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 14px}
+nav.steps button{flex:1 1 auto;min-width:44px;padding:8px 6px;border:1px solid var(--line);background:var(--card);border-radius:6px;font:inherit;font-size:.85rem;cursor:pointer;color:var(--ink)}
+nav.steps button.cur{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+nav.steps button.bad::after{content:" !";color:var(--bad);font-weight:700}
+nav.steps button.cur.bad::after{color:#ffd0d0}
+nav.steps .lbl{display:none}
+@media(min-width:700px){nav.steps .lbl{display:inline}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:0 0 12px}
+h2{margin:0 0 4px;font-size:1.3rem}
+h3{margin:14px 0 4px;font-size:1.05rem}
+.hint{color:var(--muted);font-size:.93rem;margin:2px 0 8px}
+.note{background:#eef3f2;border-left:4px solid var(--accent);padding:8px 10px;margin:8px 0;font-size:.93rem}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn);padding:8px 10px;margin:8px 0;font-size:.93rem;color:var(--warn)}
+.bad{background:var(--bad-bg);border-left:4px solid var(--bad);padding:8px 10px;margin:8px 0;font-size:.93rem;color:var(--bad)}
+.ok{background:var(--ok-bg);border-left:4px solid var(--ok);padding:8px 10px;margin:8px 0;font-size:.93rem;color:var(--ok)}
+label{display:block;font-weight:600;margin:10px 0 3px}
+input[type=text],input[type=number],select,textarea{width:100%;padding:9px 10px;border:1px solid #9a9890;border-radius:6px;font:inherit;background:#fff;color:var(--ink)}
+textarea{min-height:70px}
+button.btn{padding:9px 14px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:6px;font:inherit;cursor:pointer}
+button.btn.sec{background:#fff;color:var(--accent)}
+button.btn:disabled{opacity:.4;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.opt{display:block;border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin:6px 0;cursor:pointer;background:#fff}
+.opt.sel{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset;background:#f0f6f5}
+.opt.dis{opacity:.45;cursor:not-allowed}
+.opt b{font-weight:700}
+.opt small{display:block;color:var(--muted);font-weight:400}
+.opt input{margin-right:8px}
+.chk{display:flex;gap:8px;align-items:flex-start;padding:6px 4px;border-bottom:1px solid #eee}
+.chk.dis{opacity:.45}
+.chk input{margin-top:5px}
+.chk .t small{display:block;color:var(--muted)}
+.grid6{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.ab{border:1px solid var(--line);border-radius:8px;padding:8px;text-align:center;background:#fff}
+.ab .n{font-size:.82rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.ab .big{font-size:1.6rem;font-weight:700}
+.counter{font-size:1.4rem;font-weight:700}
+.counter.over{color:var(--bad)}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+@media(max-width:699px){.card table{display:block;overflow-x:auto;max-width:100%}}
+th,td{border:1px solid var(--line);padding:5px 7px;text-align:left;vertical-align:top}
+th{background:#f0efe9}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:12px;padding:1px 8px;font-size:.8rem;color:var(--muted);margin-left:4px}
+.pill.x{border-color:var(--warn);color:var(--warn)}
+.navbtns{position:sticky;bottom:0;background:var(--bg);border-top:1px solid var(--line);padding:10px 16px;display:flex;gap:8px;justify-content:space-between;max-width:900px;margin:0 auto}
+.levelbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:4px 0 8px}
+.levelbar button.cur{background:var(--accent);color:#fff}
+/* sheet */
+#sheet h2{border-bottom:2px solid var(--ink);padding-bottom:4px}
+.sh-head{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px;margin:8px 0}
+.sh-head div{border:1px solid var(--line);padding:4px 8px;border-radius:6px}
+.sh-head span{display:block;font-size:.75rem;color:var(--muted);text-transform:uppercase}
+.sh-cols{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:700px){.sh-cols{grid-template-columns:1fr 1fr}}
+.prof{font-weight:700}
+@media print{
+  body{background:#fff;font-size:11pt}
+  header.top,nav.steps,.navbtns,.noprint,.wrap>.card:not(#sheetcard){display:none!important}
+  #sheetcard{border:none;padding:0;margin:0}
+  .wrap{padding:0;max-width:none}
+  a{color:inherit;text-decoration:none}
+}
+
+/* ==== Shared look v1: see docs/DESIGN.md (same block on every page) ==== */
+nav.site{background:#16302e;display:flex;flex-wrap:wrap;align-items:center;gap:2px 2px;padding:6px 12px;font:600 14px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+nav.site .brand{color:#fff;font-weight:700;margin-right:10px;padding:6px 0;letter-spacing:.02em;white-space:nowrap}
+nav.site a{color:#d6e6e4;text-decoration:none;padding:8px 10px;border-radius:6px;display:inline-flex;align-items:center;min-height:36px;white-space:nowrap}
+nav.site a:hover{background:rgba(255,255,255,.12);color:#fff}
+nav.site a[aria-current="page"]{background:#fff;color:#16302e}
+nav.site a:focus-visible{outline:3px solid #f5c542;outline-offset:1px}
+@media (max-width:640px){nav.site{padding:4px 8px}nav.site .brand{width:100%;padding:4px 2px 2px}nav.site a{padding:6px 8px;font-size:13px}}
+header.top{padding:14px 16px}
+header.top h1{font-size:1.35rem;line-height:1.25}
+header.top p{max-width:860px}
+@media print{nav.site{display:none!important}}
+/* ==== end shared look ==== */
+</style>
+</head>
+<body>
+<nav class="site" aria-label="All pages"><span class="brand">Skippy &middot; Artificer</span><a href="start-here.html">Start here</a><a href="guide.html">Guide</a><a href="creator.html" aria-current="page">Creator</a><a href="exceptions.html">Exceptions</a><a href="checklists.html">Checklists</a><a href="combos.html">Combos</a><a href="sheet/skippy-sheet.html">Sheet</a><a href="sheet/skippy-extra.html">Extra pages</a></nav>
+<header class="top">
+  <h1>Artificer Character Creator</h1>
+  <p>D&amp;D 5th edition (2014) with Tasha's Cauldron of Everything. Builds a level 3 artificer. Works offline.</p>
+  <p><button type="button" class="btn" data-act="preset" style="font-weight:700;background:#fff;color:#111;border-color:#fff">Load my pirate build</button> <span style="font-size:.9em;opacity:.9">(Half-Orc Artillerist with Pirate background. You can change everything.)</span></p>
+</header>
+<div class="wrap">
+  <nav class="steps" id="steps" aria-label="Steps"></nav>
+  <div id="levelbar" class="levelbar noprint"></div>
+  <main id="app"></main>
+</div>
+<div class="navbtns noprint" id="navbtns"></div>
+
+<script>
+/* =====================================================================
+   RULES DATA BLOCK  (START)
+   Everything about the game rules is in this one block, so a later
+   worker can fix mistakes here without touching the app code below.
+   Page numbers: T = Tasha's Cauldron of Everything (printed page),
+                 PHB = Player's Handbook 2014 (printed page).
+   Text is written in plain words, not copied from the books.
+   ===================================================================== */
+const DATA = {
+  version: "1.0",
+  abilities: [
+    {id:"str", name:"Strength",     line:"Raw muscle. Melee attacks and carrying things. Low priority for artificers."},
+    {id:"dex", name:"Dexterity",    line:"Speed and aim. Adds to armor class (up to +2 in medium armor), ranged attacks and initiative."},
+    {id:"con", name:"Constitution", line:"Health. Adds hit points and helps you keep spells going when hit. Second most important."},
+    {id:"int", name:"Intelligence", line:"Your spellcasting score. Sets spell save DC, spell attack and how many spells you prepare. Put your best score here (T p.10)."},
+    {id:"wis", name:"Wisdom",       line:"Awareness and common sense. Perception, Insight, Survival."},
+    {id:"cha", name:"Charisma",     line:"Force of personality. Persuasion, Deception, Intimidation."}
+  ],
+  standardArray: [15,14,13,12,10,8],                     // PHB p.13
+  /* Point buy is NOT used at the player's table (docs/TABLE-RULES.md). Data kept for reference only; no screen uses it. */
+  pointBuyTotal: 27,                                     // PHB p.13
+  pointBuyCost: {8:0,9:1,10:2,11:3,12:4,13:5,14:7,15:9}, // PHB p.13
+  pointBuyMin: 8, pointBuyMax: 15,
+  manualMin: 6, manualMax: 18,                            // table rule: 4d6, reroll 1s, drop lowest => 6 to 18 (PHB p.13 for 4d6; reroll rule from docs/TABLE-RULES.md)
+  hpRollMin: 2, hpRollMax: 8,                              // table rule: reroll 1s on level-up hit point rolls
+  /* ---- MY PIRATE BUILD (PRESET): the player's chosen character. Loaded when there is no saved progress, or by the "Load my pirate build" button. Edit here to change it. ---- */
+  preset: {
+    step:0, name:"Skippy", concept:"Half-orc powder monkey searching for his lost captain, Edwine Blackscale, a bronze dragonborn he calls \"the skipper\". His Eldritch Cannon, a Tiny bell-shaped black iron ship's cannon named Mourning Bell, is the last gun of their sunk ship, The Widow, shrunk by magic. It has no legs: he fires it from his shoulder like a rocket launcher.", align:"Chaotic neutral",
+    race:"halforc", subrace:"", customize:true, custPick:["int","con"],
+    method:"standard", std:{int:15,dex:14,con:13,str:12,wis:10,cha:8}, hpMode:"avg",
+    bg:"pirate", specialist:"artillerist", armor:"studded", gearMode:"kit",
+    sel:{ "skill:class":["Arcana","Investigation"], "tool:class":"Cartographer's tools", "lang:swap:1":"Draconic", "weapons":["Spear","Dagger"],
+          "cantrips":["Shocking grasp","Guidance"], "prepared":["Cure wounds","Faerie fire","False life","Detect magic (ritual)"],
+          "infusions":["Enhanced Defense","Repeating Shot","Enhanced Weapon","Mind Sharpener"],
+          "active":["Enhanced Defense","Repeating Shot"] },
+    /* Question 25 (how he owns both tool sets): the player chose option b (final, 2026-11-14). */
+    otherGear:"Woodcarver's tools: bought for 1 gp (PHB p.154). Cartographer's tools: made with The Right Tool for the Job (T p.13); they are not magic and vanish if he uses that feature again. Gold left: 9 gp (10 gp from the background pouch, minus 1 gp).",
+    activeNote:"Active today: Enhanced Defense (armor), Repeating Shot (crossbow). Melee day: swap Repeating Shot for Enhanced Weapon on the spear."
+  },
+  suggested: {
+    standard: {int:15, con:14, dex:13, wis:12, cha:10, str:8},
+    pointbuy: {int:15, con:14, dex:14, wis:10, cha:10, str:8}
+  },
+  skills: [
+    ["Acrobatics","dex"],["Animal Handling","wis"],["Arcana","int"],["Athletics","str"],["Deception","cha"],
+    ["History","int"],["Insight","wis"],["Intimidation","cha"],["Investigation","int"],["Medicine","wis"],
+    ["Nature","int"],["Perception","wis"],["Performance","cha"],["Persuasion","cha"],["Religion","int"],
+    ["Sleight of Hand","dex"],["Stealth","dex"],["Survival","wis"]
+  ],                                                      // PHB p.174-175
+  languages: ["Abyssal","Celestial","Common","Deep Speech","Draconic","Dwarvish","Elvish","Giant","Gnomish","Goblin","Halfling","Infernal","Orc","Primordial","Sylvan","Undercommon"], // T p.7 list
+  artisanTools: ["Alchemist's supplies","Brewer's supplies","Calligrapher's supplies","Carpenter's tools","Cartographer's tools","Cobbler's tools","Cook's utensils","Glassblower's tools","Jeweler's tools","Leatherworker's tools","Mason's tools","Painter's supplies","Potter's tools","Smith's tools","Tinker's tools","Weaver's tools","Woodcarver's tools"], // PHB p.154
+  gamingSets: ["Dice set","Dragonchess set","Playing card set","Three-Dragon Ante set"],
+  instruments: ["Bagpipes","Drum","Dulcimer","Flute","Lute","Lyre","Horn","Pan flute","Shawm","Viol"],
+  otherTools: ["Disguise kit","Forgery kit","Herbalism kit","Navigator's tools","Poisoner's kit","Thieves' tools","Vehicles (land)","Vehicles (water)"],
+
+  /* ---- Class: artificer (T p.10) ---- */
+  cls: {
+    name:"Artificer", hitDie:8, saves:["con","int"],
+    skillList:["Arcana","History","Investigation","Medicine","Nature","Perception","Sleight of Hand"],
+    skillCount:2,
+    fixedTools:["Thieves' tools","Tinker's tools"],
+    armor:"Light armor, medium armor, shields", weapons:"Simple weapons",
+    cantrips:{1:2,10:3,14:4},
+    slots:{1:[2],2:[2],3:[3],4:[3],5:[4,2]},
+    profBonus:function(L){return L>=17?6:L>=13?5:L>=9?4:L>=5?3:2;},
+    infusions:function(L){return L<2?{known:0,items:0}:L<6?{known:4,items:2}:{known:6,items:3};},
+    features:[
+      [1,"Magical Tinkering","Touch a Tiny plain object (tools in hand) to give it a small magic trick: light, a 6-second message, a sound or smell, or a picture. Up to your Int modifier objects at once (min 1).","T p.11"],
+      [1,"Spellcasting","Intelligence spellcasting. Your focus is your tools: hold thieves' tools or an artisan's tool you are proficient with when you cast. Change your prepared spells after each long rest. You can cast a prepared spell that has the ritual tag as a ritual: it takes 10 minutes longer and uses no spell slot.","T p.11-12"],
+      [2,"Infuse Item","After a long rest, turn plain objects into magic items with your known infusions.","T p.12-13"],
+      [3,"Artificer Specialist","Pick Alchemist, Armorer, Artillerist or Battle Smith.","T p.13"],
+      [3,"The Right Tool for the Job","With thieves' tools or artisan's tools in hand, spend 1 hour of uninterrupted work (it can be during a short or long rest) to create one set of artisan's tools next to you. They are not magic, and they vanish when you use this feature again.","T p.13"]
+    ]
+  },
+
+  /* ---- Races (PHB p.17-43) plus Tasha's Custom Lineage (T p.8) ----
+     fixed: ability increases that are set.  flex: increases you place yourself (list of amounts).
+     flexExclude: abilities flex picks may not use.  customOk: Tasha's "move the increases" option works. */
+  races: {
+    dwarf:{name:"Dwarf",page:"PHB p.18-21",size:"Medium",speed:25,fixed:{con:2},customOk:true,
+      blurb:"Tough and steady. Short, hardy folk with a love of stone and craft.",
+      langs:["Common","Dwarvish"],
+      traits:["Darkvision 60 ft. (see in dim light as bright, dark as dim).","Dwarven Resilience: advantage on saves against poison, resistance to poison damage.","Speed is not slowed by heavy armor.","Combat training: battleaxe, handaxe, light hammer, warhammer.","Stonecunning: double proficiency on History checks about stonework.","Tool proficiency: choose smith's, brewer's or mason's tools."],
+      toolPick:["Smith's tools","Brewer's supplies","Mason's tools"],
+      subraces:{
+        hill:{name:"Hill Dwarf",page:"PHB p.20",fixed:{wis:1},hpPerLevel:1,traits:["Dwarven Toughness: +1 hit point per level (including level 1)."],blurb:"+1 Wisdom, extra hit points."},
+        mountain:{name:"Mountain Dwarf",page:"PHB p.20",fixed:{str:2},traits:["Armor training: light and medium armor (you already have this as an artificer)."],blurb:"+2 Strength."}
+      }},
+    elf:{name:"Elf",page:"PHB p.21-24",size:"Medium",speed:30,fixed:{dex:2},customOk:true,
+      blurb:"Graceful and long-lived, with sharp senses.",
+      langs:["Common","Elvish"],skillsFixed:["Perception"],
+      traits:["Darkvision 60 ft.","Keen Senses: proficiency in Perception.","Fey Ancestry: advantage on saves against being charmed, and magic cannot put you to sleep.","Trance: 4 hours of meditation counts as a long rest."],
+      subraces:{
+        high:{name:"High Elf",page:"PHB p.23",fixed:{int:1},langPicks:1,wizardCantrip:true,traits:["Elf weapon training: longsword, shortsword, shortbow, longbow.","One wizard cantrip of your choice (Intelligence is its spellcasting ability).","One extra language."],blurb:"+1 Intelligence, one free wizard cantrip. A very good fit."},
+        wood:{name:"Wood Elf",page:"PHB p.24",fixed:{wis:1},speed:35,traits:["Elf weapon training: longsword, shortsword, shortbow, longbow.","Speed 35 ft.","Mask of the Wild: you can try to hide when nature only partly hides you (leaves, heavy rain, falling snow, mist)."],blurb:"+1 Wisdom, faster."},
+        drow:{name:"Dark Elf (Drow)",page:"PHB p.24",fixed:{cha:1},traits:["Superior darkvision 120 ft.","Sunlight Sensitivity: disadvantage on attacks and sight Perception in direct sunlight.","Drow Magic: dancing lights cantrip (Charisma). Faerie fire at level 3, darkness at level 5.","Drow weapon training: rapier, shortsword, hand crossbow."],cantripsFixed:[["Dancing lights","cha"]],blurb:"+1 Charisma, great darkvision, sun trouble."}
+      }},
+    halfling:{name:"Halfling",page:"PHB p.26-28",size:"Small",speed:25,fixed:{dex:2},customOk:true,
+      blurb:"Small, cheerful and lucky.",langs:["Common","Halfling"],
+      traits:["Lucky: when you roll a natural 1 on an attack, check or save, reroll it.","Brave: advantage on saves against being frightened.","Halfling Nimbleness: move through the space of bigger creatures."],
+      subraces:{
+        lightfoot:{name:"Lightfoot",page:"PHB p.28",fixed:{cha:1},traits:["Naturally Stealthy: hide behind creatures one size bigger than you."],blurb:"+1 Charisma."},
+        stout:{name:"Stout",page:"PHB p.28",fixed:{con:1},traits:["Stout Resilience: advantage on saves against poison, resistance to poison damage."],blurb:"+1 Constitution."}
+      }},
+    human:{name:"Human",page:"PHB p.29-31",size:"Medium",speed:30,blurb:"Adaptable. Two flavors: standard or variant (a feat).",
+      langs:["Common"],langPicks:1,traits:["One extra language."],
+      subraces:{
+        standard:{name:"Standard",page:"PHB p.29",fixed:{str:1,dex:1,con:1,int:1,wis:1,cha:1},noCustom:true,traits:["+1 to every ability score."],blurb:"+1 to all six scores."},
+        variant:{name:"Variant Human (optional rule)",page:"PHB p.31",flex:[1,1],feat:true,skillPicks:1,noCustom:true,traits:["+1 to two different scores of your choice.","One skill of your choice.","One feat of your choice."],blurb:"Choose two +1s, a skill and a feat. Strong for beginners who want a feat."}
+      }},
+    dragonborn:{name:"Dragonborn",page:"PHB p.32-34",size:"Medium",speed:30,fixed:{str:2,cha:1},customOk:true,dragon:true,
+      blurb:"Proud dragon-blooded folk with a breath weapon.",langs:["Common","Draconic"],
+      traits:["Draconic Ancestry: pick a dragon type. It sets your breath weapon and damage resistance.","Breath Weapon: 2d6 damage (at level 1) in a line or cone, once per short or long rest. Save DC = 8 + Con modifier + proficiency bonus.","Damage Resistance: to the damage type of your ancestry."]},
+    gnome:{name:"Gnome",page:"PHB p.35-37",size:"Small",speed:25,fixed:{int:2},customOk:true,
+      blurb:"Small and curious inventors. The classic artificer race.",langs:["Common","Gnomish"],
+      traits:["Darkvision 60 ft.","Gnome Cunning: advantage on Intelligence, Wisdom and Charisma saves against magic."],
+      subraces:{
+        forest:{name:"Forest Gnome",page:"PHB p.37",fixed:{dex:1},cantripsFixed:[["Minor illusion","int"]],traits:["Natural Illusionist: you know the minor illusion cantrip (Intelligence).","Speak with Small Beasts."],blurb:"+1 Dexterity, minor illusion."},
+        rock:{name:"Rock Gnome",page:"PHB p.37",fixed:{con:1},toolsFixed:["Tinker's tools"],traits:["Artificer's Lore: double proficiency on History checks about magic items, alchemical objects and technological devices.","Tinker: proficiency with tinker's tools (you already have them, so you choose another tool), and you can build tiny clockwork toys."],blurb:"+1 Constitution. Fits the artificer story."}
+      }},
+    halfelf:{name:"Half-Elf",page:"PHB p.38-39",size:"Medium",speed:30,fixed:{cha:2},flex:[1,1],flexExclude:["cha"],customOk:true,skillPicks:2,langPicks:1,
+      blurb:"Charming and adaptable. +2 Charisma and two +1s of your choice.",langs:["Common","Elvish"],
+      traits:["Darkvision 60 ft.","Fey Ancestry: advantage on saves against being charmed, and magic cannot put you to sleep.","Skill Versatility: two skills of your choice.","One extra language."]},
+    halforc:{name:"Half-Orc",page:"PHB p.40-41",size:"Medium",speed:30,fixed:{str:2,con:1},customOk:true,
+      blurb:"Strong and hard to put down.",langs:["Common","Orc"],skillsFixed:["Intimidation"],
+      traits:["Darkvision 60 ft.","Menacing: proficiency in Intimidation.","Relentless Endurance: once per long rest, when you drop to 0 hit points but are not killed outright, you drop to 1 hit point instead.","Savage Attacks: on a critical hit with a melee weapon attack, roll one extra weapon damage die. A thrown dagger or spear is a ranged attack, so it does not count."]},
+    tiefling:{name:"Tiefling",page:"PHB p.42-43",size:"Medium",speed:30,fixed:{int:1,cha:2},customOk:true,
+      blurb:"Touched by the lower planes. Natural fit for Intelligence (+1).",langs:["Common","Infernal"],
+      traits:["Darkvision 60 ft.","Hellish Resistance: resistance to fire damage.","Infernal Legacy: thaumaturgy cantrip. Hellish rebuke at level 3 and darkness at level 5 (Charisma)."],
+      cantripsFixed:[["Thaumaturgy","cha"]]},
+    custom:{name:"Custom Lineage (Tasha's)",page:"T p.8",size:"Small or Medium",speed:30,flex:[2],feat:true,variableTrait:true,noCustom:true,langs:["Common"],langPicks:1,
+      blurb:"Build your own origin: +2 to one score, a feat, and darkvision or a skill.",
+      traits:["+2 to one ability score of your choice.","One feat of your choice.","Either darkvision 60 ft. or one skill of your choice.","Common plus one other language."]}
+  },
+  dragons:[["Black","acid","5x30 ft line (Dex save)"],["Blue","lightning","5x30 ft line (Dex save)"],["Brass","fire","5x30 ft line (Dex save)"],["Bronze","lightning","5x30 ft line (Dex save)"],["Copper","acid","5x30 ft line (Dex save)"],["Gold","fire","15 ft cone (Dex save)"],["Green","poison","15 ft cone (Con save)"],["Red","fire","15 ft cone (Dex save)"],["Silver","cold","15 ft cone (Con save)"],["White","cold","15 ft cone (Con save)"]], // PHB p.34
+  customizeNotes: "Tasha's optional rule (T p.7): move your race's ability increases to any scores you like (two increases cannot go on one score), replace racial languages, and swap racial skill or other proficiencies.",
+
+  /* ---- Feats (optional rule, PHB p.165-170). Only ones with simple effects. ---- */
+  feats: {
+    alert:{n:"Alert",t:"+5 to initiative. You cannot be surprised while awake.",init:5},
+    crossbow:{n:"Crossbow Expert",t:"Ignore loading with crossbows. No penalty for close shots. Good with your light crossbow."},
+    durable:{n:"Durable",asi:{con:1},t:"+1 Constitution. Healing from Hit Dice on a rest is never less than twice your Con modifier."},
+    healer:{n:"Healer",t:"A healer's kit can restore hit points to friends once per rest each."},
+    keen:{n:"Keen Mind",asi:{int:1},t:"+1 Intelligence. Perfect memory for the last month, always know north and the time."},
+    lucky:{n:"Lucky",t:"3 luck points per long rest. Spend one to roll an extra d20 for attacks, checks or saves."},
+    observant:{n:"Observant",asiChoice:["int","wis"],passive:5,t:"+1 Intelligence or Wisdom. +5 to passive Perception and Investigation."},
+    resilient:{n:"Resilient",asiChoice:["str","dex","con","int","wis","cha"],saveProf:true,t:"+1 to one score of your choice, and proficiency in saves with that score."},
+    skilled:{n:"Skilled",skilled:3,t:"Proficiency in any three skills or tools of your choice."},
+    tough:{n:"Tough",hpPerLevel:2,t:"+2 hit points per level (including level 1)."},
+    warcaster:{n:"War Caster",t:"Advantage on concentration saves. Cast with hands full. Cast a spell instead of an opportunity attack."}
+  },
+  featsPage:"PHB p.165-170",
+
+  /* ---- Backgrounds (PHB p.125-141, the main version of each) ---- */
+  backgrounds: {
+    acolyte:{name:"Acolyte",page:"PHB p.127",skills:["Insight","Religion"],langs:2,feature:"Shelter of the Faithful",equip:"Holy symbol, prayer book or wheel, 5 sticks of incense, vestments, common clothes, pouch with 15 gp.",gp:15,blurb:"You served in a temple."},
+    charlatan:{name:"Charlatan",page:"PHB p.128",skills:["Deception","Sleight of Hand"],toolsFixed:["Disguise kit","Forgery kit"],feature:"False Identity",equip:"Fine clothes, disguise kit, tools of a con of your choice, pouch with 15 gp.",gp:15,blurb:"You lie for a living."},
+    criminal:{name:"Criminal",page:"PHB p.129",skills:["Deception","Stealth"],toolsFixed:["Thieves' tools"],toolChoices:[["Gaming set","gaming"]],feature:"Criminal Contact",equip:"Crowbar, dark common clothes with a hood, pouch with 15 gp.",gp:15,blurb:"You broke the law. You already have thieves' tools, so you choose another tool."},
+    spy:{name:"Spy (Criminal variant)",page:"PHB p.130",skills:["Deception","Stealth"],toolsFixed:["Thieves' tools"],toolChoices:[["Gaming set","gaming"]],feature:"Criminal Contact",equip:"Crowbar, dark common clothes with a hood, pouch with 15 gp. (Same as Criminal.)",gp:15,ideas:"Ideas: the same skills as a Criminal, but you learned them as an agent of spies, for a crown or for the highest bidder. Same feature as Criminal.",blurb:"A secret agent. Same as Criminal. You already have thieves' tools, so you choose another tool."},
+    entertainer:{name:"Entertainer",page:"PHB p.130",skills:["Acrobatics","Performance"],toolsFixed:["Disguise kit"],toolChoices:[["Musical instrument","instrument"]],feature:"By Popular Demand",equip:"A musical instrument, a keepsake from an admirer, a costume, pouch with 15 gp.",gp:15,blurb:"You perform for crowds."},
+    gladiator:{name:"Gladiator (Entertainer variant)",page:"PHB p.131",skills:["Acrobatics","Performance"],toolsFixed:["Disguise kit"],toolChoices:[["Musical instrument","instrument"]],feature:"By Popular Demand",equip:"An unusual cheap weapon (such as a trident or net) in place of the instrument, a keepsake from an admirer, a costume, pouch with 15 gp.",gp:15,ideas:"Ideas: your show is flashy combat. Your feature lets you find a place to perform wherever fights are shown for fun, such as an arena or a secret fighting club.",blurb:"An arena fighter as entertainer. Same skills and tools as Entertainer; the weapon replaces the instrument in your gear."},
+    folkhero:{name:"Folk Hero",page:"PHB p.131",skills:["Animal Handling","Survival"],toolsFixed:["Vehicles (land)"],toolChoices:[["Artisan's tools","artisan"]],feature:"Rustic Hospitality",equip:"A set of artisan's tools (your choice), shovel, iron pot, common clothes, pouch with 10 gp.",gp:10,blurb:"A common person who stood up to something evil."},
+    guildartisan:{name:"Guild Artisan",page:"PHB p.132",skills:["Insight","Persuasion"],toolChoices:[["Artisan's tools","artisan"]],langs:1,feature:"Guild Membership",equip:"A set of artisan's tools (your choice), letter of introduction from your guild, traveler's clothes, pouch with 15 gp.",gp:15,blurb:"Recommended by the artificer Quick Build (T p.10). You are a skilled crafter."},
+    hermit:{name:"Hermit",page:"PHB p.134",skills:["Medicine","Religion"],toolsFixed:["Herbalism kit"],langs:1,feature:"Discovery",equip:"Scroll case of notes, winter blanket, common clothes, herbalism kit, 5 gp.",gp:5,blurb:"You lived alone and found a great secret."},
+    noble:{name:"Noble",page:"PHB p.135",skills:["History","Persuasion"],toolChoices:[["Gaming set","gaming"]],langs:1,feature:"Position of Privilege",equip:"Fine clothes, signet ring, scroll of pedigree, purse with 25 gp.",gp:25,blurb:"You come from wealth and title."},
+    knight:{name:"Knight (Noble variant)",page:"PHB p.136",skills:["History","Persuasion"],toolChoices:[["Gaming set","gaming"]],langs:1,feature:"Retainers",equip:"Fine clothes, signet ring, scroll of pedigree, purse with 25 gp. (Same as Noble.)",gp:25,ideas:"Ideas: knighthood is a low noble rank that can lead higher. Instead of Position of Privilege you have three loyal retainers (they do chores and errands; they do not fight or follow you into danger). One may be a squire.",blurb:"A knight. Same skills and gear as Noble. Feature: Retainers instead of Position of Privilege."},    outlander:{name:"Outlander",page:"PHB p.136",skills:["Athletics","Survival"],toolChoices:[["Musical instrument","instrument"]],langs:1,feature:"Wanderer",equip:"A staff, hunting trap, an animal trophy, traveler's clothes, pouch with 10 gp.",gp:10,blurb:"You grew up in the wild."},
+    sage:{name:"Sage",page:"PHB p.137",skills:["Arcana","History"],langs:2,feature:"Researcher",equip:"Bottle of black ink, quill, small knife, a letter from a dead colleague, common clothes, pouch with 10 gp.",gp:10,blurb:"A scholar. Arcana and History are also artificer skills (so you pick other skills from the class list)."},
+    sailor:{name:"Sailor",page:"PHB p.139",skills:["Athletics","Perception"],toolsFixed:["Navigator's tools","Vehicles (water)"],feature:"Ship's Passage",equip:"Belaying pin (club), 50 ft silk rope, a lucky charm, common clothes, pouch with 10 gp.",gp:10,blurb:"You sailed the seas."},
+    pirate:{name:"Pirate (Sailor variant)",page:"PHB p.139",skills:["Athletics","Perception"],toolsFixed:["Navigator's tools","Vehicles (water)"],feature:"Bad Reputation",equip:"Belaying pin (club), 50 ft silk rope, a lucky charm, common clothes, pouch with 10 gp. (Same as Sailor.)",gp:10,ideas:"Ideas: you sailed under a feared pirate captain. People fear your name. In a town you can usually get away with small crimes, such as skipping a tavern bill, because most people will not report you. Good for a swaggering, cool-guy sea rover.",blurb:"A sailor who chose piracy. Same skills and gear as Sailor. Feature: Bad Reputation (people fear you; small crimes in towns are overlooked) instead of Ship's Passage."},
+    soldier:{name:"Soldier",page:"PHB p.140",skills:["Athletics","Intimidation"],toolsFixed:["Vehicles (land)"],toolChoices:[["Gaming set","gaming"]],feature:"Military Rank",equip:"Insignia of rank, a trophy from a fallen enemy, dice or cards, common clothes, pouch with 10 gp.",gp:10,blurb:"You served in an army."},
+    factionagent:{name:"Faction Agent (table option)",page:"SCAG p.147-148 (web source, check with your DM)",skills:["Insight"],skillChoice:["Arcana","History","Investigation","Nature","Religion","Animal Handling","Medicine","Perception","Survival","Deception","Intimidation","Performance","Persuasion"],langs:2,feature:"Safe Haven",equip:"Faction badge or emblem, a faction text or code-book, common clothes, pouch with 15 gp.",gp:15,tableNote:"At this table it also gives 3 renown and Rank 2 in your faction (docs/TABLE-RULES.md).",blurb:"You work for a faction. Insight plus one Intelligence, Wisdom or Charisma skill. At this table: 3 renown and Rank 2."},
+    urchin:{name:"Urchin",page:"PHB p.141",skills:["Sleight of Hand","Stealth"],toolsFixed:["Disguise kit","Thieves' tools"],feature:"City Secrets",equip:"Small knife, map of your home city, pet mouse, a token of your parents, common clothes, pouch with 10 gp.",gp:10,blurb:"You grew up on the streets. You already have thieves' tools, so you choose another tool."}
+  },
+
+  /* ---- Equipment ---- */
+  simpleWeapons: [   // PHB p.149
+    {n:"Club",d:"1d4",t:"bludgeoning",ranged:false,p:"light"},
+    {n:"Dagger",d:"1d4",t:"piercing",finesse:true,p:"finesse, light, thrown 20/60"},
+    {n:"Greatclub",d:"1d8",t:"bludgeoning",p:"two-handed"},
+    {n:"Handaxe",d:"1d6",t:"slashing",p:"light, thrown 20/60"},
+    {n:"Javelin",d:"1d6",t:"piercing",p:"thrown 30/120"},
+    {n:"Light hammer",d:"1d4",t:"bludgeoning",p:"light, thrown 20/60"},
+    {n:"Mace",d:"1d6",t:"bludgeoning",p:""},
+    {n:"Quarterstaff",d:"1d6",t:"bludgeoning",p:"versatile (1d8)"},
+    {n:"Sickle",d:"1d4",t:"slashing",p:"light"},
+    {n:"Spear",d:"1d6",t:"piercing",p:"thrown 20/60, versatile (1d8)"},
+    {n:"Light crossbow",d:"1d8",t:"piercing",ranged:true,p:"ammunition 80/320, loading, two-handed"},
+    {n:"Dart",d:"1d4",t:"piercing",ranged:true,finesse:true,p:"finesse, thrown 20/60"},
+    {n:"Shortbow",d:"1d6",t:"piercing",ranged:true,p:"ammunition 80/320, two-handed"},
+    {n:"Sling",d:"1d4",t:"bludgeoning",ranged:true,p:"ammunition 30/120"}
+  ],
+  armor: {           // PHB p.145. base AC, dexCap (null = no cap, 0 = no Dex), cost in gp, stealth disadvantage
+    none:{n:"No armor",base:10,cap:null,cost:0,stealth:false},
+    padded:{n:"Padded",base:11,cap:null,cost:5,stealth:true,cat:"Light"},
+    leather:{n:"Leather",base:11,cap:null,cost:10,stealth:false,cat:"Light"},
+    studded:{n:"Studded leather",base:12,cap:null,cost:45,stealth:false,cat:"Light"},
+    hide:{n:"Hide",base:12,cap:2,cost:10,stealth:false,cat:"Medium"},
+    chainshirt:{n:"Chain shirt",base:13,cap:2,cost:50,stealth:false,cat:"Medium"},
+    scale:{n:"Scale mail",base:14,cap:2,cost:50,stealth:true,cat:"Medium"},
+    breastplate:{n:"Breastplate",base:14,cap:2,cost:400,stealth:false,cat:"Medium"},
+    halfplate:{n:"Half plate",base:15,cap:2,cost:750,stealth:true,cat:"Medium"}
+  },
+  kitArmor:["studded","scale"],           // T p.10
+  shield:{bonus:2,cost:10},                // PHB p.145
+  kitFixed:["Light crossbow and 20 bolts","Thieves' tools","Dungeoneer's pack (backpack, crowbar, hammer, 10 pitons, 10 torches, tinderbox, 10 days of rations, waterskin, 50 ft hempen rope; PHB p.151)"], // T p.10
+  goldDice:{n:5,sides:4,mult:10},          // 5d4 x 10 gp (T p.10)
+
+  /* ---- Spells (artificer list, T p.12). src: P = Player's Handbook, T = Tasha's chapter 3, X = Xanathar's (not in your books) ---- */
+  cantrips: [
+    ["Acid splash","P","PHB p.211","Hurl acid at one or two creatures next to each other. Dexterity save or 1d6 acid."],
+    ["Booming blade","T","T p.106","Melee weapon attack. If the target willingly moves away, it takes extra thunder damage."],
+    ["Create bonfire","X","XGE","Make a small fire on the ground that burns creatures in it."],
+    ["Dancing lights","P","PHB p.230","Make up to four floating torch-sized lights."],
+    ["Fire bolt","P","PHB p.242","Ranged spell attack, 120 ft, 1d10 fire damage. A simple strong attack."],
+    ["Frostbite","X","XGE","Cold damage, and the target has disadvantage on its next weapon attack."],
+    ["Green-flame blade","T","T p.107","Melee weapon attack. Fire can jump to a second creature next to the target."],
+    ["Guidance","P","PHB p.248","Touch a creature (you or a friend). It adds a d4 to one ability check."],
+    ["Light","P","PHB p.255","One object glows like a torch."],
+    ["Lightning lure","T","T p.107","Pull a creature up to 10 ft toward you (Strength save). Damage if it ends next to you."],
+    ["Mage hand","P","PHB p.256","A ghostly hand moves small objects up to 30 ft away."],
+    ["Magic stone","X","XGE","Enchant pebbles so they can be thrown as spell attacks."],
+    ["Mending","P","PHB p.259","Repair one small break or tear in an object."],
+    ["Message","P","PHB p.259","Whisper to one creature within 120 ft. Only they hear it."],
+    ["Poison spray","P","PHB p.266","1d12 poison damage within 10 ft. Constitution save."],
+    ["Prestidigitation","P","PHB p.267","Small harmless magic tricks: clean, warm, flavor, small sparks."],
+    ["Ray of frost","P","PHB p.271","Ranged spell attack, 1d8 cold, slows the target by 10 ft."],
+    ["Resistance","P","PHB p.272","Touch a creature (you or a friend). It adds a d4 to one saving throw."],
+    ["Shocking grasp","P","PHB p.275","Melee spell attack, 1d8 lightning, target cannot take reactions. Advantage against metal armor."],
+    ["Spare the dying","P","PHB p.277","Make a creature at 0 hit points stable."],
+    ["Sword burst","T","T p.115","Spinning spectral blades hit all creatures next to you. Dexterity save, 1d6 force."],
+    ["Thorn whip","P","PHB p.282","Melee spell attack, 1d6 piercing, pulls the target up to 10 ft closer."],
+    ["Thunderclap","X","XGE","Loud thunder damages creatures next to you."]
+  ],
+  spells1: [
+    ["Absorb elements","X","XGE","Reaction: take less elemental damage, and add that damage to your next melee hit."],
+    ["Alarm (ritual)","P","PHB p.211","Set a warning on a door, window or area for 8 hours."],
+    ["Catapult","X","XGE","Throw a light object at a target in a line."],
+    ["Cure wounds","P","PHB p.230","Touch: heal 1d8 + Intelligence modifier. Your main healing spell."],
+    ["Detect magic (ritual)","P","PHB p.231","Sense magic within 30 ft for 10 minutes. Cast as a ritual to save a slot."],
+    ["Disguise self","P","PHB p.233","Look different for 1 hour."],
+    ["Expeditious retreat","P","PHB p.238","Dash as a bonus action each turn for 10 minutes."],
+    ["Faerie fire","P","PHB p.239","Outline creatures in light. Attacks against them have advantage."],
+    ["False life","P","PHB p.239","Gain 1d4 + 4 temporary hit points for 1 hour."],
+    ["Feather fall","P","PHB p.239","Reaction: slow the fall of up to five creatures."],
+    ["Grease","P","PHB p.246","Make a 10-ft square slippery. Creatures may fall."],
+    ["Identify (ritual)","P","PHB p.252","Learn what a magic item does. Needs a 100 gp pearl."],
+    ["Jump","P","PHB p.254","Triple one creature's jump distance."],
+    ["Longstrider","P","PHB p.256","Touch: +10 ft speed for 1 hour."],
+    ["Purify food and drink (ritual)","P","PHB p.270","Remove poison and disease from food and drink."],
+    ["Sanctuary","P","PHB p.272","Bonus action: protect a creature from attacks."],
+    ["Snare","X","XGE","Make a hidden magic trap."],
+    ["Tasha's caustic brew","T","T p.115","A 30-ft line of acid. Damage each turn until cleaned off."]
+  ],
+  wizardCantrips:["Acid splash","Blade ward","Chill touch","Dancing lights","Fire bolt","Friends","Light","Mage hand","Mending","Message","Minor illusion","Poison spray","Prestidigitation","Ray of frost","Shocking grasp","True strike"], // PHB p.114
+
+  /* ---- Infusions (T p.20-23). Only ones with no level requirement can be chosen at level 2-3. ---- */
+  infusions: [
+    {n:"Enhanced Weapon",lv:0,page:"T p.21",star:true,item:"Simple or martial weapon",line:"+1 to attack and damage with the weapon. +2 at level 10."},
+    {n:"Enhanced Defense",lv:0,page:"T p.21",star:true,item:"Armor or shield",line:"+1 Armor Class. +2 at level 10."},
+    {n:"Enhanced Arcane Focus",lv:0,page:"T p.21",star:true,item:"Rod, staff or wand (attunement)",line:"+1 to spell attack rolls, ignore half cover. +2 at level 10."},
+    {n:"Mind Sharpener",lv:0,page:"T p.22",star:true,item:"Armor or robes",line:"4 charges. When the wearer fails a Constitution save to keep concentration on a spell, they can use their reaction and spend 1 charge to succeed instead. 1d4 charges back at dawn."},
+    {n:"Repeating Shot",lv:0,page:"T p.22",star:true,item:"Weapon with ammunition (attunement)",line:"+1 to attack and damage rolls with it. Ignores the loading property. If you load no ammunition, it makes its own. Good with a crossbow. Needs attunement: you bond with the item before its magic works for you (T p.22)."},
+    {n:"Returning Weapon",lv:0,page:"T p.23",item:"Thrown weapon",line:"+1 to attack and damage. Flies back to your hand after a throw."},
+    {n:"Armor of Magical Strength",lv:0,page:"T p.20",item:"Armor (attunement)",line:"6 charges: add Intelligence to Strength checks and saves, or avoid being knocked prone."},
+    {n:"Homunculus Servant",lv:0,page:"T p.21-22",item:"A gem or crystal worth 100 gp",line:"A tiny flying helper creature. Costs a bonus action to command."},
+    {n:"Replicate: Alchemy jug",lv:0,page:"T p.22-23",item:"Replicate Magic Item",line:"Copy an alchemy jug (makes liquids). No attunement."},
+    {n:"Replicate: Bag of holding",lv:0,page:"T p.22-23",item:"Replicate Magic Item",line:"Copy a bag of holding. A big, light storage bag. No attunement."},
+    {n:"Replicate: Cap of water breathing",lv:0,page:"T p.22-23",item:"Replicate Magic Item",line:"Copy a cap of water breathing. No attunement."},
+    {n:"Replicate: Goggles of night",lv:0,page:"T p.22-23",item:"Replicate Magic Item",line:"Copy goggles of night (darkvision). No attunement."},
+    {n:"Replicate: Rope of climbing",lv:0,page:"T p.22-23",item:"Replicate Magic Item",line:"Copy a rope of climbing. No attunement."},
+    {n:"Replicate: Sending stones",lv:0,page:"T p.22-23",item:"Replicate Magic Item",line:"Copy sending stones (short messages at distance). No attunement."},
+    {n:"Replicate: Wand of magic detection",lv:0,page:"T p.22-23",item:"Replicate Magic Item",line:"Copy a wand of magic detection. No attunement."},
+    {n:"Replicate: Wand of secrets",lv:0,page:"T p.22-23",item:"Replicate Magic Item",line:"Copy a wand of secrets (finds hidden doors and traps). No attunement."}
+  ],
+  lockedInfusions: [
+    ["Boots of the Winding Path",6,"T p.21"],["Radiant Weapon",6,"T p.22"],["Repulsion Shield",6,"T p.23"],["Resistant Armor",6,"T p.23"],
+    ["Spell-Refueling Ring",6,"T p.23"],["Helm of Awareness",10,"T p.21"],["Arcane Propulsion Armor",14,"T p.20"]
+  ],
+
+  /* ---- Specialists (T p.14-20). Features at level 3 are active in the level 3 preview. ---- */
+  specialists: {
+    alchemist:{name:"Alchemist",page:"T p.14-15",tool:"Alchemist's supplies",
+      feel:"The team's medic and chemist. You hand out elixirs that heal or help.",
+      spells:{3:["Healing word","Ray of sickness"],5:["Flaming sphere","Melf's acid arrow"],9:["Gaseous form","Mass healing word"],13:["Blight","Death ward"],17:["Cloudkill","Raise dead"]},
+      features:[[3,"Tool Proficiency","Alchemist's supplies (or another artisan's tool if you already have them).","T p.14"],
+        [3,"Experimental Elixir","After a long rest, make one elixir in an empty flask. Roll a d6 for its effect: healing (2d4 + Int), faster, +1 AC, d4 bonus, fly 10 ft, or alter self. You can spend a spell slot to make more and choose the effect.","T p.14-15"],
+        [5,"Alchemical Savant","Add your Int modifier to one healing roll, or one acid, fire, necrotic or poison damage roll, when you cast through alchemist's supplies.","T p.15"],
+        [9,"Restorative Reagents","Elixirs also give 2d6 + Int temporary hit points. Free lesser restoration (Int times per long rest).","T p.15"],
+        [15,"Chemical Mastery","Resist acid and poison, immune to poisoned. Free greater restoration and heal once each per long rest.","T p.15"]],
+      strong:"Very good at keeping people alive. Simple to run.",weak:"Low damage. Elixir effects are random unless you spend slots.",suits:"A player who likes helping friends and does not want a pet to manage."},
+    armorer:{name:"Armorer",page:"T p.15-17",tool:"Smith's tools",
+      feel:"A walking suit of magic armor. Front-line Guardian or sneaky ranged Infiltrator.",
+      spells:{3:["Magic missile","Thunderwave"],5:["Mirror image","Shatter"],9:["Hypnotic pattern","Lightning bolt"],13:["Fire shield","Greater invisibility"],17:["Passwall","Wall of force"]},
+      features:[[3,"Tools of the Trade","Heavy armor proficiency and smith's tools (or another artisan's tool if you already have them).","T p.15"],
+        [3,"Arcane Armor","Turn armor you wear into magic armor (smith's tools in hand). No Strength requirement, works as a spellcasting focus, cannot be removed against your will.","T p.15-16"],
+        [3,"Armor Model","Choose Guardian (thunder gauntlets 1d8; a creature you hit has disadvantage attacking anyone but you; temporary hit points equal to your level) or Infiltrator (lightning launcher 1d6 at range, +5 speed, advantage on Stealth). The model's weapon uses Intelligence.","T p.16"],
+        [5,"Extra Attack","Two attacks when you take the Attack action.","T p.16"],
+        [9,"Armor Modifications","Your armor counts as four items for infusions, with two extra infusion slots.","T p.17"],
+        [15,"Perfected Armor","Guardian: pull enemies to you. Infiltrator: targets glow and take extra damage.","T p.17"]],
+      strong:"The sturdiest artificer. Extra Attack at level 5. No pet to manage.",weak:"Best when you stay close. Heavy armor still has Strength limits for other armors.",suits:"A beginner who wants to fight up close and keep things simple."},
+    artillerist:{name:"Artillerist",page:"T p.17-18",tool:"Woodcarver's tools",
+      feel:"A battlefield engineer. You build a cannon that blasts enemies or shields allies.",
+      spells:{3:["Shield","Thunderwave"],5:["Scorching ray","Shatter"],9:["Fireball","Wind wall"],13:["Ice storm","Wall of fire"],17:["Cone of cold","Wall of force"]},
+      features:[[3,"Tool Proficiency","Woodcarver's tools (or another artisan's tool if you already have them).","T p.17"],
+        [3,"Eldritch Cannon","As an action, with woodcarver's or smith's tools in hand, create a Small or Tiny cannon within 5 ft. Free once per long rest; after that, spend a spell slot. One cannon at a time. AC 18, hit points = 5 x level, lasts 1 hour. On your turn, a bonus action (within 60 ft of it) makes it fire: Flamethrower (2d8 fire cone), Force Ballista (2d8 force, ranged, pushes) or Protector (temporary hit points to itself and friends). If you do not activate it, it does nothing.","T p.17-18"],
+        [5,"Arcane Firearm","A wand, staff or rod becomes a focus that adds a d8 to one damage roll of your spells.","T p.18"],
+        [9,"Explosive Cannon","Cannon damage +1d8. It can explode for 3d8 force in a 20 ft area.","T p.18"],
+        [15,"Fortified Position","You and your allies within 10 ft of your cannon get half cover. Two cannons at once.","T p.18"]],
+      strong:"Strong ranged damage from a safe spot. Flexible cannon.",weak:"The cannon costs a bonus action each turn and can be destroyed.",suits:"A player who likes ranged damage and does not mind one more thing to run."},
+    battlesmith:{name:"Battle Smith",page:"T p.18-20",tool:"Smith's tools",
+      feel:"A fighter-medic with a loyal steel defender (a robot bodyguard). You hit using Intelligence.",
+      spells:{3:["Heroism","Shield"],5:["Branding smite","Warding bond"],9:["Aura of vitality","Conjure barrage"],13:["Aura of purity","Fire shield"],17:["Banishing smite","Mass cure wounds"]},
+      features:[[3,"Tool Proficiency","Smith's tools (or another artisan's tool if you already have them).","T p.19"],
+        [3,"Battle Ready","Martial weapon proficiency. Use Intelligence for attack and damage rolls with a magic weapon (for example one with Enhanced Weapon).","T p.19"],
+        [3,"Steel Defender","A companion: AC 15, hit points 2 + Int + 5 x level, speed 40 ft. Its strike uses your spell attack bonus and deals 1d8 + proficiency bonus force damage. It only takes the Dodge action unless you spend a bonus action to command it.","T p.19"],
+        [5,"Extra Attack","Two attacks when you take the Attack action.","T p.20"],
+        [9,"Arcane Jolt","When you hit with a magic weapon or your defender hits: +2d6 force damage, or heal 2d6 to a creature within 30 ft of the target. Int modifier times per long rest, once per turn.","T p.20"],
+        [15,"Improved Defender","Arcane Jolt becomes 4d6. Defender gets +2 AC.","T p.20"]],
+      strong:"A second body in combat, good damage, and some healing. Strong use of Intelligence.",weak:"The defender costs a bonus action each turn. Battle Ready needs a magic weapon (use Enhanced Weapon).",suits:"A player who likes a loyal pet and wants a fighter-healer mix."}
+  }
+};
+/* =====================================================================
+   RULES DATA BLOCK  (END)
+   ===================================================================== */
+
+/* =========================== APP CODE =============================== */
+const STEPS = ["Concept","Race","Ability scores","Background","Skills & tools","Equipment","Spells & infusions","Specialist","Sheet"];
+const KEY = "artificerCreator.v1";
+const ABIL = DATA.abilities.map(a=>a.id);
+const AN = id => DATA.abilities.find(a=>a.id===id).name;
+const mod = s => Math.floor((s-10)/2);
+const sg = n => (n>=0?"+":"")+n;
+const esc = s => String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function defaults(){
+  const z=()=>({str:null,dex:null,con:null,int:null,wis:null,cha:null});
+  return {step:0,level:3,hpMode:'avg',hpRolls:[null,null],name:"",concept:"",align:"",
+    race:"",subrace:"",customize:false,flexPick:[],custPick:[],dragon:"",lineSize:"Medium",customTrait:"",
+    method:"standard",std:z(),pb:{str:8,dex:8,con:8,int:8,wis:8,cha:8},man:z(),
+    bg:"",sel:{},showX:false,
+    armor:"",gearMode:"kit",gold:null,goldArmor:"none",goldShield:false,otherGear:"",
+    specialist:"",profNote:"",activeNote:""};
+}
+let S = defaults();
+function loadPreset(){ S=Object.assign(defaults(),JSON.parse(JSON.stringify(DATA.preset))); S.level=3; }
+function load(){
+  let had=false;
+  try{ const t=localStorage.getItem(KEY); if(t){ had=true; const o=JSON.parse(t); S=Object.assign(defaults(),o); S.level=3; if(S.method==='pointbuy') S.method='standard'; if(!Array.isArray(S.hpRolls)) S.hpRolls=[null,null]; S.std=Object.assign(defaults().std,o.std||{}); S.pb=Object.assign(defaults().pb,o.pb||{}); S.man=Object.assign(defaults().man,o.man||{}); } }catch(e){}
+  if(!had) loadPreset();
+}
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
+
+/* ---------- effective race ---------- */
+function effRace(){
+  const b=DATA.races[S.race]; if(!b) return null;
+  const sub = b.subraces ? b.subraces[S.subrace] : null;
+  const R = {key:S.race, name:b.name+(sub?" ("+sub.name+")":""), page:b.page+(sub?"; "+sub.page:""), size:b.size, speed:(sub&&sub.speed)||b.speed,
+    fixed:Object.assign({},b.fixed||{},sub&&sub.fixed||{}), flex:(sub&&sub.flex)||b.flex||[], flexExclude:b.flexExclude||[],
+    customOk:!!b.customOk&&!(sub&&sub.noCustom), langs:(b.langs||[]).slice(), langPicks:(b.langPicks||0)+(sub&&sub.langPicks||0),
+    skillsFixed:(b.skillsFixed||[]).slice(), skillPicks:(sub&&sub.skillPicks)||b.skillPicks||0,
+    toolPick:b.toolPick||null, toolsFixed:(sub&&sub.toolsFixed)||[], feat:!!((sub&&sub.feat)||b.feat),
+    dragon:!!b.dragon, wizardCantrip:!!(sub&&sub.wizardCantrip), variableTrait:!!b.variableTrait,
+    cantripsFixed:((b.cantripsFixed||[]).concat(sub&&sub.cantripsFixed||[])),
+    hpPerLevel:(sub&&sub.hpPerLevel)||0, traits:(b.traits||[]).concat(sub&&sub.traits||[]), needSub:!!b.subraces, blurb:b.blurb};
+  if(b.subraces && !sub){ R.fixed={}; R.flex=[]; }
+  return R;
+}
+function asiSlots(R){
+  if(!R) return [];
+  if(S.customize && R.customOk){
+    const vals=Object.values(R.fixed).concat(R.flex).sort((a,b)=>b-a);
+    return vals.map(v=>({v:v,exclude:[]}));
+  }
+  return R.flex.map(v=>({v:v,exclude:R.flexExclude}));
+}
+function asiPicks(R){ return (S.customize && R.customOk) ? S.custPick : S.flexPick; }
+
+/* ---------- compute everything ---------- */
+function compute(){
+  let C=null;
+  for(let pass=0;pass<4;pass++){ C=build(); if(!C.changed) break; }
+  return C;
+}
+function build(){
+  const L=S.level, C={slots:[],problems:[],changed:false,owned:{skills:new Set(),tools:new Set(),langs:new Set()},notes:[],featIds:[]};
+  const R=effRace(), BG=DATA.backgrounds[S.bg]||null, SP=DATA.specialists[S.specialist]||null;
+  C.R=R; C.BG=BG; C.SP=SP;
+  const need=(step,msg)=>C.problems.push({step,msg});
+  function slot(id,group,label,options,count,hint){
+    const cur=S.sel[id];
+    let arr=Array.isArray(cur)?cur:(cur?[cur]:[]);
+    const ok=v=>options.some(o=>o.v===v&&!o.dis);
+    const valid=arr.filter((v,i)=>ok(v)&&arr.indexOf(v)===i).slice(0,count);
+    if(valid.length!==arr.length){ C.changed=true; S.sel[id]=count>1?valid:(valid[0]||""); }
+    const s={id,group,label,options,count,hint,value:valid};
+    C.slots.push(s); return valid;
+  }
+  const opts=(list,owned)=>list.map(x=>({v:x,l:x,dis:owned&&owned.has(x)}));
+  const own=C.owned;
+
+  /* languages */
+  if(R){
+    R.langs.forEach((lg,i)=>{
+      if(S.customize && R.customOk){
+        const o=[{v:"",l:"Keep "+lg}].concat(DATA.languages.filter(x=>x!==lg).map(x=>({v:x,l:x,dis:own.langs.has(x)})));
+        const v=slot("lang:swap:"+i,"race","Language: replace "+lg+"? (Tasha's, T p.7)",o,1,"");
+        const f=v[0]||lg; own.langs.add(f);
+      } else own.langs.add(lg);
+    });
+    if(R.langPicks){ const v=slot("lang:race","race","Extra language (race)",opts(DATA.languages,own.langs),R.langPicks,"Pick any language. Ask your DM about secret languages like Deep Speech (PHB p.123)."); v.forEach(x=>own.langs.add(x)); if(v.length<R.langPicks) need(1,"Choose your extra racial language."); }
+  }
+  if(BG&&BG.langs){ const v=slot("lang:bg","bg","Background languages",opts(DATA.languages,own.langs),BG.langs,""); v.forEach(x=>own.langs.add(x)); if(v.length<BG.langs) need(3,"Choose your background language(s)."); }
+
+  /* skills */
+  const allSk=DATA.skills.map(s=>s[0]);
+  if(BG) BG.skills.forEach(s=>own.skills.add(s));
+  if(BG&&BG.skillChoice){ const v=slot("skill:bgchoice","bg","Background skill (one that fits your faction)",opts(BG.skillChoice,own.skills),1,""); if(v[0]) own.skills.add(v[0]); else need(3,"Choose your Faction Agent skill."); }
+  if(R){
+    R.skillsFixed.forEach(sk=>{
+      if(S.customize && R.customOk){
+        const o=[{v:"",l:"Keep "+sk}].concat(allSk.filter(x=>x!==sk).map(x=>({v:x,l:x,dis:own.skills.has(x)})));
+        const v=slot("skill:swap:"+sk,"race","Skill: replace "+sk+"? (Tasha's proficiency swap, T p.7)",o,1,"");
+        const f=v[0]||sk; if(own.skills.has(f)){ const d=slot("skill:dup:"+f,"skills","You already have "+f+" from your background. Choose a different skill (PHB p.125)",opts(allSk,own.skills),1,""); if(d[0]) own.skills.add(d[0]); else need(4,"Replace the duplicate skill "+f+"."); } else own.skills.add(f);
+      } else if(own.skills.has(sk)){
+        const d=slot("skill:dup:"+sk,"skills","You already have "+sk+" from your background. Choose a different skill (PHB p.125)",opts(allSk,own.skills),1,"");
+        if(d[0]) own.skills.add(d[0]); else need(4,"Replace the duplicate skill "+sk+".");
+      } else own.skills.add(sk);
+    });
+    let rp=R.skillPicks; if(R.variableTrait && S.customTrait==="skill") rp=1;
+    if(R.variableTrait && !S.customTrait) need(1,"Custom Lineage: choose darkvision or a skill.");
+    if(rp){ const v=slot("skill:race","race","Skill from your race",opts(allSk,own.skills),rp,""); v.forEach(x=>own.skills.add(x)); if(v.length<rp) need(1,"Choose your racial skill(s)."); }
+  }
+  const cs=slot("skill:class","skills","Artificer skills: choose "+DATA.cls.skillCount,DATA.cls.skillList.map(x=>({v:x,l:x,dis:own.skills.has(x)})),DATA.cls.skillCount,"");
+  cs.forEach(x=>own.skills.add(x)); if(cs.length<DATA.cls.skillCount) need(4,"Choose "+DATA.cls.skillCount+" artificer skills.");
+
+  /* tools */
+  DATA.cls.fixedTools.forEach(t=>own.tools.add(t));
+  const ct=slot("tool:class","skills","Artificer: one kind of artisan's tools",opts(DATA.artisanTools,own.tools),1,"");
+  if(ct[0]) own.tools.add(ct[0]); else need(4,"Choose your artisan's tools.");
+  const toolPool=()=>DATA.artisanTools.concat(DATA.gamingSets,DATA.instruments,DATA.otherTools);
+  function fixedTool(t,id,group,step,why){
+    if(own.tools.has(t)){ const d=slot(id,group,"You already have "+t+" ("+why+"). Choose a different tool (PHB p.125)",opts(toolPool(),own.tools),1,""); if(d[0]) own.tools.add(d[0]); else need(step,"Replace the duplicate tool "+t+"."); }
+    else own.tools.add(t);
+  }
+  if(BG){
+    (BG.toolsFixed||[]).forEach((t,i)=>fixedTool(t,"tool:bgdup:"+i,"bg",3,"background"));
+    (BG.toolChoices||[]).forEach((tc,i)=>{
+      const list=tc[1]==="gaming"?DATA.gamingSets:tc[1]==="instrument"?DATA.instruments:DATA.artisanTools;
+      const v=slot("tool:bg:"+i,"bg","Background tool: "+tc[0],opts(list,own.tools),1,""); if(v[0]) own.tools.add(v[0]); else need(3,"Choose your background tool ("+tc[0]+").");
+    });
+  }
+  if(R){
+    (R.toolsFixed||[]).forEach((t,i)=>fixedTool(t,"tool:racedup:"+i,"skills",4,"race"));
+    if(R.toolPick){ const v=slot("tool:race","race","Racial tool proficiency",opts(R.toolPick,own.tools),1,""); if(v[0]) own.tools.add(v[0]); else need(1,"Choose your racial tool."); }
+  }
+
+  /* feats */
+  C.feat=null; C.featExtra={};
+  if(R&&R.feat){
+    const fo=Object.keys(DATA.feats).map(k=>({v:k,l:DATA.feats[k].n}));
+    const v=slot("feat:race","race","Feat ("+DATA.featsPage+")",fo,1,"");
+    if(v[0]){ C.feat=v[0]; const F=DATA.feats[v[0]];
+      if(F.asiChoice){ const ao=F.asiChoice.map(a=>({v:a,l:AN(a)})); const av=slot("feat:asi","race",F.n+": which ability gets +1?",ao,1,""); C.featExtra.asi=av[0]; if(!av[0]) need(1,F.n+": choose the ability."); }
+      if(F.skilled){ const so=allSk.map(x=>({v:"skill:"+x,l:x+" (skill)",dis:own.skills.has(x)})).concat(toolPool().map(x=>({v:"tool:"+x,l:x+" (tool)",dis:own.tools.has(x)})));
+        const sv=slot("feat:skilled","skills","Skilled feat: choose 3 skills or tools",so,3,""); sv.forEach(x=>{ if(x.indexOf("skill:")===0) own.skills.add(x.slice(6)); else own.tools.add(x.slice(5)); }); C.featExtra.skilled=sv; if(sv.length<3) need(4,"Skilled feat: choose 3 skills or tools."); }
+    } else need(1,"Choose a feat.");
+  }
+
+  /* specialist tool (level 3) */
+  if(L>=3){
+    if(!SP) need(7,"Choose your Artificer Specialist (needed at level 3).");
+    else if(own.tools.has(SP.tool)){ const d=slot("tool:spec","spec","You already have "+SP.tool+". Choose another artisan's tool (T p.14-19)",opts(DATA.artisanTools,own.tools),1,""); if(d[0]) own.tools.add(d[0]); else need(7,"Choose a replacement artisan's tool."); }
+    else own.tools.add(SP.tool);
+  }
+
+  /* ability scores */
+  C.base={}; let abOk=true;
+  ABIL.forEach(a=>{ let v=S.method==="standard"?S.std[a]:S.man[a]; if(v==null||v==="") {abOk=false; v=null;} C.base[a]=v; });
+  if(S.method==="standard"){ const used=ABIL.map(a=>S.std[a]).filter(v=>v!=null); if(used.length<6) {abOk=false;} if(new Set(used).size!==used.length){abOk=false; need(2,"Each standard-array number can be used only once.");} }
+  if(S.method==="manual"){ ABIL.forEach(a=>{ const v=S.man[a]; if(v!=null&&(v<DATA.manualMin||v>DATA.manualMax||!Number.isInteger(v))){abOk=false;need(2,"Rolled scores must be whole numbers from 6 to 18.");} }); }
+  if(!abOk && !C.problems.some(p=>p.step===2)) need(2,"Fill in all six ability scores.");
+  C.racial={str:0,dex:0,con:0,int:0,wis:0,cha:0};
+  if(R){
+    const sl=asiSlots(R), pk=asiPicks(R);
+    if(S.customize && R.customOk){ /* all increases free */ }
+    else Object.keys(R.fixed).forEach(a=>C.racial[a]+=R.fixed[a]);
+    const used=new Set(S.customize&&R.customOk?[]:Object.keys(R.fixed));
+    sl.forEach((s,i)=>{ const a=pk[i]; if(!a||s.exclude.includes(a)||used.has(a)){ need(1,"Place every racial ability increase on a different score."); return; } used.add(a); C.racial[a]+=s.v; });
+  } else need(1,"Choose a race.");
+  if(R&&R.needSub&&!S.subrace) need(1,"Choose a subrace.");
+  if(R&&R.dragon&&!S.dragon) need(1,"Choose a draconic ancestry.");
+  if(R&&R.key==="custom"&&!S.lineSize) need(1,"Choose a size.");
+  C.featAsi={str:0,dex:0,con:0,int:0,wis:0,cha:0};
+  if(C.feat){ const F=DATA.feats[C.feat]; if(F.asi) Object.keys(F.asi).forEach(a=>C.featAsi[a]+=F.asi[a]); if(F.asiChoice&&C.featExtra.asi) C.featAsi[C.featExtra.asi]+=1; }
+  C.score={}; C.mod={};
+  ABIL.forEach(a=>{ const b=C.base[a]==null?8:C.base[a]; C.score[a]=Math.min(20,b+C.racial[a]+C.featAsi[a]); C.mod[a]=mod(C.score[a]); });
+  C.abOk=abOk;
+
+  /* numbers */
+  C.pb=DATA.cls.profBonus(L);
+  C.intMod=C.mod.int;
+  C.dc=8+C.pb+C.intMod; C.atk=C.pb+C.intMod;
+  C.prepN=Math.max(1,C.intMod+Math.floor(L/2));
+  C.cantripN=L>=14?4:L>=10?3:2;
+  C.slotsArr=DATA.cls.slots[L]||[2];
+  C.inf=DATA.cls.infusions(L);
+  let hpPer=0; if(R) hpPer+=R.hpPerLevel; if(C.feat&&DATA.feats[C.feat].hpPerLevel) hpPer+=DATA.feats[C.feat].hpPerLevel;
+  C.hp = Math.max(1,8+C.mod.con)+hpPer;
+  for(let lv=2;lv<=L;lv++){ const r=S.hpMode==="roll"?S.hpRolls[lv-2]:5; C.hp+=Math.max(1,(r==null?0:r)+C.mod.con)+hpPer;
+    if(S.hpMode==="roll"&&(r==null||r<DATA.hpRollMin||r>DATA.hpRollMax||!Number.isInteger(r))) need(2,"Hit points: enter a d8 roll (2 to 8, after rerolling 1s) for level "+lv+", or choose the fixed average."); }
+  C.speed=R?R.speed:30;
+  C.init=C.mod.dex+((C.feat&&DATA.feats[C.feat].init)||0);
+
+  /* equipment */
+  C.weaponsPicked=[];
+  if(S.gearMode==="kit"){
+    const wo=DATA.simpleWeapons.map(w=>({v:w.n,l:w.n+" ("+w.d+" "+w.t+")"}));
+    const wv=slot("weapons","equip","Choose two simple weapons (T p.10)",wo,2,"");
+    C.weaponsPicked=wv.slice();
+    if(wv.length<2) need(5,"Choose your two simple weapons.");
+    if(!S.armor||!DATA.kitArmor.includes(S.armor)) need(5,"Choose studded leather or scale mail.");
+  } else {
+    if(S.gold==null) need(5,"Roll (or enter) your starting gold.");
+  }
+  C.armorKey = S.gearMode==="kit"?(DATA.kitArmor.includes(S.armor)?S.armor:"none"):S.goldArmor;
+  C.shield = S.gearMode==="gold"&&S.goldShield;
+  const A=DATA.armor[C.armorKey]||DATA.armor.none;
+  let dexPart = A.cap===null?C.mod.dex:Math.min(C.mod.dex,A.cap);
+  C.ac=A.base+dexPart+(C.shield?DATA.shield.bonus:0);
+  C.acText=A.n+" ("+A.base+(A.cap===null?" + Dex":(" + Dex, max +"+A.cap))+")"+(C.shield?" + shield 2":"");
+  C.stealthDis=A.stealth;
+  if(S.gearMode==="gold" && S.gold!=null){
+    const spent=A.cost+(C.shield?DATA.shield.cost:0); C.goldLeft=S.gold-spent;
+    if(C.goldLeft<0) need(5,"Your armor costs more gold than you have.");
+  }
+
+  /* spells and infusions */
+  const co=DATA.cantrips.map(c=>({v:c[0],l:c[0],src:c[1]}));
+  const cv=slot("cantrips","spells","Artificer cantrips: choose "+C.cantripN,co,C.cantripN,"");
+  if(cv.length<C.cantripN) need(6,"Choose "+C.cantripN+" cantrips.");
+  if(R&&R.wizardCantrip){ const v=slot("cantrip:race","spells","High Elf: one wizard cantrip (Intelligence)",DATA.wizardCantrips.map(x=>({v:x,l:x,dis:cv.includes(x)})),1,""); if(!v[0]) need(6,"Choose your High Elf wizard cantrip."); }
+  const po=DATA.spells1.map(c=>({v:c[0],l:c[0],src:c[1]}));
+  const pv=slot("prepared","spells","Prepared 1st-level spells: choose "+C.prepN,po,C.prepN,"");
+  if(pv.length<C.prepN) need(6,"Prepare "+C.prepN+" spell(s).");
+  const io=DATA.infusions.filter(i=>i.lv<=Math.max(L,3)).map(i=>({v:i.n,l:i.n}));
+  const iv=slot("infusions","spells","Infusions known: choose "+Math.max(C.inf.known,4)+" (you learn them at level 2)",io,4,"");
+  if(L>=2 && iv.length<4) need(6,"Choose your 4 infusions.");
+  C.cantrips=cv; C.prepared=pv; C.infusions=iv;
+  /* active infusions (items infused today): up to C.inf.items, chosen from the known infusions (T p.12) */
+  const av=slot("active","spells","Active infusions today: choose up to "+C.inf.items+" of your known infusions",iv.map(n=>({v:n,l:n})),C.inf.items,"");
+  C.active=L>=2?av:[];
+  C.edActive=false;
+  if(C.active.indexOf("Enhanced Defense")>=0){
+    if(C.armorKey!=="none"||C.shield){ C.edActive=true; C.ac+=1; C.acText+=" + Enhanced Defense 1"; }
+    else C.notes.push("Enhanced Defense goes on armor or a shield, and you have neither, so it does not change your Armor Class.");
+  }
+  C.bonusSpells = (L>=3&&SP)?SP.spells[3]:[];
+  if(!S.name.trim()) C.notes.push("You have not given your character a name yet (step 1).");
+  C.blocking=C.problems.length>0;
+  return C;
+}
+
+/* ---------- UI helpers ---------- */
+function opt(selected,html,attrs,dis){ return '<label class="opt'+(selected?' sel':'')+(dis?' dis':'')+'" '+(attrs||'')+'>'+html+'</label>'; }
+function srcPill(s){ return s==="X"?'<span class="pill x">Xanathar\'s</span>':s==="T"?'<span class="pill">Tasha\'s</span>':''; }
+function renderSlot(C,s,opt2){
+  opt2=opt2||{};
+  if(s.count===1){
+    let h='<label>'+esc(s.label)+'</label><select data-sel="'+esc(s.id)+'"><option value="">- choose -</option>';
+    s.options.forEach(o=>{ h+='<option value="'+esc(o.v)+'"'+(s.value[0]===o.v?' selected':'')+(o.dis?' disabled':'')+'>'+esc(o.l)+(o.dis?' (already have)':'')+'</option>'; });
+    return h+'</select>'+(s.hint?'<div class="hint">'+esc(s.hint)+'</div>':'');
+  }
+  let h='<label>'+esc(s.label)+' <span class="pill">'+s.value.length+' of '+s.count+'</span></label>';
+  s.options.forEach(o=>{
+    const on=s.value.includes(o.v), full=s.value.length>=s.count;
+    h+='<label class="chk'+((o.dis||(!on&&full))?' dis':'')+'"><input type="checkbox" data-chk="'+esc(s.id)+'" value="'+esc(o.v)+'"'+(on?' checked':'')+((o.dis||(!on&&full))?' disabled':'')+'><span class="t">'+esc(o.l)+(o.dis?' (already have)':'')+'</span></label>';
+  });
+  return h;
+}
+function slotsFor(C,group,filter){ return C.slots.filter(s=>s.group===group&&(!filter||filter(s))).map(s=>renderSlot(C,s)).join(""); }
+
+/* ---------- steps ---------- */
+const STEP_FN=[];
+STEP_FN[0]=function(C){
+  return '<div class="card"><h2>1. Concept and name</h2><p class="hint">An artificer is an inventor-spellcaster. You use tools to cast spells and turn plain items into magic items (T p.9, T p.11-13).</p>'+
+  '<label for="f-name">Character name</label><input type="text" id="f-name" data-text="name" value="'+esc(S.name)+'" placeholder="Your pirate&#39;s name">'+
+  '<label for="f-concept">Concept: who are they, in one or two sentences?</label><textarea id="f-concept" data-text="concept" placeholder="A cheerful gnome who fixes things and loves gadgets.">'+esc(S.concept)+'</textarea>'+
+  '<label for="f-align">Alignment (optional)</label><input type="text" id="f-align" data-text="align" value="'+esc(S.align)+'" placeholder="For example: Neutral good (PHB p.122)">'+
+  '<p class="hint">Alignment is a short label for how your character thinks about right and wrong. It does not change any numbers.</p></div>'+
+  '<div class="note"><b>Quick Build tip (T p.10):</b> put your highest score in Intelligence, then Constitution or Dexterity, and choose the Guild Artisan background.</div>'+
+  '<div class="note">This tool builds a level 3 artificer. You start at level 1, gain Infuse Item at level 2, and pick your specialist at level 3 (T p.10, p.12-13). The sheet at the end explains what you had at each level.</div>';
+};
+STEP_FN[1]=function(C){
+  let h='<div class="card"><h2>2. Race</h2><p class="hint">Your race gives ability score bonuses, speed, senses and other traits. Pick one from the Player\'s Handbook (PHB p.17-43) or build a Custom Lineage from Tasha\'s (T p.8).</p>';
+  Object.keys(DATA.races).forEach(k=>{ const r=DATA.races[k]; h+=opt(S.race===k,'<input type="radio" name="race" data-race="'+k+'"'+(S.race===k?' checked':'')+'><b>'+esc(r.name)+'</b> <span class="pill">'+esc(r.page)+'</span><small>'+esc(r.blurb)+'</small>'); });
+  h+='</div>';
+  const R=C.R;
+  if(R){
+    const b=DATA.races[S.race];
+    h+='<div class="card"><h3>'+esc(b.name)+'</h3>';
+    if(b.subraces){ h+='<label>Subrace (a variation of the race)</label>'; Object.keys(b.subraces).forEach(k=>{ const s=b.subraces[k]; h+=opt(S.subrace===k,'<input type="radio" name="sub" data-sub="'+k+'"'+(S.subrace===k?' checked':'')+'><b>'+esc(s.name)+'</b> <span class="pill">'+esc(s.page)+'</span><small>'+esc(s.blurb||"")+'</small>'); }); }
+    if(S.race==="custom"){ h+='<label>Size</label><select data-set="lineSize"><option'+(S.lineSize==="Medium"?' selected':'')+'>Medium</option><option'+(S.lineSize==="Small"?' selected':'')+'>Small</option></select>';
+      h+='<label>Variable trait (T p.8)</label><select data-set="customTrait"><option value="">- choose -</option><option value="dark"'+(S.customTrait==="dark"?' selected':'')+'>Darkvision 60 ft.</option><option value="skill"'+(S.customTrait==="skill"?' selected':'')+'>One skill of your choice</option></select>'; }
+    if(R.dragon){ h+='<label>Draconic ancestry (PHB p.34)</label><select data-set="dragon"><option value="">- choose -</option>'+DATA.dragons.map(d=>'<option value="'+d[0]+'"'+(S.dragon===d[0]?' selected':'')+'>'+d[0]+' dragon: '+d[1]+', '+d[2]+'</option>').join("")+'</select>'; }
+    if(!R.needSub || S.subrace){
+      h+='<h3>Traits</h3><ul>'+R.traits.map(t=>'<li>'+esc(t)+'</li>').join("")+'</ul><p class="hint">Size: '+esc(S.race==="custom"?S.lineSize:R.size)+'. Speed: '+R.speed+' ft. ('+esc(R.page)+')</p>';
+      if(R.customOk) h+='<div class="note"><label style="display:flex;gap:8px;margin:0"><input type="checkbox" data-bool="customize"'+(S.customize?' checked':'')+'> Use Tasha\'s "Customizing Your Origin" (T p.7)</label><div class="hint">'+esc(DATA.customizeNotes)+'</div></div>';
+      else if(R.key==="human"||R.key==="custom") h+='<div class="hint">Tasha\'s Customizing Your Origin has nothing to move for this choice: its increases are already your own to place or equal.</div>';
+      const sl=asiSlots(R);
+      h+='<h3>Ability score increases</h3>';
+      if(!(S.customize&&R.customOk)){ const f=Object.keys(R.fixed); if(f.length) h+='<p>Fixed: '+f.map(a=>AN(a)+' '+sg(R.fixed[a])).join(", ")+'.</p>'; }
+      if(sl.length){ const pk=asiPicks(R); h+='<p class="hint">'+(S.customize&&R.customOk?'Place each increase on a different score (Tasha\'s option, T p.7).':'Place these increases yourself. Each must go on a different score.')+'</p>';
+        sl.forEach((s,i)=>{ h+='<label>Increase of '+sg(s.v)+'</label><select data-asi="'+i+'"><option value="">- choose -</option>'+DATA.abilities.filter(a=>!s.exclude.includes(a.id)).map(a=>'<option value="'+a.id+'"'+(pk[i]===a.id?' selected':'')+'>'+a.name+'</option>').join("")+'</select>'; }); }
+      h+=slotsFor(C,"race");
+      if(R.cantripsFixed.length) h+='<p class="hint">Racial cantrips: '+R.cantripsFixed.map(c=>c[0]+' ('+AN(c[1])+')').join(", ")+'.</p>';
+      h+='<label>Proficiency swaps for weapons or other items (optional note, Tasha\'s T p.7)</label><input type="text" data-text="profNote" value="'+esc(S.profNote)+'" placeholder="For example: swap longsword proficiency for lute"><div class="hint">Tasha\'s lets you swap racial weapon or tool proficiencies (table on T p.7). The creator only records your note on the sheet.</div>';
+    }
+    h+='</div>';
+  }
+  return h;
+};
+STEP_FN[2]=function(C){
+  let h='<div class="card"><h2>3. Ability scores</h2><p class="hint">Six numbers describe your character. The modifier (the number you add to dice) is: score minus 10, divided by 2, rounded down (PHB p.13). Choose how to get the numbers.</p>';
+  const m=[["standard","Standard array: 15, 14, 13, 12, 10, 8 (PHB p.13). Easiest."],["manual","Rolled scores: roll 4d6, reroll any 1s, drop the lowest die (4d6: PHB p.13; reroll 1s: your table rule)."]];
+  m.forEach(x=>h+=opt(S.method===x[0],'<input type="radio" name="method" data-method="'+x[0]+'"'+(S.method===x[0]?' checked':'')+'><b>'+esc(x[1])+'</b>'));
+  h+='<div class="row" style="margin-top:8px"><button class="btn sec" data-act="suggest">Fill in a suggested artificer spread</button></div>';
+  h+='<div class="hint">Suggested: Intelligence highest, then Constitution and Dexterity (T p.10 Quick Build). Point buy is not used at your table, so it is not offered.</div></div>';
+  h+='<div class="card">';
+  if(S.method==="standard"){
+    h+='<p class="hint">Give each number to one ability. Each number can be used once.</p>';
+    DATA.abilities.forEach(a=>{ const used=ABIL.filter(x=>x!==a.id).map(x=>S.std[x]); h+='<label>'+a.name+'</label><select data-std="'+a.id+'"><option value="">- choose -</option>'+DATA.standardArray.map(v=>'<option value="'+v+'"'+(S.std[a.id]===v?' selected':'')+(used.includes(v)?' disabled':'')+'>'+v+'</option>').join("")+'</select><div class="hint">'+esc(a.line)+'</div>'; });
+  } else {
+    h+='<p class="hint">Type six rolled scores (6 to 18; the lowest possible is 6 because 1s are rerolled). The button rolls 4d6 six times: each 1 is rerolled until it is not a 1, then the lowest die is dropped. Assign the six numbers to abilities as you like (PHB p.13).</p><div class="row"><button class="btn sec" data-act="roll">Roll all six for me</button></div>';
+    DATA.abilities.forEach(a=>{ h+='<label>'+a.name+'</label><input type="number" min="6" max="18" step="1" data-man="'+a.id+'" value="'+(S.man[a.id]==null?'':S.man[a.id])+'"><div class="hint">'+esc(a.line)+'</div>'; });
+  }
+  h+='</div><div class="card"><h3>Your scores with bonuses</h3><div class="grid6">';
+  DATA.abilities.forEach(a=>{ h+='<div class="ab"><div class="n">'+a.name+'</div><div class="big">'+(C.base[a.id]==null?'-':C.score[a.id])+'</div><div>mod '+(C.base[a.id]==null?'-':sg(C.mod[a.id]))+'</div><div class="hint" style="margin:0">base '+(C.base[a.id]==null?'-':C.base[a.id])+' + race '+C.racial[a.id]+(C.featAsi[a.id]?' + feat '+C.featAsi[a.id]:'')+'</div></div>'; });
+  h+='</div></div>';
+  h+='<div class="card"><h3>Hit points for levels 2 and 3</h3><p class="hint">At level 1 you get 8 + Constitution modifier (T p.10). For each later level you gain 1d8 + Constitution modifier, or the fixed average of 5 + Constitution modifier (T p.10). Minimum 1 per level (PHB p.15). Your table lets you reroll 1s on these rolls; type the final number (2 to 8).</p>'+
+  opt(S.hpMode==="avg",'<input type="radio" name="hpm" data-hpm="avg"'+(S.hpMode==="avg"?' checked':'')+'><b>Fixed average (5 per level)</b>')+opt(S.hpMode==="roll",'<input type="radio" name="hpm" data-hpm="roll"'+(S.hpMode==="roll"?' checked':'')+'><b>Roll a d8 for each level (your table lets you reroll a 1)</b>');
+  if(S.hpMode==="roll"){ [2,3].forEach((lv,i)=>{ h+='<label>d8 roll for level '+lv+'</label><input type="number" min="2" max="8" step="1" data-hpr="'+i+'" value="'+(S.hpRolls[i]==null?'':S.hpRolls[i])+'">'; }); h+='<div class="row" style="margin-top:6px"><button class="btn sec" data-act="rollhp">Roll for me</button></div>'; }
+  h+='<div class="note">Hit points at level 3: <b>'+C.hp+'</b></div></div>';
+  return h;
+};
+STEP_FN[3]=function(C){
+  let h='<div class="card"><h2>4. Background</h2><p class="hint">Your background is what you did before adventuring. It gives two skills, usually tools or languages, and starting gear (PHB p.125). Guild Artisan is the book\'s Quick Build choice for artificers (T p.10).</p>';
+  Object.keys(DATA.backgrounds).forEach(k=>{ const b=DATA.backgrounds[k]; h+=opt(S.bg===k,'<input type="radio" name="bg" data-bg="'+k+'"'+(S.bg===k?' checked':'')+'><b>'+esc(b.name)+'</b> <span class="pill">'+esc(b.page)+'</span><small>'+esc(b.blurb)+' Skills: '+b.skills.join(", ")+'.</small>'); });
+  h+='</div>';
+  if(C.BG){ const b=C.BG; h+='<div class="card"><h3>'+esc(b.name)+'</h3><p><b>Feature:</b> '+esc(b.feature)+' ('+esc(b.page)+')</p><p><b>Skills:</b> '+b.skills.join(", ")+(b.skillChoice?' plus one of your choice (below)':'')+'.</p>'+(b.tableNote?'<div class="note">'+esc(b.tableNote)+'</div>':'')+(b.ideas?'<p class="hint">'+esc(b.ideas)+'</p>':'')+(b.toolsFixed?'<p><b>Tools:</b> '+b.toolsFixed.join(", ")+'.</p>':'')+'<p><b>Starting gear:</b> '+esc(b.equip)+'</p>'+slotsFor(C,"bg")+'</div>'; }
+  return h;
+};
+STEP_FN[4]=function(C){
+  let h='<div class="card"><h2>5. Skills and tools</h2><p class="hint">A skill is something you are trained in: you add your proficiency bonus (+'+C.pb+') to checks with it. Tools work the same way (PHB p.12, p.154).</p>';
+  h+='<h3>Skills you already have</h3><p>'+(C.BG?'Background: '+C.BG.skills.join(", ")+'.':'Choose a background first (step 4).')+(C.R&&C.R.skillsFixed.length?' Race: '+C.R.skillsFixed.join(", ")+'.':'')+'</p>';
+  h+=slotsFor(C,"skills",s=>s.id.indexOf("skill:")===0||s.id==="feat:skilled");
+  h+='<div class="hint">Grayed skills are ones you already have. When two sources give the same one, you pick another (PHB p.125).</div></div>';
+  h+='<div class="card"><h3>Tools</h3><p>Always: thieves\' tools and tinker\'s tools (T p.10). Pick one kind of artisan\'s tools below.</p>'+slotsFor(C,"skills",s=>s.id.indexOf("tool:")===0);
+  h+='<div class="note">Your spellcasting focus (T p.11) is thieves\' tools or an artisan\'s tool you are proficient with.</div></div>';
+  return h;
+};
+STEP_FN[5]=function(C){
+  let h='<div class="card"><h2>6. Equipment</h2><p class="hint">Your class gives a starting kit (T p.10). Or you can skip the kit and the background gear and take gold to shop (T p.10, PHB p.143).</p>';
+  h+=opt(S.gearMode==="kit",'<input type="radio" name="gear" data-gear="kit"'+(S.gearMode==="kit"?' checked':'')+'><b>Take the starting kit (recommended)</b>');
+  h+=opt(S.gearMode==="gold",'<input type="radio" name="gear" data-gear="gold"'+(S.gearMode==="gold"?' checked':'')+'><b>Take gold instead (5d4 x 10 gp) and buy armor myself</b>');
+  h+='</div>';
+  if(S.gearMode==="kit"){
+    h+='<div class="card"><h3>Weapons</h3>'+slotsFor(C,"equip")+'<div class="hint">You are proficient with simple weapons. The book does not say if both picks may be the same weapon; ask your DM (T p.10).</div>';
+    h+='<h3>Armor (choose one, T p.10)</h3>';
+    DATA.kitArmor.forEach(k=>{ const a=DATA.armor[k]; h+=opt(S.armor===k,'<input type="radio" name="armor" data-armor="'+k+'"'+(S.armor===k?' checked':'')+'><b>'+a.n+'</b>: AC '+a.base+(a.cap===null?' + Dex':' + Dex (max +'+a.cap+')')+(a.stealth?'. Disadvantage on Stealth.':'.')+' <span class="pill">PHB p.145</span>'); });
+    h+='<h3>Also you get</h3><ul>'+DATA.kitFixed.map(x=>'<li>'+esc(x)+'</li>').join("")+'</ul>'+(C.BG?'<p><b>From your background:</b> '+esc(C.BG.equip)+'</p>':'<p class="hint">Pick a background to see its gear.</p>')+
+      '<label>Other gear you bought or made, and gold left (write it down)</label><textarea data-text="otherGear" placeholder="For example: woodcarver\'s tools (1 gp). Gold left: 9 gp. Prices: PHB p.143-159.">'+esc(S.otherGear)+'</textarea></div>';
+  } else {
+    h+='<div class="card"><h3>Starting gold</h3><div class="row"><button class="btn" data-act="rollgold">Roll 5d4 x 10 gp</button><span>or type it:</span><input type="number" style="max-width:120px" min="50" max="200" step="10" data-gold value="'+(S.gold==null?'':S.gold)+'"></div><div class="hint">5d4 x 10 gives 50 to 200 gp (T p.10). In this case you give up both the class kit and your background gear (T p.10).</div>';
+    if(S.gold!=null){ h+='<h3>Buy armor</h3><select data-set="goldArmor">'+Object.keys(DATA.armor).map(k=>{const a=DATA.armor[k]; return '<option value="'+k+'"'+(S.goldArmor===k?' selected':'')+'>'+a.n+(a.cost?' ('+a.cost+' gp)':'')+'</option>';}).join("")+'</select><div class="hint">You are proficient with light and medium armor and shields. Prices: PHB p.145.</div>';
+      h+='<label style="display:flex;gap:8px"><input type="checkbox" data-bool="goldShield"'+(S.goldShield?' checked':'')+'> Shield (+2 AC, 10 gp)</label>';
+      h+='<div class="counter'+(C.goldLeft<0?' over':'')+'">Gold left: '+C.goldLeft+' gp</div><label>Other gear you bought (write it down)</label><textarea data-text="otherGear" placeholder="Weapons, thieves\' tools (25 gp), a pack. See PHB p.143-159.">'+esc(S.otherGear)+'</textarea>'; }
+    h+='</div>';
+  }
+  h+='<div class="note">Armor Class now: <b>'+C.ac+'</b> ('+esc(C.acText)+')'+(C.stealthDis?'. This armor gives disadvantage on Stealth checks.':'')+'</div>';
+  return h;
+};
+function spellList(C,listData,slotId,count){
+  const s=C.slots.find(x=>x.id===slotId); let h='<div class="hint">Chosen '+s.value.length+' of '+s.count+'.</div>';
+  listData.forEach(sp=>{
+    const on=s.value.includes(sp[0]), full=s.value.length>=s.count;
+    if(sp[1]==="X" && !S.showX && !on) return;
+    h+='<label class="chk'+((!on&&full)?' dis':'')+'"><input type="checkbox" data-chk="'+slotId+'" value="'+esc(sp[0])+'"'+(on?' checked':'')+((!on&&full)?' disabled':'')+'><span class="t"><b>'+esc(sp[0])+'</b> '+srcPill(sp[1])+' <span class="pill">'+esc(sp[2])+'</span><small>'+esc(sp[3])+'</small></span></label>';
+  });
+  return h;
+}
+STEP_FN[6]=function(C){
+  let h='<div class="card"><h2>7. Cantrips, spells and infusions</h2><p class="hint">A cantrip is a spell you can cast again and again without using a spell slot. A spell slot is a limited "charge" for stronger spells (T p.11). Your spell save DC (the number an enemy must reach on its saving throw to resist your spell) is <b>'+C.dc+'</b>: 8 + proficiency bonus + Intelligence modifier. Your spell attack bonus (what you add to a d20 when a spell makes an attack) is <b>'+sg(C.atk)+'</b>: proficiency bonus + Intelligence modifier (T p.12).</p>';
+  h+='<label style="display:flex;gap:8px"><input type="checkbox" data-bool="showX"'+(S.showX?' checked':'')+'> Also show spells from Xanathar\'s Guide (a book you do not own)</label></div>';
+  h+='<div class="card"><h3>Cantrips: choose '+C.cantripN+'</h3><div class="hint">Artificer cantrips (T p.12). Good beginner picks: Fire bolt (ranged damage), Guidance (help allies), Mending (fix things), Booming blade or Shocking grasp (close fighting).</div>'+spellList(C,DATA.cantrips,"cantrips")+'</div>';
+  if(C.R&&C.R.wizardCantrip) h+='<div class="card">'+slotsFor(C,"spells",s=>s.id==="cantrip:race")+'</div>';
+  h+='<div class="card"><h3>Prepared spells: choose '+C.prepN+'</h3><div class="hint">Each day you prepare Intelligence modifier + half your level (rounded down), minimum 1 (T p.11). At level '+S.level+' that is '+C.prepN+'. You change the list after a long rest. Good beginner picks: Cure wounds (healing), Faerie fire, False life, Detect magic (also a ritual).</div>'+spellList(C,DATA.spells1,"prepared")+'</div>';
+  h+='<div class="card"><h3>Infusions (you gain the feature at level 2, T p.12)</h3><div class="hint">An infusion turns a plain item into a magic item after a long rest. You know 4 and can infuse 2 items at once at levels 2-5 (T p.10, p.12-13). The star marks easy picks for a beginner (my suggestion). Higher-level infusions are listed below.</div>';
+  const s=C.slots.find(x=>x.id==="infusions"); h+='<div class="hint">Chosen '+s.value.length+' of 4.</div>';
+  DATA.infusions.forEach(i=>{ const on=s.value.includes(i.n), full=s.value.length>=4; h+='<label class="chk'+((!on&&full)?' dis':'')+'"><input type="checkbox" data-chk="infusions" value="'+esc(i.n)+'"'+(on?' checked':'')+((!on&&full)?' disabled':'')+'><span class="t"><b>'+esc(i.n)+'</b>'+(i.star?' <span class="pill">beginner pick</span>':'')+' <span class="pill">'+esc(i.page)+'</span><small>'+esc(i.item)+'. '+esc(i.line)+'</small></span></label>'; });
+  h+='<div class="hint">Locked for now: '+DATA.lockedInfusions.map(x=>x[0]+' (level '+x[1]+', '+x[2]+')').join("; ")+'.</div></div>';
+  h+='<div class="card">'+slotsFor(C,"spells",s=>s.id==="active")+'<div class="hint">These are the items you infused after your last long rest. The sheet adds their bonuses (for example +1 Armor Class from Enhanced Defense).</div></div>';
+  h+='<label>Active infusions today (a short note for your sheet)</label><textarea data-text="activeNote" placeholder="For example: Active today: Enhanced Defense (armor), Repeating Shot (crossbow).">'+esc(S.activeNote)+'</textarea><div class="hint">You can have 2 infused items at once. Change them after a long rest.</div>';
+  return h;
+};
+STEP_FN[7]=function(C){
+  let h='<div class="card"><h2>8. Specialist (subclass)</h2><p class="hint">At level 3 you pick a specialist: a path that gives you new features and extra spells that are always prepared (T p.13). This is a real choice: it is part of your level 3 character.</p>';
+  Object.keys(DATA.specialists).forEach(k=>{ const s=DATA.specialists[k]; h+=opt(S.specialist===k,'<input type="radio" name="spec" data-spec="'+k+'"'+(S.specialist===k?' checked':'')+'><b>'+esc(s.name)+'</b> <span class="pill">'+esc(s.page)+'</span><small>'+esc(s.feel)+'</small>'); });
+  h+='</div>';
+  const P=C.SP; if(P){
+    h+='<div class="card"><h3>'+esc(P.name)+'</h3><p><b>Strong:</b> '+esc(P.strong)+'</p><p><b>Weak:</b> '+esc(P.weak)+'</p><p><b>Suits:</b> '+esc(P.suits)+' <span class="hint">(my opinion)</span></p>';
+    h+='<h3>Always-prepared spells</h3><table><tr><th>Level</th><th>Spells</th></tr>'+Object.keys(P.spells).map(l=>'<tr><td>'+l+'</td><td>'+P.spells[l].join(", ")+'</td></tr>').join("")+'</table><div class="hint">They do not count against your prepared-spell number (T p.14-19).</div>';
+    h+='<h3>Features</h3><table><tr><th>Level</th><th>Feature</th><th>Page</th></tr>'+P.features.map(f=>'<tr><td>'+f[0]+'</td><td><b>'+esc(f[1])+'</b>: '+esc(f[2])+'</td><td>'+esc(f[3])+'</td></tr>').join("")+'</table>';
+    h+=slotsFor(C,"spec")+'</div>';
+  }
+  h+='<div class="card"><h3>Side by side</h3><table><tr><th></th>'+Object.values(DATA.specialists).map(s=>'<th>'+s.name+'</th>').join("")+'</tr><tr><td>Main job</td><td>Healer, support</td><td>Tank or sneaky striker</td><td>Ranged damage</td><td>Fighter with a pet</td></tr><tr><td>Extra Attack (L5)</td><td>No</td><td>Yes</td><td>No</td><td>Yes</td></tr><tr><td>Heavy armor</td><td>No</td><td>Yes</td><td>No</td><td>No (martial weapons)</td></tr><tr><td>Bonus action each turn</td><td>No</td><td>No</td><td>Yes (cannon)</td><td>Yes (defender)</td></tr><tr><td>Beginner ease (my view)</td><td>Easy</td><td>Easiest</td><td>Medium</td><td>Medium</td></tr></table></div>';
+  return h;
+};
+STEP_FN[8]=function(C){
+  const R=C.R, BG=C.BG, L=S.level, P=C.SP;
+  const prof=a=>DATA.cls.saves.includes(a)||(C.feat&&DATA.feats[C.feat].saveProf&&C.featExtra.asi===a);
+  const allSk=DATA.skills;
+  let h='';
+  if(C.problems.length) h+='<div class="bad noprint"><b>The sheet is not finished yet.</b><ul>'+C.problems.map(p=>'<li><a href="#" data-goto="'+p.step+'">Step '+(p.step+1)+' ('+STEPS[p.step]+')</a>: '+esc(p.msg)+'</li>').join("")+'</ul></div>';
+  else h+='<div class="ok noprint">All choices are complete.</div>';
+  if(C.notes.length) h+='<div class="warn noprint">'+C.notes.map(esc).join("<br>")+'</div>';
+  h+='<div class="row noprint" style="margin-bottom:10px"><button class="btn" data-act="print">Print / Save as PDF</button><span class="hint">In the print window choose "Save as PDF" as the printer.</span></div>';
+  h+='<div class="card" id="sheetcard"><div id="sheet"><h2>'+esc(S.name||"(unnamed)")+'</h2>';
+  h+='<div class="sh-head"><div><span>Level and XP</span>Level 3 &middot; 900 XP</div><div><span>Class and level</span>Artificer '+L+(L>=3&&P?' ('+esc(P.name)+')':'')+'</div><div><span>Race</span>'+esc(R?R.name:"-")+'</div><div><span>Background</span>'+esc(BG?BG.name:"-")+'</div><div><span>Alignment</span>'+esc(S.align||"-")+'</div></div>';
+  if(S.concept) h+='<p><i>'+esc(S.concept)+'</i></p>';
+  h+='<div class="grid6">'+DATA.abilities.map(a=>'<div class="ab"><div class="n">'+a.name+'</div><div class="big">'+sg(C.mod[a.id])+'</div><div>'+C.score[a.id]+'</div></div>').join("")+'</div>';
+  h+='<div class="sh-head" style="margin-top:10px"><div><span>Proficiency bonus</span>'+sg(C.pb)+'</div><div><span>Hit points</span>'+C.hp+' (d8 hit dice: '+L+')</div><div><span>Armor class</span>'+C.ac+'<br><small>'+esc(C.acText)+'</small></div><div><span>Initiative</span>'+sg(C.init)+'</div><div><span>Speed</span>'+C.speed+' ft.</div><div><span>Size</span>'+esc(R?(R.key==="custom"?S.lineSize:R.size):"-")+'</div><div><span>Passive Perception</span>'+(10+C.mod.wis+(C.owned.skills.has("Perception")?C.pb:0)+((C.feat&&DATA.feats[C.feat].passive)||0))+'</div></div>';
+  h+='<div class="sh-cols"><div><h3>Saving throws</h3><table>'+DATA.abilities.map(a=>'<tr><td>'+(prof(a.id)?'&#9679; ':'&#9675; ')+a.name+'</td><td class="prof">'+sg(C.mod[a.id]+(prof(a.id)?C.pb:0))+'</td></tr>').join("")+'</table><div class="hint">&#9679; = proficient</div></div>';
+  h+='<div><h3>Skills</h3><table>'+allSk.map(s=>{ const p=C.owned.skills.has(s[0]); return '<tr><td>'+(p?'&#9679; ':'&#9675; ')+s[0]+' <small>('+s[1].toUpperCase()+')</small>'+(s[0]==="Stealth"&&C.stealthDis?' <small>(disadvantage: your armor, PHB p.145)</small>':'')+'</td><td class="prof">'+sg(C.mod[s[1]]+(p?C.pb:0))+'</td></tr>'; }).join("")+'</table></div></div>';
+  h+='<h3>Spellcasting (Intelligence)</h3><div class="sh-head"><div><span>Spell save DC</span>'+C.dc+'</div><div><span>Spell attack bonus</span>'+sg(C.atk)+'</div><div><span>Spells prepared</span>'+C.prepN+(C.bonusSpells.length?' + '+C.bonusSpells.length+' always prepared':'')+'</div><div><span>Spell slots</span>'+C.slotsArr.map((n,i)=>n+' x level '+(i+1)).join(", ")+'</div></div>';
+  const rc=(R?R.cantripsFixed.map(c=>c[0]+' ('+AN(c[1])+')'):[]).concat(C.slots.find(s=>s.id==="cantrip:race")&&C.slots.find(s=>s.id==="cantrip:race").value.length?[C.slots.find(s=>s.id==="cantrip:race").value[0]+' (wizard cantrip, Intelligence)']:[]);
+  h+='<p><b>Cantrips:</b> '+(C.cantrips.join(", ")||"-")+(rc.length?'. <b>Racial:</b> '+rc.join(", "):'')+'</p><p><b>Prepared:</b> '+(C.prepared.join(", ")||"-")+(C.bonusSpells.length?'. <b>Always prepared ('+esc(P.name)+'):</b> '+C.bonusSpells.join(", "):'')+'</p><p class="hint">Spellcasting focus: thieves\' tools or an artisan\'s tool you are proficient with (T p.11).</p>';
+  h+='<h3>Attacks</h3><table><tr><th>Weapon</th><th>Attack</th><th>Damage</th></tr>';
+  const wl=S.gearMode==="kit"?["Light crossbow"].concat(C.weaponsPicked):[];
+  const rsOn=C.active.indexOf("Repeating Shot")>=0;
+  wl.forEach((n,i)=>{ const w=DATA.simpleWeapons.find(x=>x.n===n); const ab=w.finesse?(C.mod.dex>C.mod.str?"dex":"str"):(w.ranged?"dex":"str");
+    const rs=(i===0&&rsOn)?1:0; /* Repeating Shot goes on the kit's light crossbow (first row) */
+    const props=rs?'ammunition 80/320, two-handed. Repeating Shot: no loading, makes its own bolts, needs attunement':w.p;
+    h+='<tr><td>'+esc(w.n)+(rs?' (Repeating Shot)':'')+' <small>'+esc(props)+'</small></td><td>'+sg(C.mod[ab]+C.pb+rs)+'</td><td>'+w.d+sg(C.mod[ab]+rs)+' '+w.t+'</td></tr>'; });
+  if(!wl.length) h+='<tr><td colspan="3">Add your bought weapons in step 6 notes. Simple weapon attack = ability modifier + '+sg(C.pb)+'.</td></tr>';
+  h+='</table>';
+  { const ex=[]; const inf=C.infusions||[]; const has=n=>wl.indexOf(n)>=0;
+    if(has("Spear")){ ex.push('Spear, two hands (versatile): '+sg(C.mod.str+C.pb)+', 1d8'+sg(C.mod.str)+' piercing. One hand: '+sg(C.mod.str+C.pb)+', 1d6'+sg(C.mod.str)+'.'+(inf.indexOf("Enhanced Weapon")>=0?' With Enhanced Weapon on it: '+sg(C.mod.str+C.pb+1)+', one hand 1d6'+sg(C.mod.str+1)+', two hands 1d8'+sg(C.mod.str+1)+'.':'')); }
+    if(C.cantrips.indexOf("Shocking grasp")>=0) ex.push('Shocking Grasp (cantrip, touch): '+sg(C.atk)+', 1d8 lightning. On a hit, the target cannot take reactions until the start of its next turn. Advantage on the attack if the target wears metal armor (PHB p.275).');
+    if(inf.indexOf("Repeating Shot")>=0&&S.gearMode==="kit"){
+      if(rsOn) ex.push('Light crossbow without Repeating Shot: '+sg(C.mod.dex+C.pb)+', 1d8'+sg(C.mod.dex)+' piercing, and it has the loading property again.');
+      else ex.push('Light crossbow with Repeating Shot (when it is one of your active infusions; needs attunement): '+sg(C.mod.dex+C.pb+1)+', 1d8'+sg(C.mod.dex+1)+' piercing. No loading needed; it makes its own ammunition.');
+    }
+    if(ex.length) h+='<ul>'+ex.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
+    if(C.edActive) h+='<p class="hint">Your Armor Class includes +1 from Enhanced Defense. Without it: '+(C.ac-1)+'.</p>';
+    else if(inf.indexOf("Enhanced Defense")>=0&&(C.armorKey!=="none"||C.shield)) h+='<p class="hint">Armor Class with Enhanced Defense active on your armor: '+(C.ac+1)+'.</p>';
+    if(S.activeNote) h+='<p><b>'+esc(S.activeNote)+'</b></p>';
+    if(L>=3&&S.specialist==="artillerist") h+='<h3>Eldritch Cannon (T p.17-18)</h3><ul><li>Make it: an action, with woodcarver\'s or smith\'s tools in hand. It appears in an empty space on the ground within 5 ft (Small or Tiny). Free once per long rest; after that, spend a spell slot. Only one cannon at a time.</li><li>Armor Class 18, '+(5*L)+' hit points. Immune to poison and psychic damage. Mending heals it 2d6. It lasts 1 hour, or until it drops to 0 hit points or you dismiss it (an action).</li><li>Use it: a bonus action on your turn while you are within 60 ft of it. The same bonus action can make it walk or climb 15 ft if it has legs. If you do not activate it, it does nothing.</li><li>Force Ballista: ranged spell attack '+sg(C.atk)+' at a target within 120 ft, 2d8 force damage, pushes a creature 5 ft.</li><li>Flamethrower: 15-ft cone, Dexterity save DC '+C.dc+', 2d8 fire on a fail, half on a success.</li><li>Protector: 1d8'+sg(Math.max(1,C.intMod))+' temporary hit points to itself and each creature you choose within 10 ft of it.</li></ul><p class="hint">Looks like a small ship&#39;s cannon (you choose its look, T p.17-18).</p>';
+  }
+  if(L>=3&&S.specialist==="battlesmith") h+='<p class="hint">Battle Smith: with a magic weapon you may use Intelligence ('+sg(C.mod.int)+') instead of Strength or Dexterity for attack and damage (T p.19).</p>';
+  h+='<div class="sh-cols"><div><h3>Proficiencies</h3><p><b>Armor:</b> '+DATA.cls.armor+(L>=3&&S.specialist==="armorer"?', heavy armor':'')+'.</p><p><b>Weapons:</b> '+DATA.cls.weapons+(L>=3&&S.specialist==="battlesmith"?', martial weapons':'')+'.</p><p><b>Tools:</b> '+Array.from(C.owned.tools).join(", ")+'.</p><p><b>Languages:</b> '+languagesFinal(C).join(", ")+'.</p>'+(S.profNote?'<p><b>Swap note:</b> '+esc(S.profNote)+'</p>':'')+'</div>';
+  h+='<div><h3>Equipment</h3>'+(S.gearMode==="kit"?'<ul><li>'+esc(DATA.armor[C.armorKey].n)+'</li>'+C.weaponsPicked.map(w=>'<li>'+esc(w)+'</li>').join("")+DATA.kitFixed.map(x=>'<li>'+esc(x.split(" (")[0])+'</li>').join("")+'</ul>'+(BG?'<p class="hint">Background gear: '+esc(BG.equip)+'</p>':'')+(S.otherGear?'<p>'+esc(S.otherGear)+'</p>':''):'<p>Gold bought: '+(S.gold==null?'-':S.gold)+' gp. Armor: '+esc(DATA.armor[C.armorKey].n)+(C.shield?', shield':'')+'. Gold left: '+(C.goldLeft==null?'-':C.goldLeft)+' gp.</p><p>'+esc(S.otherGear)+'</p>')+'</div></div>';
+  h+='<h3>Features and traits</h3><ul>';
+  DATA.cls.features.filter(f=>f[0]<=L).forEach(f=>h+='<li><b>'+esc(f[1])+'</b> (level '+f[0]+', '+f[3]+'): '+esc(f[2])+'</li>');
+  if(L>=3&&P) P.features.filter(f=>f[0]<=3).forEach(f=>h+='<li><b>'+esc(f[1])+'</b> ('+esc(P.name)+', '+f[3]+'): '+esc(f[2])+'</li>');
+  if(R) R.traits.forEach(t=>h+='<li>'+esc(t)+'</li>');
+  if(R&&R.dragon&&S.dragon){ const d=DATA.dragons.find(x=>x[0]===S.dragon); h+='<li>Ancestry: '+d[0]+' dragon. Breath weapon: 2d6 '+d[1]+', '+d[2]+', save DC '+(8+C.mod.con+C.pb)+'. Resistance to '+d[1]+'.</li>'; }
+  if(R&&R.key==="custom"&&S.customTrait==="dark") h+='<li>Darkvision 60 ft.</li>';
+  if(C.feat) h+='<li><b>Feat: '+DATA.feats[C.feat].n+'</b> ('+DATA.featsPage+'): '+esc(DATA.feats[C.feat].t)+'</li>';
+  if(BG) h+='<li><b>Background feature: '+esc(BG.feature)+'</b> ('+esc(BG.page)+')</li>';
+  h+='</ul>';
+  h+='<h3>Infusions'+(L<2?' (planned, from level 2)':'')+'</h3><p>'+(C.infusions.length?C.infusions.join(", "):'None chosen.')+'</p>'+(C.active.length?'<p><b>Active today:</b> '+esc(C.active.join(", "))+'</p>':'')+(L>=2?'<p class="hint">Known: '+C.inf.known+'. Items you can infuse at once: '+C.inf.items+' (T p.10).</p>':'');
+  h+='<h3>How you got here</h3><ul><li><b>Level 1:</b> 8 + Con hit points, Magical Tinkering, Spellcasting with '+C.cantripN+' cantrips and 2 first-level slots (T p.10-12).</li><li><b>Level 2:</b> Infuse Item. You learned 4 infusions and can infuse 2 items at a time (T p.10, p.12-13). Hit points + '+(S.hpMode==="roll"?'your d8 roll':'5')+' + Con modifier. Still 2 first-level slots.</li><li><b>Level 3:</b> Specialist ('+esc(P?P.name:"-")+'), The Right Tool for the Job, always-prepared specialist spells, and a third first-level slot (T p.10, p.13). You can prepare '+C.prepN+' spells: your Int modifier plus half your level, rounded down (half of 2 or 3 is 1) (T p.11). Proficiency bonus stays +2 until level 5.</li></ul><p class="hint">Hit points: '+(S.hpMode==="roll"?'rolled':'fixed average of 5 per level')+' for levels 2 and 3. Ability Score Improvement comes at level 4 (T p.13).</p>';
+  h+='<p class="hint">Made with the Artificer Character Creator. Rules: Tasha\'s Cauldron of Everything and Player\'s Handbook (2014). Check page numbers in your books.</p></div></div>';
+  return h;
+};
+function languagesFinal(C){
+  const R=C.R; const out=[];
+  if(R) R.langs.forEach((lg,i)=>{ const sw=(S.sel["lang:swap:"+i]||""); out.push(sw||lg); });
+  ["lang:race","lang:bg"].forEach(id=>{ const v=S.sel[id]; if(Array.isArray(v)) v.forEach(x=>out.push(x)); else if(v) out.push(v); });
+  return out.length?out:["-"];
+}
+
+/* ---------- main render ---------- */
+function render(){
+  const C=compute(); save();
+  const stepsEl=document.getElementById("steps");
+  stepsEl.innerHTML=STEPS.map((n,i)=>'<button data-step="'+i+'" class="'+(i===S.step?'cur ':'')+(C.problems.some(p=>p.step===i)&&i<8?'bad':'')+'" title="'+esc(n)+'">'+(i+1)+'<span class="lbl"> '+esc(n)+'</span></button>').join("");
+  document.getElementById("levelbar").innerHTML=''; void '<b>Show sheet at:</b> <button class="btn sec'+(S.level===1?' cur':'')+'" data-level="1">Level 1</button><button class="btn sec'+(S.level===3?' cur':'')+'" data-level="3">Level 3 (with specialist)</button><span class="hint" style="margin:0">Level 3 adds your specialist, infusions, and more spell slots (T p.10, p.13).</span>';
+  document.getElementById("app").innerHTML=STEP_FN[S.step](C);
+  document.getElementById("navbtns").innerHTML='<button class="btn sec" data-nav="-1"'+(S.step===0?' disabled':'')+'>&larr; Back</button><button class="btn sec" data-act="reset">Start over</button><button class="btn" data-nav="1"'+(S.step===8?' disabled':'')+'>Next &rarr;</button>';
+  window.CREATOR={S:S,C:C,DATA:DATA,compute:compute};
+}
+function clearRaceSel(){ Object.keys(S.sel).filter(k=>/^(lang:swap|skill:swap|skill:dup|skill:race|lang:race|tool:race|tool:dup|tool:racedup|feat:|cantrip:race)/.test(k)).forEach(k=>delete S.sel[k]); }
+function resetRacePicks(){ S.flexPick=[]; S.custPick=[]; clearRaceSel(); S.customTrait=""; S.dragon=""; }
+
+/* ---------- events ---------- */
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-step],[data-nav],[data-act],[data-goto],[data-level]"); if(!t) return;
+  if(t.hasAttribute("data-step")){ S.step=+t.dataset.step; render(); window.scrollTo(0,0); }
+  else if(t.hasAttribute("data-nav")){ S.step=Math.max(0,Math.min(8,S.step+ +t.dataset.nav)); render(); window.scrollTo(0,0); }
+  else if(t.hasAttribute("data-goto")){ e.preventDefault(); S.step=+t.dataset.goto; render(); window.scrollTo(0,0); }
+  else if(t.hasAttribute("data-level")){ S.level=+t.dataset.level; render(); }
+  else if(t.dataset.act==="print"){ window.print(); }
+  else if(t.dataset.act==="preset"){ if(confirm("Replace your current choices with the pirate build? Your current choices will be lost.")){ loadPreset(); render(); window.scrollTo(0,0); } }
+  else if(t.dataset.act==="reset"){ if(confirm("Start over? This clears everything you chose.")){ S=defaults(); render(); } }
+  else if(t.dataset.act==="suggest"){ if(S.method==="standard") ABIL.forEach(a=>S.std[a]=DATA.suggested.standard[a]); else { const v=DATA.standardArray.slice(); ABIL.forEach(a=>S.man[a]=DATA.suggested.standard[a]); } render(); }
+  else if(t.dataset.act==="roll"){ ABIL.forEach(a=>{ const d=[0,0,0,0].map(()=>{let r; do{ r=1+Math.floor(Math.random()*6); }while(r===1); return r;}).sort((x,y)=>x-y); S.man[a]=d[1]+d[2]+d[3]; }); render(); }
+  else if(t.dataset.act==="rollhp"){ S.hpRolls=[0,0].map(()=>{let r; do{ r=1+Math.floor(Math.random()*8); }while(r===1); return r;}); render(); }
+  else if(t.dataset.act==="rollgold"){ let s=0; for(let i=0;i<DATA.goldDice.n;i++) s+=1+Math.floor(Math.random()*DATA.goldDice.sides); S.gold=s*DATA.goldDice.mult; render(); }
+});
+document.addEventListener("change",e=>{
+  const t=e.target; const d=t.dataset; let r=true;
+  if(d.race!==undefined){ if(S.race!==d.race){ S.race=d.race; S.subrace=""; S.customize=false; resetRacePicks(); } }
+  else if(d.sub!==undefined){ S.subrace=d.sub; S.flexPick=[]; S.custPick=[]; clearRaceSel(); }
+  else if(d.bool!==undefined){ S[d.bool]=t.checked; if(d.bool==="customize"){ S.flexPick=[]; S.custPick=[]; clearRaceSel(); } }
+  else if(d.set!==undefined){ S[d.set]=t.value; if(d.set==="customTrait") clearRaceSel(); }
+  else if(d.asi!==undefined){ const R=effRace(); const arr=asiPicks(R); arr[+d.asi]=t.value; }
+  else if(d.method!==undefined){ S.method=d.method==='pointbuy'?'standard':d.method; }
+  else if(d.std!==undefined){ S.std[d.std]=t.value===""?null:+t.value; }
+  else if(d.man!==undefined){ S.man[d.man]=t.value===""?null:Number(t.value); }
+  else if(d.bg!==undefined){ if(S.bg!==d.bg){ S.bg=d.bg; ["lang:bg"].forEach(k=>delete S.sel[k]); Object.keys(S.sel).filter(k=>k.indexOf("tool:bg")===0||k==="skill:bgchoice").forEach(k=>delete S.sel[k]); } }
+  else if(d.hpm!==undefined){ S.hpMode=d.hpm; }
+  else if(d.hpr!==undefined){ S.hpRolls[+d.hpr]=t.value===""?null:Number(t.value); }
+  else if(d.gear!==undefined){ S.gearMode=d.gear; }
+  else if(d.armor!==undefined){ S.armor=d.armor; }
+  else if(d.gold!==undefined){ const v=t.value===""?null:Number(t.value); S.gold=(v==null||isNaN(v))?null:Math.max(0,v); }
+  else if(d.spec!==undefined){ S.specialist=d.spec; delete S.sel["tool:spec"]; }
+  else if(d.sel!==undefined){ S.sel[d.sel]=t.value; }
+  else if(d.chk!==undefined){ let arr=Array.isArray(S.sel[d.chk])?S.sel[d.chk].slice():[]; if(t.checked){ if(!arr.includes(t.value)) arr.push(t.value);} else arr=arr.filter(x=>x!==t.value); S.sel[d.chk]=arr; }
+  else r=false;
+  if(r) render();
+});
+document.addEventListener("input",e=>{ const t=e.target; if(t.dataset.text!==undefined){ S[t.dataset.text]=t.value; save(); } });
+load(); render();
+</script>
+</body>
+</html>

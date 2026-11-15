@@ -1,0 +1,21 @@
+{
+ "name": "Skippy hub (iPad)",
+ "short_name": "Skippy",
+ "start_url": "skippy-ipad.html",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#16302e",
+ "theme_color": "#16302e",
+ "icons": [
+  {
+   "src": "skippy-icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "skippy-icon.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}

@@ -1,0 +1,965 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Start Here: How D&amp;D Works and Your Pirate Artificer</title>
+<style>html{scroll-behavior:auto;overflow-anchor:none}
+
+:root{
+  --bg:#f5f4f0; --card:#ffffff; --ink:#1d1d1b; --muted:#5a5a55; --line:#d8d6cf;
+  --accent:#1f5f5b; --accent-ink:#ffffff; --warn:#8a4b00; --warn-bg:#fff4e0; --bad:#a1262b; --bad-bg:#fdecec; --ok:#1d6b3a; --ok-bg:#e8f5ec;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow-wrap:break-word}
+header.top{background:var(--accent);color:var(--accent-ink);padding:12px 16px}
+header.top h1{margin:0;font-size:1.25rem}
+header.top p{margin:2px 0 0;font-size:.9rem;opacity:.92}
+header.top a{color:#fff;font-weight:700}
+.wrap{max-width:860px;margin:0 auto;padding:12px 16px 100px}
+.bar{height:10px;background:#e3e1da;border-radius:6px;overflow:hidden;margin:4px 0 4px}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s}
+.prog{display:flex;justify-content:space-between;gap:8px;font-size:.88rem;color:var(--muted);margin-bottom:8px;flex-wrap:wrap}
+details.steps{background:var(--card);border:1px solid var(--line);border-radius:8px;margin:0 0 12px}
+details.steps summary{cursor:pointer;padding:10px 14px;font-weight:600}
+details.steps .list{padding:0 10px 10px}
+.steps h4{margin:10px 4px 4px;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.steps button{display:block;width:100%;text-align:left;padding:8px 10px;margin:3px 0;border:1px solid var(--line);background:#fff;border-radius:6px;font:inherit;font-size:.92rem;cursor:pointer;color:var(--ink)}
+.steps button.cur{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.steps button.seen::after{content:" \2713";color:var(--ok);font-weight:700}
+.steps button.cur.seen::after{color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:0 0 12px}
+.part{font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--accent);font-weight:700;margin:0}
+h2{margin:2px 0 8px;font-size:1.4rem;line-height:1.25}
+h3{margin:16px 0 4px;font-size:1.05rem}
+p{margin:6px 0}
+ul,ol{margin:6px 0;padding-left:22px}
+li{margin:3px 0}
+.hint{color:var(--muted);font-size:.93rem}
+.note{background:#eef3f2;border-left:4px solid var(--accent);padding:8px 10px;margin:10px 0;font-size:.95rem}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn);padding:8px 10px;margin:10px 0;font-size:.95rem;color:var(--warn)}
+.ok{background:var(--ok-bg);border-left:4px solid var(--ok);padding:8px 10px;margin:10px 0;font-size:.95rem;color:var(--ok)}
+.why{background:#fdf8e6;border:1px solid #e6d58a;border-left:6px solid #c9a227;border-radius:6px;padding:10px 12px;margin:14px 0}
+.why b.t{display:block;margin-bottom:2px;color:#6b5400}
+.rec{background:var(--ok-bg);border:1px solid #9fcfb0;border-left:6px solid var(--ok);border-radius:6px;padding:10px 12px;margin:12px 0}
+.rec b.t{display:block;color:var(--ok);margin-bottom:2px}
+.g{border-bottom:2px dotted var(--accent);cursor:help;color:inherit}
+.g:focus{outline:2px solid var(--accent);outline-offset:1px}
+#tip{position:fixed;pointer-events:none;z-index:50;max-width:300px;background:#1d1d1b;color:#fff;font-size:.9rem;line-height:1.4;padding:8px 10px;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.3);display:none}
+#tip b{color:#ffe08a}
+.pg{display:inline-block;border:1px solid var(--line);border-radius:12px;padding:0 7px;font-size:.78rem;color:var(--muted);white-space:nowrap;background:#faf9f5}
+.tw{overflow-x:auto;max-width:100%;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--line);padding:5px 7px;text-align:left;vertical-align:top}
+th{background:#f0efe9}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.box{border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:#fff}
+.box h4{margin:0 0 4px}
+.dice{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+button.btn,a.btn{display:inline-block;padding:9px 14px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:6px;font:inherit;cursor:pointer;text-decoration:none}
+button.btn.sec,a.btn.sec{background:#fff;color:var(--accent)}
+button.btn:disabled{opacity:.4;cursor:not-allowed}
+a.big{display:block;text-align:center;font-size:1.2rem;font-weight:700;padding:16px;margin:14px 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{padding:7px 12px;border:1px solid var(--line);background:#fff;border-radius:18px;font:inherit;font-size:.9rem;cursor:pointer;color:var(--ink)}
+.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.say{border-left:3px solid var(--line);padding:2px 10px;margin:6px 0}
+.say .who{font-weight:700;color:var(--accent)}
+.say .roll{color:var(--warn);font-style:italic}
+.diag{font-family:ui-monospace,Consolas,monospace;font-size:.82rem;background:#f0efe9;border-radius:6px;padding:8px 10px;white-space:pre;overflow-x:auto;max-width:100%}
+.navbtns{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);padding:10px 16px;z-index:20}
+.navbtns div{max-width:860px;margin:0 auto;display:flex;gap:8px;justify-content:space-between;align-items:center}
+.navbtns .mid{font-size:.85rem;color:var(--muted);text-align:center}
+.stat{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:6px;margin:8px 0}
+.stat div{border:1px solid var(--line);border-radius:6px;padding:4px 8px;background:#fff}
+.stat span{display:block;font-size:.72rem;color:var(--muted);text-transform:uppercase}
+.stat b{font-size:1.2rem}
+@media print{header.top,.navbtns,details.steps,.prog,.bar{display:none}}
+
+/* ==== Shared look v1: see docs/DESIGN.md (same block on every page) ==== */
+nav.site{background:#16302e;display:flex;flex-wrap:wrap;align-items:center;gap:2px 2px;padding:6px 12px;font:600 14px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+nav.site .brand{color:#fff;font-weight:700;margin-right:10px;padding:6px 0;letter-spacing:.02em;white-space:nowrap}
+nav.site a{color:#d6e6e4;text-decoration:none;padding:8px 10px;border-radius:6px;display:inline-flex;align-items:center;min-height:36px;white-space:nowrap}
+nav.site a:hover{background:rgba(255,255,255,.12);color:#fff}
+nav.site a[aria-current="page"]{background:#fff;color:#16302e}
+nav.site a:focus-visible{outline:3px solid #f5c542;outline-offset:1px}
+@media (max-width:640px){nav.site{padding:4px 8px}nav.site .brand{width:100%;padding:4px 2px 2px}nav.site a{padding:6px 8px;font-size:13px}}
+header.top{padding:14px 16px}
+header.top h1{font-size:1.35rem;line-height:1.25}
+header.top p{max-width:860px}
+@media print{nav.site{display:none!important}}
+/* ==== end shared look ==== */
+</style>
+</head>
+<body>
+<nav class="site" aria-label="All pages"><span class="brand">Skippy &middot; Artificer</span><a href="start-here.html" aria-current="page">Start here</a><a href="guide.html">Guide</a><a href="creator.html">Creator</a><a href="exceptions.html">Exceptions</a><a href="checklists.html">Checklists</a><a href="combos.html">Combos</a><a href="sheet/skippy-sheet.html">Sheet</a><a href="sheet/skippy-extra.html">Extra pages</a></nav>
+<header class="top">
+  <h1>Start Here: how D&amp;D works, and your pirate artificer</h1>
+  <p>For the player. D&amp;D 5th edition (2014 rules) with Tasha's. Works offline. Tap a <span class="g" style="border-color:#fff">dotted word</span> to see what it means.</p>
+  <p>For the game table: <a href="skippy-ipad.html">Skippy iPad hub</a>, everything in one file, made for an iPad in landscape.</p>
+</header>
+<div class="wrap">
+  <div class="bar" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="100" id="bar"><i id="barfill"></i></div>
+  <div class="prog"><span id="progtxt"></span><span id="progpart"></span></div>
+  <details class="steps" id="stepsbox"><summary>All steps (tap to jump)</summary><div class="list" id="steplist"></div></details>
+  <main id="app" aria-live="polite"></main>
+</div>
+<div id="tip" role="tooltip"></div>
+<div class="navbtns"><div>
+  <button class="btn sec" id="back">&larr; Back</button>
+  <span class="mid" id="mid"></span>
+  <button class="btn" id="next">Next &rarr;</button>
+</div></div>
+
+<script>
+/* ===================================================================
+   Start Here page. Everything is in this one file. No outside files.
+   Page numbers: PHB = Player's Handbook 2014 (printed page).
+                 T = Tasha's Cauldron of Everything (printed page).
+   All text is in my own words, not copied from the books.
+   =================================================================== */
+const KEY = "startHere.v1";
+
+/* ---------- Glossary (shown on tap or hover) ---------- */
+const GL = {
+ "dm":["Dungeon Master (DM)","The player who runs the game. They describe the world, play the monsters and the townspeople, and decide what happens."],
+ "d20":["d20","A twenty-sided die. You roll it for almost every important test."],
+ "modifier":["Modifier","A small number you add to (or take from) a roll. It comes from an ability score. Example: Intelligence 17 gives +3."],
+ "ability score":["Ability score","One of six numbers that say how strong, quick, tough, smart, wise or charming you are. Most heroes have scores from 8 to 17."],
+ "proficiency bonus":["Proficiency bonus","A number you add when you roll for something you are trained in. At levels 1 to 4 it is +2."],
+ "proficient":["Proficient","Trained in something. You add your proficiency bonus when you use it."],
+ "dc":["DC (Difficulty Class)","The number you must reach or beat on your roll. The DM sets it. Easy is about 10, hard is about 20."],
+ "ac":["AC (Armor Class)","How hard you are to hit. An attack hits if the roll is equal to or higher than your AC."],
+ "advantage":["Advantage","Roll two d20 and keep the higher one."],
+ "disadvantage":["Disadvantage","Roll two d20 and keep the lower one."],
+ "saving throw":["Saving throw","A roll to dodge, resist or survive something bad (a fireball, poison, a spell). You roll d20 + the matching modifier."],
+ "ability check":["Ability check","A roll to see if you can do something that might fail: climb, spot, remember, pick a lock."],
+ "attack roll":["Attack roll","d20 + modifiers. If it equals or beats the target's AC, you hit."],
+ "initiative":["Initiative","A d20 + Dexterity modifier roll at the start of a fight. It sets who goes first."],
+ "action":["Action","The main thing you do on your turn: attack, cast a spell, run extra far (Dash), and so on. You get one per turn."],
+ "bonus action":["Bonus action","A smaller extra thing. You only get one if a feature or spell says so. One per turn."],
+ "reaction":["Reaction","Something you do in answer to a trigger, even on someone else's turn. One per round."],
+ "hit points":["Hit points (HP)","Your health. Damage lowers them. At 0 you fall down and start to die."],
+ "death saves":["Death saving throws","When you are at 0 HP you roll a d20 each turn. 10 or more is a success. 3 successes: you are stable. 3 failures: you die."],
+ "hit die":["Hit Die","The die you roll for hit points when you level up. You can also spend them to heal on a short rest. The artificer uses a d8."],
+ "short rest":["Short rest","About 1 hour of quiet time. You can spend Hit Dice to heal."],
+ "long rest":["Long rest","About 8 hours of sleep. You get all hit points back, and spell slots and most powers refresh."],
+ "spell slot":["Spell slot","A charge that pays for a spell of 1st level or higher. Used up when you cast. Back after a long rest."],
+ "cantrip":["Cantrip","A simple spell with no spell slot cost. You can cast it all day."],
+ "concentration":["Concentration","Some spells last only while you keep your mind on them. You can focus on one at a time. Taking damage can break it."],
+ "ritual":["Ritual","A spell with the ritual tag can be cast without a slot if you take 10 extra minutes. An artificer can do this only with a ritual spell that is prepared."],
+ "focus":["Spellcasting focus","The object you hold when you cast. For an artificer it is thieves' tools or an artisan's tool kit that you are proficient with."],
+ "infusion":["Infusion","An artificer power. After a long rest you can turn a plain item into a magic item. It stays magic until you replace that infusion with a new one."],
+ "specialist":["Artificer Specialist","The artificer's subclass. You pick one at level 3: Alchemist, Armorer, Artillerist or Battle Smith."],
+ "subclass":["Subclass","A path inside your class that gives you special features. For the artificer it is called a Specialist."],
+ "attunement":["Attunement","A short bond with a magic item so it works for you. You can bond with only a few items."],
+ "spell save dc":["Spell save DC","The number other creatures must beat to resist your spell. 8 + proficiency bonus + Intelligence modifier."],
+ "spell attack":["Spell attack bonus","What you add to a d20 when a spell needs an attack roll. Proficiency bonus + Intelligence modifier."],
+ "passive perception":["Passive Perception","A fixed score for noticing things without rolling: 10 + your Perception modifier. The DM uses it for hidden dangers."],
+ "feat":["Feat","An optional special talent, like a mini-class feature. Some characters get one at level 1 (Variant Human, Custom Lineage)."],
+ "darkvision":["Darkvision","You can see in the dark up to a set distance. Dim light looks bright. Darkness looks dim and grey."],
+ "one-shot":["One-shot","A game that is finished in one session, usually 3 to 4 hours."],
+ "alignment":["Alignment","Two words that sum up how your hero thinks: how they feel about rules (lawful, neutral, chaotic) and about right and wrong (good, neutral, evil). It is a guide for roleplay."],
+ "temporary hit points":["Temporary hit points","Extra health that is lost first. They do not add up: you keep only the bigger pile."],
+ "critical hit":["Critical hit","A natural 20 on an attack roll. You roll the damage dice twice."],
+ "natural 20":["Natural 20","The number shown on the die itself, before you add anything."],
+ "speed":["Speed","How far you can walk on your turn. 30 feet is normal. A square on a battle map is 5 feet."],
+ "melee":["Melee","Close fighting, within 5 feet."],
+ "ranged":["Ranged","Attacking from a distance, with a bow, crossbow or spell."],
+ "level":["Level","How experienced your hero is, from 1 to 20. You start at level 3 at this table."],
+ "xp":["XP (experience points)","Points you earn by playing. Enough XP gives a new level. Level 3 starts at 900 XP."],
+ "background":["Background","Your hero's life before adventuring. It gives you 2 skills, tools or languages, some gear and a special feature."],
+ "race":["Race","Your hero's people: human, gnome, half-orc... It sets size, speed, senses and special traits."],
+ "tasha":["Tasha's","Tasha's Cauldron of Everything. A book the player owns. It has the artificer class and the option to customize your origin."],
+ "prepared":["Prepared spells","The spells you choose each day from your class list. Only prepared spells can be cast."],
+ "skill":["Skill","A trained talent such as Perception or Arcana. If you are proficient you add your proficiency bonus to checks with it."],
+ "tool":["Tool proficiency","Training with a kit, like thieves' tools. You add your proficiency bonus when you use it for a check."]
+};
+
+/* ---------- Page markup shorthands ----------
+   [[word]] or [[shown text|key]] = glossary word.   {{PHB p.7}} = page tag.   */
+function fmt(h){
+  return h.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g,(m,a,b)=>{
+    const k=(b||a).toLowerCase(); if(!GL[k]) return a;
+    return '<span class="g" tabindex="0" data-g="'+k+'">'+a+'</span>';
+  }).replace(/\{\{([^}]+)\}\}/g,'<span class="pg">$1</span>');
+}
+const why=t=>'<div class="why"><b class="t">Why this matters for your build</b>'+t+'</div>';
+const rec=t=>'<div class="rec"><b class="t">What I suggest for a pirate artificer (the choice is yours)</b>'+t+'</div>';
+function chips(group,list){
+  return '<div class="chips" data-group="'+group+'">'+list.map(x=>'<button class="chip" data-pick="'+group+'" data-val="'+x+'">'+x+'</button>').join('')+'</div>';
+}
+
+/* ---------- The three ready-made builds (numbers are worked out by code, and I also checked them by hand) ---------- */
+const mod=s=>Math.floor((s-10)/2), sg=n=>(n>=0?"+":"")+n;
+const BUILDS=[
+ {id:"A",rec:true,short:"Skippy, Half-Orc Artillerist (cannon)",name:'Skippy, the powder monkey',tag:"Half-Orc Artillerist: the cannon pirate (your character)",
+  race:"Half-Orc, customized with Tasha's rule (T p.7)",raceNote:"Half-Orc normally gives Strength +2 and Constitution +1. With Tasha's rule you move them: Intelligence +2 and Constitution +1.",
+  size:"Medium",speed:30,bg:"Pirate (Sailor variant, PHB p.139)",spec:"Artillerist",align:"Chaotic neutral (a free spirit who keeps promises to the crew)",
+  base:{int:15,dex:14,con:13,wis:10,cha:8,str:12},bonus:{int:2,con:1},
+  profSkills:[["Athletics","str","Sailor"],["Perception","wis","Sailor"],["Intimidation","cha","Half-Orc: Menacing"],["Arcana","int","Artificer"],["Investigation","int","Artificer"]],
+  tools:"Thieves' tools, tinker's tools (class). Cartographer's tools (class pick, instead of carpenter's: read and draw sea charts and maps). Woodcarver's tools (Artillerist, T p.17). Navigator's tools and water vehicles (Sailor).",
+  ownTools:"Kits he owns: thieves' tools (class kit). Woodcarver's tools bought for 1 gp. Cartographer's tools made with The Right Tool for the Job (T p.13). (Open question 25, option b.) Gold left: 9 gp (the Sailor's 10 gp minus 1).",
+  langs:"Common, Draconic (Orc swapped with Tasha's rule, T p.7: he grew up with his dragonborn captain's crew)",senses:"Darkvision 60 ft",
+  racial:"Relentless Endurance (once per long rest, drop to 1 HP instead of 0). Savage Attacks (on a critical hit with a melee weapon, roll one extra weapon damage die; not with the crossbow or a thrown weapon). Menacing (Intimidation).",
+  armor:"Studded leather",armorBase:12,cap:null,stealth:false,
+  weapons:"Spear, dagger, light crossbow and 20 bolts",
+  otherAtk:"Spear: +3 to hit, 1d6+1 piercing (1d8+1 with two hands), thrown 20/60 ft; with Enhanced Weapon instead: +4, 1d6+2. Dagger: +4 to hit, 1d4+2 piercing (finesse, uses Dexterity), thrown 20/60 ft. Shocking grasp: +5 melee spell attack, 1d8 lightning, advantage against a target in metal armor, and the target cannot take reactions until the start of its next turn.",
+  atk:{name:"Light crossbow (Repeating Shot)",abil:"dex",dmg:"1d8",plus:1,note:"Range 80/320 ft. No loading, and it makes its own bolts. Repeating Shot needs attunement. Without the infusion: +4 to hit, 1d8+2"},
+  infStuff:"Enhanced Defense on the studded leather (AC +1). Repeating Shot on the crossbow (attunement needed).",
+  cantrips:"Shocking grasp, Guidance",prepared:"Cure wounds (1d8+3), Faerie fire, False life (1d4+4 temporary HP), Detect magic (ritual)",
+  alwaysPrep:"Shield, Thunderwave (Artillerist; they do not count toward your 4)",
+  infusions:"Enhanced Defense, Repeating Shot, Enhanced Weapon, Mind Sharpener",
+  acBonus:1,
+  specFeat:["Eldritch Cannon (Mourning Bell): AC 18, 15 HP (5 x level 3). You take an action, holding woodcarver's or smith's tools, and it appears in an empty space on flat ground within 5 ft. It is Small or Tiny. Free once per long rest; after that each new one costs a spell slot. Only one at a time. It lasts 1 hour, or until it drops to 0 HP, or until you use an action to send it away. You choose its look and whether it has legs (T p.17-18).","To make it act, use a bonus action while you are within 60 ft of it. The same bonus action can make it walk or climb 15 ft if it has legs. If you do not activate it, it does nothing. Force Ballista: ranged spell attack +5, 2d8 force damage, range 120 ft, pushes the target 5 ft away. Flamethrower: 15-ft cone, DC 13 Dexterity save, 2d8 fire (half on a success). Protector: 1d8 + 3 temporary HP to the cannon itself and to each creature you choose within 10 ft of it."],
+  idea:"Skippy was the powder monkey of the pirate ship The Widow: the boy who runs gunpowder to the cannons in a fight. His captain, the bronze dragonborn Edwine Blackscale (\"the skipper\"; battle soot darkened her bronze scales, hence the name), took him in as a child, so the crew called him the skipper's boy, then Skippy. The Widow sank in a storm and a sea battle. Skippy kept the ship's last small black iron gun, and later learned to shrink it with magic: that is Mourning Bell, his Eldritch Cannon. He believes the captain is alive, and he maps every coast to find where she washed ashore. More in STORY.md."},
+ {id:"B",short:"Rock Gnome Battle Smith (parrot)",name:'Pip Cogsworth, "the Parrot Smith"',tag:"Rock Gnome Battle Smith: the mechanical-parrot pirate",
+  race:"Rock Gnome (no customizing needed)",raceNote:"Rock Gnome already gives Intelligence +2 and Constitution +1. This is exactly the +2 Int / +1 Con you asked for.",
+  size:"Small",speed:25,bg:"Pirate (Sailor variant, PHB p.139)",spec:"Battle Smith",align:"Lawful neutral (the pirate code)",
+  base:{int:15,dex:14,con:13,wis:12,cha:10,str:8},bonus:{int:2,con:1},
+  profSkills:[["Athletics","str","Sailor"],["Perception","wis","Sailor"],["Arcana","int","Artificer"],["Investigation","int","Artificer"]],
+  tools:"Thieves' tools, tinker's tools (class; the gnome copy gives you a new pick: Cartographer's tools, for treasure maps). Carpenter's tools (class pick). Smith's tools (Battle Smith). Navigator's tools and water vehicles (Sailor).",
+  langs:"Common, Gnomish",senses:"Darkvision 60 ft",
+  racial:"Gnome Cunning (advantage on Intelligence, Wisdom and Charisma saves against magic). Artificer's Lore (double proficiency on History checks about magic items and gadgets). Tinker.",
+  armor:"Scale mail",armorBase:14,cap:2,stealth:true,
+  weapons:"Light crossbow and 20 bolts, dagger, handaxe, belaying pin (club)",
+  atk:{name:"Light crossbow (Enhanced Weapon)",abil:"int",dmg:"1d8",plus:1,note:"Battle Ready: you use Intelligence for attack and damage with a magic weapon"},
+  infStuff:"Enhanced Weapon on the light crossbow (+1). Enhanced Defense on the scale mail (AC +1).",
+  cantrips:"Fire bolt, Mending",prepared:"Cure wounds, Faerie fire, Feather fall, Detect magic (ritual)",
+  alwaysPrep:"Heroism, Shield (Battle Smith; they do not count toward your 4)",
+  infusions:"Enhanced Weapon, Enhanced Defense, Repeating Shot, Mind Sharpener",
+  acBonus:1,
+  specFeat:["Steel Defender: AC 15, 20 HP (2 + Int 3 + 5 x level 3), speed 40 ft. Its bite hits with your spell attack bonus (+5) for 1d8 + 2 force. It takes the Dodge action only, unless you spend a bonus action to command it. You choose how it looks (T p.19), so it can be a clockwork parrot on your shoulder.","Battle Ready: you can use martial weapons, and you use Intelligence (not Strength or Dexterity) for attack and damage with a magic weapon."],
+  idea:"Pip was the ship's tinker, the smallest one on board, and the only one who could fix the old captain's compass. When the captain vanished, Pip took the compass and a clockwork parrot named Squawk Jr. and went looking. Pip keeps the pirate code, because someone has to. Squawk Jr. understands every word Pip says, but it cannot talk: it only squawks back, rudely."},
+ {id:"C",short:"Tiefling Alchemist (smuggler)",name:'Seraphine "Rumfire" Voss',tag:"Tiefling Alchemist: the smuggler-chemist",
+  race:"Tiefling, customized with Tasha's rule (T p.7)",raceNote:"Tiefling normally gives Charisma +2 and Intelligence +1. With Tasha's rule you move them: Intelligence +2 and Constitution +1.",
+  size:"Medium",speed:30,bg:"Criminal (PHB p.129), as a smuggler",spec:"Alchemist",align:"True neutral (in it for the crew and the coin)",
+  base:{int:15,dex:14,con:13,wis:12,cha:10,str:8},bonus:{int:2,con:1},
+  profSkills:[["Deception","cha","Criminal"],["Stealth","dex","Criminal"],["Arcana","int","Artificer"],["Investigation","int","Artificer"]],
+  tools:"Thieves' tools, tinker's tools (class). Brewer's supplies (class pick: rum!). Alchemist's supplies (Alchemist). A dice set (Criminal's gaming set). Criminal also gives thieves' tools, which you already have, so you pick one other tool instead (for example a disguise kit).",
+  langs:"Common, Infernal",senses:"Darkvision 60 ft",
+  racial:"Hellish Resistance (resist fire damage). Infernal Legacy: the Thaumaturgy cantrip, and Hellish Rebuke once per long rest (Charisma is the casting score for these, so it is weak here).",
+  armor:"Scale mail",armorBase:14,cap:2,stealth:true,
+  weapons:"Light crossbow and 20 bolts, dagger, handaxe, crowbar (from your background)",
+  atk:{name:"Light crossbow (Enhanced Weapon)",abil:"dex",dmg:"1d8",plus:1,note:"Enhanced Weapon: +1 to hit and damage"},
+  infStuff:"Enhanced Defense on the scale mail. Enhanced Weapon on the crossbow.",
+  cantrips:"Guidance, Acid splash",prepared:"Cure wounds, Detect magic (ritual), Disguise self, Grease",
+  alwaysPrep:"Healing word, Ray of sickness (Alchemist; they do not count toward your 4)",
+  infusions:"Enhanced Defense, Enhanced Weapon, Mind Sharpener, Replicate: Alchemy jug",
+  acBonus:1,
+  specFeat:["Experimental Elixir: after each long rest you fill an empty flask with one random elixir (roll a d6): healing, speed, +1 AC, a d4 bonus, flying, or a body change. Healing is 2d4 + 3. Spend a spell slot to make another and choose its effect (T p.14-15).","You also know alchemist's supplies, which will be your tool when you cast (it matters more at level 5)."],
+  idea:"Seraphine smuggled rum, medicine and secrets between five islands, and brewed their own on the way. A fire that nearly sank the ship left them with a taste for hot sauce and a small tail that never burns. Quiet, quick, and always has the right bottle. Fear is a business tool, so the crew spreads rumors that Seraphine is cursed."}
+];
+function calc(b){
+  const sc={}; for(const a in b.base) sc[a]=b.base[a]+(b.bonus[a]||0);
+  const m={}; for(const a in sc) m[a]=mod(sc[a]);
+  const pb=2;
+  const hp=(8+m.con)+2*(5+m.con);
+  const ac=b.armorBase+(b.cap===null?m.dex:Math.min(m.dex,b.cap));
+  const dc=8+pb+m.int, sa=pb+m.int, init=m.dex;
+  const percProf=b.profSkills.some(s=>s[0]==="Perception");
+  const pp=10+m.wis+(percProf?pb:0);
+  const atkAbil=b.atk.abil==="int"?m.int:m.dex;
+  return {sc,m,pb,hp,ac,acInf:ac+b.acBonus,dc,sa,init,pp,prep:Math.max(1,m.int+1),atkHit:atkAbil+pb+b.atk.plus,atkDmg:atkAbil+b.atk.plus};
+}
+
+const orcBox=()=>`<div class="why" style="background:#eef3f2;border-color:#9bbab6;border-left-color:var(--accent)"><b class="t" style="color:var(--accent)">Can a half-orc be smart? What about Strength? How do I carry the cannon?</b>
+<p><b>Can a half-orc be smart?</b> Yes. In the 2014 rules a Half-Orc gets Strength +2 and Constitution +1, and <b>no penalty to Intelligence</b>. {{PHB p.40-41}} Any race can be clever: it is your hero's story. Tasha's also lets you move the racial bonuses to other scores, so Intelligence +2 is allowed. {{T p.7}} The Half-Orc's looks and traits stay the same.</p>
+<p><b>What does Strength do for an artificer?</b> It adds to melee attacks with Strength weapons, to Athletics checks (climb, swim, shove), and to how much you can carry: your Strength score x 15 pounds. {{PHB p.176}} It does <b>not</b> change your spells, your crossbow (that uses Dexterity), your armor (studded leather has no Strength rule) or your cannon. Only heavy armor asks for Strength 13 to 15, and you do not wear it. Armorers do not need it either.</p>
+<p><b>How does a hero with a low Strength carry a ship's cannon?</b> You do not carry it. <b>You build it with magic.</b> Using woodcarver's or smith's tools you take an action to create a Small or Tiny cannon on flat ground within 5 feet. It is a magical object that lasts 1 hour, then it vanishes. {{T p.17}} A Tiny one fits in one hand. If you give it legs, it walks or climbs up to 15 feet by itself when you use your bonus action. The book says you choose its look. {{T p.17-18}} You never lift it, so low Strength is fine. (Str 8 carries 120 pounds of gear, Str 12 carries 180.)</p>
+<p><b>Want a stronger-looking pirate?</b> Build A (Skippy, in Part 3) already uses <b>Strength 12</b> (spread a). The step right after build A shows all three spreads side by side: (a) Str 12, (b) Str 8, and (c) Half-Orc as written with Int 15. A Strength of 14 or more would cost Dexterity or Constitution, and for you that is not worth it. Rolled scores work the same way: whatever number you put in Strength is a number you do not put in Wisdom or Charisma.</p>
+</div>`;
+
+const cannonBox=()=>`<div class="why" style="background:#fff4e0;border-color:#e0b36a;border-left-color:var(--warn)"><b class="t" style="color:var(--warn)">Can I carry a real ship's cannon?</b>
+<p><b>Honest answer: no, not at level 3. And not with any normal Strength.</b></p>
+<p><b>What a real one is.</b> In the Dungeon Master's Guide (siege equipment) a cannon is a <b>Large object</b>: AC 19, 75 hit points, +6 to hit, 8d10 bludgeoning damage, range 600/2,400 ft. It takes one action each to load, aim and fire. <b>The book lists no weight.</b> Real naval cannons weigh from several hundred to several thousand pounds (my own knowledge). You do not own the DMG. My source is a fan website, not an official book. I could not find the DMG page number. I did not check the ship weapons in Ghosts of Saltmarsh.</p>
+<p><b>What a hero can lift.</b> You can carry your Strength x 15 pounds. You can push, drag or lift your Strength x 30 pounds, but above your carrying weight your speed is at most 5 feet. {{PHB p.176}} The best case with the Standard Array is Strength 17 with the trait <b>Powerful Build</b>, which counts you as one size bigger: 17 x 15 x 2 = <b>510 lb</b> carried, and 17 x 30 x 2 = <b>1,020 lb</b> to push, drag or lift. That still does not carry a ship's cannon. It could drag a light one, 5 feet per turn.</p>
+<p><b>Powerful Build races</b> (web sources, 2014 books you do not own): Goliath, Bugbear, Firbolg and Orc. The Half-Orc in your Player's Handbook does <b>not</b> have it. I could not confirm the Eberron or Exandria versions.</p>
+<p><b>Three practical options</b></p>
+<ol>
+<li><b>Your Eldritch Cannon looks like a small ship's cannon (your choice, chosen).</b> It is free: you choose its look and legs (T p.17-18). It has AC 18, 15 HP, 2d8 damage, DC 13. Skippy's is Tiny with no legs: he carries it on his shoulder and fires it like a rocket launcher (a Tiny cannon can be held in one hand, T p.17). You take an action with your woodcarver's tools in hand, and it appears within 5 feet; lift it to your shoulder. Tell the table "Mourning Bell, the old gun of The Widow, shrunk by magic, appears at my feet and I swing it onto my shoulder."</li>
+<li><b>A smaller real gun, if your DM allows it.</b> Your table has firearms (docs/TABLE-RULES.md). Under the DMG firearm rules a pistol is 1d10 piercing, range 30/90, and a musket is 1d12, range 40/120 (from memory, check with the DM). With Dex +2 and proficiency +2 a pistol is +4 to hit, 1d10+2 damage. Whether the artificer's firearm line (T p.10) works with your Gunslinger rules is the DM's call.</li>
+<li><b>A Powerful Build race with more Strength.</b> For example a Goliath with Strength 12: 12 x 15 x 2 = 360 lb carried, 12 x 30 x 2 = 720 lb to push, drag or lift. It costs you the Half-Orc darkvision, Menacing and Relentless Endurance, and the book is Volo's or Elemental Evil. It also does not make a real cannon liftable.</li>
+</ol>
+<p><b>Ask the DM:</b> (1) May my Eldritch Cannon look like a ship's cannon? (2) Is there a real ship with cannons in the story? (3) Do firearms work for my artificer? (4) Are Powerful Build races from Volo's allowed?</p></div>`;
+function buildPage(b){
+  const c=calc(b), AB=["int","con","dex","wis","cha","str"], N={int:"Intelligence",con:"Constitution",dex:"Dexterity",wis:"Wisdom",cha:"Charisma",str:"Strength"};
+  let h='<p class="part">Part 3 &middot; Your pirate</p><h2>'+(b.rec?'&#9733; ':'')+b.name+'</h2><p><b>'+b.tag+'</b>'+(b.rec?' <span class="pg" style="border-color:var(--ok);color:var(--ok)">my recommendation, and your choice</span>':'')+'</p>';
+  h+='<div class="stat"><div><span>Hit points</span><b>'+c.hp+'</b></div><div><span>Armor Class</span><b>'+c.ac+' ('+c.acInf+')</b></div><div><span>Spell save DC</span><b>'+c.dc+'</b></div><div><span>Spell attack</span><b>'+sg(c.sa)+'</b></div><div><span>Initiative</span><b>'+sg(c.init)+'</b></div><div><span>Passive Perception</span><b>'+c.pp+'</b></div></div>';
+  h+='<p class="hint">Armor Class in brackets is with the Enhanced Defense infusion on the armor. Level 3, 900 XP, proficiency bonus +2, speed '+b.speed+' ft, '+b.size+'.</p>';
+  h+='<div class="tw"><table><tr><th>Ability</th>'+AB.map(a=>'<th>'+N[a].slice(0,3).toUpperCase()+'</th>').join('')+'</tr>'+
+    '<tr><td>Standard Array pick</td>'+AB.map(a=>'<td>'+b.base[a]+'</td>').join('')+'</tr>'+
+    '<tr><td>Origin bonus</td>'+AB.map(a=>'<td>'+(b.bonus[a]?"+"+b.bonus[a]:"-")+'</td>').join('')+'</tr>'+
+    '<tr><td><b>Final score</b></td>'+AB.map(a=>'<td><b>'+c.sc[a]+'</b></td>').join('')+'</tr>'+
+    '<tr><td><b>Modifier</b></td>'+AB.map(a=>'<td><b>'+sg(c.m[a])+'</b></td>').join('')+'</tr></table></div>';
+  h+='<div class="grid">';
+  h+='<div class="box"><h4>Race</h4>'+b.race+'<br><small class="hint">'+b.raceNote+'</small><br><small>'+b.racial+'</small></div>';
+  h+='<div class="box"><h4>Background</h4>'+b.bg+'</div>';
+  h+='<div class="box"><h4>Specialist</h4>'+b.spec+'</div>';
+  h+='<div class="box"><h4>Alignment idea</h4>'+b.align+'</div>';
+  h+='</div>';
+  h+='<h3>Skills (modifier)</h3><ul>'+b.profSkills.map(s=>'<li><b>'+s[0]+'</b> '+sg(c.m[s[1]]+c.pb)+' <span class="hint">('+s[2]+')</span></li>').join('')+'</ul>';
+  h+='<p><b>Tools:</b> '+b.tools+'</p>'+(b.ownTools?'<p class="hint">'+b.ownTools+'</p>':'')+'<p><b>Languages:</b> '+b.langs+'. <b>Senses:</b> '+b.senses+'.</p>';
+  h+='<h3>Magic</h3><ul><li><b>Cantrips (2):</b> '+b.cantrips+'</li><li><b>Prepared spells (Int modifier '+sg(c.m.int)+' + 1 = '+c.prep+'):</b> '+b.prepared+'</li><li><b>Always prepared:</b> '+b.alwaysPrep+'</li><li><b>Spell slots:</b> three 1st-level slots</li><li><b>Infusions known (4):</b> '+b.infusions+'. You can have 2 items infused at once: '+b.infStuff+'</li></ul>';
+  h+='<h3>Gear</h3><p><b>Armor:</b> '+b.armor+' ('+b.armorBase+' + Dex'+(b.cap===null?', no Dex limit':' up to +'+b.cap)+(b.stealth?'; disadvantage on Stealth':'')+'). <b>Weapons:</b> '+b.weapons+'. Thieves\' tools, dungeoneer\'s pack, the gear and gold from your background.</p>';
+  h+='<p><b>Main weapon:</b> '+b.atk.name+': '+sg(c.atkHit)+' to hit, '+b.atk.dmg+sg(c.atkDmg)+' piercing damage. <span class="hint">'+b.atk.note+'.</span></p>'+(b.otherAtk?'<p><b>Other attacks:</b> '+b.otherAtk+'</p>':'');
+  h+='<h3>Specialist features at level 3</h3><ul>'+b.specFeat.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
+  h+='<h3>Character idea</h3><p>'+b.idea+'</p>';
+  if(b.id==="A") h+=cannonBox()+orcBox();
+  h+='<div class="note"><b>How these numbers work.</b> HP = 8 + Con modifier ('+sg(c.m.con)+') at level 1, then 5 + Con modifier ('+(5+c.m.con)+') for each of levels 2 and 3 (5 is the book\'s fixed value; the table lets you reroll 1s if you roll instead). That is '+(8+c.m.con)+' + '+(5+c.m.con)+' + '+(5+c.m.con)+' = '+c.hp+'. AC = '+b.armorBase+' + Dex ('+sg(c.m.dex)+(b.cap===null?', studded leather has no Dex limit':', the most '+b.armor.toLowerCase()+' allows is +'+b.cap)+') = '+c.ac+'. Spell save DC = 8 + 2 + '+c.m.int+' = '+c.dc+'. Spell attack = 2 + '+c.m.int+' = '+c.sa+'. Initiative = Dex = '+sg(c.init)+'. Passive Perception = 10 + Wis ('+sg(c.m.wis)+')'+(b.profSkills.some(s=>s[0]==="Perception")?' + 2 (you are proficient in Perception)':' (you are not proficient in Perception)')+' = '+c.pp+'.</div>';
+  return fmt(h);
+}
+
+
+const SPREADS=[
+ {k:"Original: Str 8 (spread b)",sc:{int:17,dex:14,con:14,str:8,wis:12,cha:10},feel:"A smart, watchful gadget genius who is physically weak. Best senses and manners, no muscle."},
+ {k:"(a) Str 12",sc:{int:17,dex:14,con:14,str:12,wis:10,cha:8},feel:"A sturdy sea-dog with real muscle. A bit blunt and not very watchful, but the spells are as strong as they get."},
+ {k:"(c) Half-Orc as written (Str 10, Int 15)",sc:{int:15,dex:14,con:14,str:10,wis:12,cha:10},feel:"Looks and plays like a true half-orc bruiser, but every spell is one notch weaker."}
+];
+const ABN={int:"Intelligence",dex:"Dexterity",con:"Constitution",str:"Strength",wis:"Wisdom",cha:"Charisma"};
+function sbsRows(){
+  const R=[]; const PB=2;
+  const row=(g,label,fn)=>R.push([g,label,SPREADS.map(x=>fn(x.sc))]);
+  ["int","dex","con","str","wis","cha"].forEach(a=>row("Scores",ABN[a]+" score (modifier)",sc=>sc[a]+" ("+sg(mod(sc[a]))+")"));
+  [["str",0],["dex",0],["con",1],["int",1],["wis",0],["cha",0]].forEach(([a,p])=>row("Saving throws",ABN[a]+" save"+(p?" (trained)":""),sc=>sg(mod(sc[a])+(p?PB:0))));
+  [["Athletics","str"],["Perception","wis"],["Intimidation","cha"],["Arcana","int"],["Investigation","int"]].forEach(([n,a])=>row("Skills you are trained in",n,sc=>sg(mod(sc[a])+PB)));
+  [["Stealth (studded leather: no penalty)","dex"],["Sleight of Hand","dex"],["Persuasion","cha"],["Deception","cha"],["Insight","wis"],["History","int"]].forEach(([n,a])=>row("Main untrained skills",n,sc=>sg(mod(sc[a]))));
+  row("Main numbers","Passive Perception",sc=>10+mod(sc.wis)+PB);
+  row("Main numbers","Hit points (level 3)",sc=>(8+mod(sc.con))+2*(5+mod(sc.con)));
+  row("Main numbers","Armor Class (studded leather; with Enhanced Defense)",sc=>(12+mod(sc.dex))+" ("+(13+mod(sc.dex))+")");
+  row("Main numbers","Initiative",sc=>sg(mod(sc.dex)));
+  row("Main numbers","Speed",()=>"30 ft");
+  row("Spells","Spell save DC",sc=>8+PB+mod(sc.int));
+  row("Spells","Spell attack bonus",sc=>sg(PB+mod(sc.int)));
+  row("Spells","Cantrips known",()=>2);
+  row("Spells","Prepared spells (plus 2 always prepared)",sc=>Math.max(1,mod(sc.int)+1));
+  row("Spells","Cure wounds heals",sc=>"1d8"+sg(mod(sc.int)));
+  row("Attacks","Light crossbow (Dexterity; without Repeating Shot)",sc=>sg(mod(sc.dex)+PB)+" to hit, 1d8"+sg(mod(sc.dex)));
+  row("Attacks","Spear in melee (Strength; two hands 1d8)",sc=>sg(mod(sc.str)+PB)+" to hit, 1d6"+(mod(sc.str)===0?"":sg(mod(sc.str))));
+  row("Attacks","Dagger (finesse, uses Dexterity)",sc=>sg(mod(sc.dex)+PB)+" to hit, 1d4"+sg(mod(sc.dex)));
+  row("Cannon","Force Ballista attack (spell attack)",sc=>sg(PB+mod(sc.int))+", 2d8 force");
+  row("Cannon","Flamethrower save DC",sc=>8+PB+mod(sc.int));
+  row("Cannon","Protector temporary HP",sc=>"1d8"+sg(mod(sc.int)));
+  row("Cannon","Cannon AC and HP",()=>"AC 18, 15 HP");
+  row("Carrying (PHB p.176)","Carry (Strength x 15)",sc=>sc.str*15+" lb");
+  row("Carrying (PHB p.176)","Push, drag or lift (Strength x 30)",sc=>sc.str*30+" lb");
+  R.push(["Feel","At the table",SPREADS.map(x=>x.feel)]);
+  return R;
+}
+function sbsHtml(){
+  let h='<p class="part">Part 3 &middot; Your pirate</p><h2>Build A: three spreads side by side</h2><p>All three are the Half-Orc Artillerist with the Pirate background, level 3, Standard Array. Only the scores change. The <b>left column is your original Str 8</b>. In the other two, a number that changed shows "(was ...)". <b>Yellow rows differ.</b> The rest are the same. Spread (a) is the one you chose for Skippy.</p>';
+  h+='<div class="tw"><table><tr><th>Thing</th>'+SPREADS.map(x=>'<th>'+x.k+'</th>').join('')+'</tr>';
+  let g="";
+  sbsRows().forEach(r=>{
+    if(r[0]!==g){ g=r[0]; h+='<tr><th colspan="4">'+g+'</th></tr>'; }
+    const same=new Set(r[2].map(String)).size===1;
+    h+='<tr'+(same?'':' style="background:#fff8d6"')+'><td>'+r[1]+'</td>'+r[2].map((v,i)=>'<td>'+v+((i>0&&r[1]!=='At the table'&&String(v)!==String(r[2][0]))?' <small style="color:var(--muted)">(was '+r[2][0]+')</small>':'')+'</td>').join('')+'</tr>';
+  });
+  h+='</table></div>';
+  h+='<div class="note"><b>How the three are built.</b> (a) Array Int 15, Dex 14, Con 13, Str 12, Wis 10, Cha 8, then Tasha\'s +2 Int and +1 Con. (b) The same, but Str 8, Wis 12, Cha 10. (c) Array Int 15, Dex 14, Con 13, Wis 12, Cha 10, Str 8, then the Half-Orc bonuses as written: Str +2 (10) and Con +1 (14). Spells and the cannon use Intelligence, so (c) is one notch lower everywhere that matters.</div>';
+  h+=rec('<p><b>Spread (a).</b> It keeps the best spell numbers, adds some real Strength and Athletics, and costs only 1 point of passive Perception and 1 of Charisma. Pick (b) if you want a watchful, smooth-talking inventor. Pick (c) only if you want a "pure" Half-Orc and do not mind weaker spells.</p>');
+  h+=why('<p>All three have the same HP, AC and initiative. The only big gap is Intelligence in (c), and a small trade between Strength, Perception and Charisma in (a) and (b).</p>');
+  return fmt(h);
+}
+/* ================== PAGES ================== */
+const PAGES=[];
+const add=(part,title,body)=>PAGES.push({part,title,body});
+
+/* ---------------- PART 1 ---------------- */
+add(1,"What is D&D?",`
+<p>Dungeons &amp; Dragons is a game you play by <b>talking</b>. There is no board and no screen. Everyone sits together (or calls on a server) and tells a story.</p>
+<ul>
+<li>One person is the [[Dungeon Master|dm]], or <b>DM</b>. The DM describes the world: "You stand at a dark cave." The DM also plays every monster and every shopkeeper.</li>
+<li>Everyone else is a <b>player</b>. You play <b>one hero</b>. You say what your hero does: "I walk into the cave and light a torch."</li>
+<li>When the result is not sure, you <b>roll dice</b>. The dice decide if you succeed. Then the DM says what happens next.</li>
+</ul>
+<p>Nobody wins or loses. The goal is to have a good story together. {{PHB p.5-6}}</p>
+<h3>Three kinds of play</h3>
+<div class="grid">
+<div class="box"><h4>Exploring</h4>Look around, open doors, find traps, climb, swim. The DM describes, you answer.</div>
+<div class="box"><h4>Talking</h4>Speak to people in character. Make deals, tell lies, scare a guard. This is called roleplay.</div>
+<div class="box"><h4>Fighting</h4>Combat uses turns and a few clear rules. Most beginners find this the easiest part to learn.</div>
+</div>
+${why(`<p>You will play an <b>artificer</b>: an inventor who casts spells through tools and can turn plain items into magic items. In a group you are the one with the clever gadget. You do not need to know all the rules. <b>The DM will help you.</b> New players are normal.</p>`)}
+`);
+
+add(1,"The dice",`
+<p>D&amp;D uses seven dice. The letter d means "die". The number is how many sides it has.</p>
+<div class="tw"><table><tr><th>Die</th><th>Sides</th><th>You will see it for</th></tr>
+<tr><td>d4</td><td>4</td><td>Small damage, bonuses like Guidance</td></tr>
+<tr><td>d6</td><td>6</td><td>Spear (Skippy), handaxe, some spells (Thorn whip)</td></tr>
+<tr><td>d8</td><td>8</td><td><b>Your hit die</b>, light crossbow, Shocking grasp, Cure wounds, the cannon (2d8)</td></tr>
+<tr><td>d10</td><td>10</td><td>Fire bolt (1d10)</td></tr>
+<tr><td>d12</td><td>12</td><td>Big weapons</td></tr>
+<tr><td>d20</td><td>20</td><td><b>Almost every test.</b> The most important die.</td></tr>
+<tr><td>d100</td><td>2 x d10</td><td>Rare random tables</td></tr></table></div>
+<h3>How to read "2d6+3"</h3>
+<p><b>2d6+3</b> means: roll <b>2</b> six-sided dice, add the numbers, then add <b>3</b>. Example: you roll 4 and 5. That is 9, plus 3, so <b>12</b>.</p>
+<p><b>1d8+2</b> means: roll one eight-sided die and add 2. <b>d20+5</b> means one d20 plus 5.</p>
+<p>The page number for dice is {{PHB p.6}}. Try them here:</p>
+<div class="dice" id="dicebox"></div>
+<div id="diceout" class="note" style="font-weight:700">Tap a die.</div>
+${why(`<p>Skippy's attacks and spells use mostly d8s (crossbow, Shocking grasp, cannon) and d20s. The spear uses a d6 and the dagger a d4. You will carry a set of dice to the table (or use a free dice roller on the server). A <b>d20</b> is the one you will touch most.</p>`)}
+`);
+
+add(1,"The d20 test: the heart of the game",`
+<p>Whenever the DM is not sure you can do something, you roll a [[d20]] and add a number. If the total is <b>equal to or more than</b> a target number, you <b>succeed</b>.</p>
+<div class="diag">roll d20  +  modifier  +  proficiency (if trained)
+          |
+          v
+  compare with the target number
+  (a [[DC]] set by the DM, or the enemy's [[AC]])
+          |
+   equal or higher = success</div>
+<p>There are three kinds of d20 test:</p>
+<ul>
+<li><b>[[Ability check|ability check]]:</b> "Can I climb the mast?" You roll d20 + modifier against a [[DC]]. {{PHB p.174}}</li>
+<li><b>[[Saving throw|saving throw]]:</b> "Can I dodge the fireball?" You roll to resist something that happens to you. {{PHB p.179}}</li>
+<li><b>[[Attack roll|attack roll]]:</b> "Do I hit the goblin?" You roll against the monster's [[Armor Class|ac]]. {{PHB p.194}}</li>
+</ul>
+<h3>The DC and the AC</h3>
+<p>The <b>DC</b> is how hard the task is. About 10 is easy, 15 is medium, 20 is hard. The <b>AC</b> is how hard a creature is to hit. A goblin has AC 15, so you need 15 or more to hit it.</p>
+<h3>[[Advantage]] and [[disadvantage]]</h3>
+<p>Sometimes the situation helps you or hurts you. With <b>advantage</b> you roll two d20 and keep the <b>higher</b>. With <b>disadvantage</b> you keep the <b>lower</b>. They do not add up. {{PHB p.173}}</p>
+<h3>A natural 20 and a natural 1</h3>
+<p>On an attack roll, a [[natural 20]] always hits and is a [[critical hit]] (damage dice are rolled twice). A natural 1 always misses. {{PHB p.194}}</p>
+${why(`<p>Everything your artificer does is one of these three tests. <b>Intelligence</b> will be added to your spell attacks and to the DC of your spells. That is why Intelligence is your top score.</p>`)}
+`);
+
+add(1,"The six ability scores and modifiers",`
+<p>Every hero has six numbers called [[ability scores|ability score]]. They show what your hero is naturally good at. {{PHB p.12-13}}</p>
+<div class="tw"><table><tr><th>Score</th><th>What it means</th><th>Artificer?</th></tr>
+<tr><td><b>Strength</b></td><td>Muscle: lifting, shoving, hitting hard with melee weapons</td><td>Not needed</td></tr>
+<tr><td><b>Dexterity</b></td><td>Speed, aim, balance. Adds to AC, ranged attacks, initiative</td><td>Third</td></tr>
+<tr><td><b>Constitution</b></td><td>Health and toughness. Adds hit points</td><td>Second</td></tr>
+<tr><td><b>Intelligence</b></td><td>Memory and reasoning</td><td><b>First</b></td></tr>
+<tr><td><b>Wisdom</b></td><td>Senses and common sense</td><td>Low</td></tr>
+<tr><td><b>Charisma</b></td><td>Force of personality</td><td>Low</td></tr></table></div>
+<h3>The score becomes a [[modifier]]</h3>
+<p>You almost never add the score. You add the <b>modifier</b>. The rule: take the score, subtract 10, divide by 2, round down. {{PHB p.13}}</p>
+<div class="tw"><table><tr><th>Score</th><td>8-9</td><td>10-11</td><td>12-13</td><td>14-15</td><td>16-17</td><td>18-19</td><td>20</td></tr><tr><th>Modifier</th><td>-1</td><td>0</td><td>+1</td><td>+2</td><td>+3</td><td>+4</td><td>+5</td></tr></table></div>
+<p><b>Notice:</b> an even score and the odd score above it give the same modifier. A 17 is no better than a 16. This will help you pick scores.</p>
+${why(`<p>Your best score goes in Intelligence. A score of 16 or 17 gives +3. That +3 goes on your spell attacks, on the DC of your spells, on how many spells you prepare, and on your Cure wounds healing.</p>`)}
+`);
+
+add(1,"Proficiency: what you are trained in",`
+<p>The [[proficiency bonus|proficiency bonus]] is a number that grows as you level. At <b>level 3 it is +2</b>. {{PHB p.12}}</p>
+<p>When you use something you are [[proficient|proficient]] in, you add the proficiency bonus to the roll. If you are not trained, you add only the modifier.</p>
+<h3>What can you be proficient in?</h3>
+<ul>
+<li><b>[[Skills|skill]]</b>: Perception, Arcana, Stealth... There are 18. Each skill uses one ability score. {{PHB p.174-175}}</li>
+<li><b>[[Saving throws|saving throw]]</b>: each class is trained in two. Artificers: <b>Constitution and Intelligence</b>.</li>
+<li><b>Armor and weapons</b>: what you can wear and use without a penalty.</li>
+<li><b>[[Tools|tool]]</b>: kits like thieves' tools. Artificers get several.</li>
+</ul>
+<h3>Example</h3>
+<div class="tw"><table><tr><th>Check</th><th>Math</th></tr>
+<tr><td>Arcana (trained), Int +3</td><td>d20 + 3 + 2 = <b>d20+5</b></td></tr>
+<tr><td>Persuasion (not trained), Cha -1</td><td>d20 - 1 = <b>d20-1</b></td></tr></table></div>
+<p class="hint">These are Skippy's numbers (Int 17, Cha 8).</p>
+<p>Passive checks: [[passive Perception|passive Perception]] is 10 + your Perception bonus. The DM uses it to see if you notice something without rolling. {{PHB p.175}}</p>
+${why(`<p>Skills decide which things you are good at when the DM says "make a check". Part 2 will help you pick skills that fit a pirate. Your saving throws (Constitution and Intelligence) are strong against poison and mind tricks.</p>`)}
+`);
+
+add(1,"A round of combat",`
+<p>A fight is played in <b>rounds</b>. One round is about 6 seconds in the story. In each round, everyone gets one turn. {{PHB p.189}}</p>
+<h3>Step 1: [[initiative|initiative]]</h3>
+<p>At the start, everyone rolls d20 + Dexterity modifier. The highest goes first, then the next, and so on. The order stays the same for the whole fight.</p>
+<h3>Step 2: your turn</h3>
+<p>On your turn you can do these things:</p>
+<ul>
+<li><b>Move</b> up to your [[speed]] (30 feet is normal). You can split it around your action.</li>
+<li>Take <b>one [[action|action]]</b>. The common ones: <b>Attack</b>, <b>Cast a spell</b>, <b>Dash</b> (move extra), <b>Disengage</b> (walk away without free hits), <b>Dodge</b> (attacks on you have disadvantage), <b>Help</b> a friend, <b>Hide</b>, <b>Use an object</b>. {{PHB p.192}}</li>
+<li>Take <b>one [[bonus action|bonus action]]</b>, only if something gives you one. For an artificer: a cannon, a steel defender, and a few spells. {{PHB p.189}}</li>
+<li>You also get <b>one [[reaction|reaction]]</b> each round. You use it when a trigger happens, even on someone else's turn. Example: the spell <i>Shield</i>, or an opportunity attack when an enemy walks away from you. {{PHB p.190, p.195}}</li>
+</ul>
+<div class="diag">Your turn:  MOVE  +  1 ACTION  +  (bonus action?)
+Between turns: you have 1 REACTION</div>
+<h3>Step 3: attack</h3>
+<p>Roll d20 + modifiers. If the total is equal to or above the target's [[AC]], you hit and roll damage. If you are far from the enemy, the attack is [[ranged|ranged]]. Close up it is [[melee|melee]]. Careful: a ranged attack next to an enemy has disadvantage.</p>
+<h3>Cover</h3>
+<p>If a wall or barrel is between you and the enemy, you have <b>cover</b>: +2 to AC for half cover, +5 for three-quarters. {{PHB p.196}}</p>
+${why(`<p>Your best moves as an artificer: shoot from behind a friend, cast a spell, or use your specialist's bonus action (the cannon or the steel defender; an Alchemist's elixir takes an action to drink). Remember that each turn gives you <b>one action, one bonus action, one reaction</b>. If your DM asks "what do you do?", you can always say "I attack with my crossbow".</p>`)}
+`);
+
+add(1,"Hit points, falling down, and death saves",`
+<p>[[Hit points|hit points]] (HP) measure how much punishment you can take. Damage takes them away. Healing gives them back, up to your maximum. {{PHB p.196}}</p>
+<h3>What happens at 0 HP?</h3>
+<p>You do <b>not</b> die at once. You fall <b>unconscious</b> and start to die. {{PHB p.197}}</p>
+<ul>
+<li>At the start of each of your turns you roll a d20. This is a [[death saving throw|death saves]].</li>
+<li><b>10 or more</b> = a success. <b>9 or less</b> = a failure. A natural 1 counts as two failures. A natural 20 puts you back on your feet with 1 HP.</li>
+<li><b>3 successes</b> = you are stable (not dying). <b>3 failures</b> = you die.</li>
+<li>Any damage while you are at 0 HP is a failure. Any healing wakes you up.</li>
+<li>If one hit takes you to 0 and the extra damage is as big as your maximum HP, you die at once.</li>
+</ul>
+<p>Spells like <i>Cure wounds</i> or <i>Healing word</i> bring a fallen friend back. The cantrip <i>Spare the dying</i> keeps one stable.</p>
+<h3>[[Temporary hit points|temporary hit points]]</h3>
+<p>A spell like <i>False life</i> gives you extra, temporary HP. They are lost first. They do not stack: if you get new ones, keep the bigger pile.</p>
+<h3>Your health at level 3</h3>
+<p>The artificer uses a d8. HP at level 1 is 8 + Constitution modifier. Each later level adds 5 + Con modifier (the book's fixed number, or you roll a d8; this table lets you reroll a 1).</p>
+${why(`<p>Constitution makes you harder to kill. With Con +2 you have <b>24 HP at level 3</b> (Skippy: 10 + 7 + 7). That is not much, so stay behind your friends and keep your armor good.</p>`)}
+`);
+
+add(1,"Resting",`
+<p>Heroes cannot fight all day. They need to rest. {{PHB p.186}}</p>
+<div class="grid">
+<div class="box"><h4>[[Short rest|short rest]]: 1 hour</h4><p>You can spend [[Hit Dice|hit die]] to heal. Each die heals its roll plus your Constitution modifier. A level 3 artificer has 3 d8 Hit Dice.</p></div>
+<div class="box"><h4>[[Long rest|long rest]]: 8 hours</h4><p>You get <b>all your hit points back</b>, half your Hit Dice back, and your spell slots. You can do only one long rest in 24 hours.</p></div>
+</div>
+${why(`<p>Everything an artificer does <b>comes back after a long rest</b>: spell slots, your prepared spells (you pick them again), your free cannon or elixir. You can also change your infusions then. In a one-shot, the DM decides how many rests you get. Spend your resources if the fight is hard. Do not save everything.</p>`)}
+`);
+
+add(1,"Spells in plain words",`
+<p>A spell is a bit of magic you cast on purpose. {{PHB p.201-205}}</p>
+<ul>
+<li>A [[cantrip|cantrip]] is a simple spell with <b>no cost</b>. You can cast it every turn. Artificer examples: <i>Shocking grasp</i> (Skippy's) and <i>Fire bolt</i>. {{PHB p.201}}</li>
+<li>Stronger spells need a [[spell slot|spell slot]]. A slot is a charge. You have <b>three 1st-level slots</b> at level 3. When they are gone, you get them back only after a long rest.</li>
+<li>You can only cast spells you have <b>[[prepared|prepared]]</b>. Each long rest you choose the list again. For you it is Intelligence modifier + half your level (rounded down): at level 3 with Int +3, that is <b>4 spells</b>.</li>
+<li>A spell either needs an <b>attack roll</b> from you ([[spell attack|spell attack]]) or it makes the target roll a <b>saving throw</b> against your [[spell save DC|spell save dc]].</li>
+<li>[[Concentration|concentration]]: some spells last as long as you keep your mind on them. Only one at a time. If you get hit, you roll a Constitution save to hold on (DC 10, or half the damage if higher). {{PHB p.203}}</li>
+<li>A [[ritual|ritual]] spell like <i>Detect magic</i> can be cast with no slot if you spend 10 extra minutes. {{PHB p.201-202}} An artificer can do this only if the spell is prepared. (T p.12)</li>
+</ul>
+<h3>How the artificer is different</h3>
+<p>You cast through <b>tools</b>. You hold thieves' tools or an artisan's kit as your [[focus|focus]]. The spell does what it says. The look is yours: a spark from a gadget, a puff of steam. (T p.11)</p>
+${why(`<p>You have few slots, so your cantrips do most of the work. Your slots go on healing (<i>Cure wounds</i>), control (<i>Faerie fire</i>) and your specialist's always-prepared spells (Skippy: <i>Shield</i> and <i>Thunderwave</i>). Always-prepared spells do not count toward your 4, but they still cost a slot.</p>`)}
+`);
+
+add(1,"Exploring and talking (roleplay)",`
+<p>Most of D&amp;D is not fighting. It is the DM describing a place and you answering.</p>
+<ul>
+<li>The DM says what you see. You say what you do. "I look for a lever." "I ask the guard about the ship."</li>
+<li>If you can fail, the DM asks for an [[ability check|ability check]]: "Roll Investigation." You roll d20 + your bonus against a hidden [[DC]].</li>
+<li>When you talk to people, you can speak <b>as your hero</b> ("Aye, friend, I'll pay double for that map"). This is called <b>roleplay</b>. You do not need a voice or an acting talent. Just tell the DM what your hero says and why.</li>
+<li>Talking has dice too. Persuasion (be nice), Deception (lie), Intimidation (scare). The DM chooses when to ask for a roll.</li>
+</ul>
+<h3>Easy beginner tips</h3>
+<ul>
+<li>Ask questions. "Can I see the door from here?" "Are there any people near?"</li>
+<li>Say your plan in one sentence. The DM will tell you which roll to make.</li>
+<li>It is fine to say "I do not know the rules. What can I do?"</li>
+<li>Work with the other players. Be a good teammate and the game is fun for all.</li>
+</ul>
+${why(`<p>Your artificer is smart and handy. Good questions for the DM: "Can I examine the lock?" "Can I fix this with my tools?" "Is the thing magic?" (<i>Detect magic</i>). Your high Intelligence is built for investigating.</p>`)}
+`);
+
+add(1,"A one-shot, and what to bring",`
+<p>A [[one-shot|one-shot]] is a game that starts and ends in one session, usually 3 to 4 hours. There is no long story to catch up with. You meet your party, finish one adventure, and that is it. Your server starts you at [[level|level]] 3 with 900 [[XP|xp]]. (docs/TABLE-RULES.md)</p>
+<h3>What to bring</h3>
+<ul>
+<li><b>Your character sheet.</b> Make it with the creator, then print it or keep it on screen.</li>
+<li><b>Dice.</b> A set of seven (d4, d6, d8, d10, a percent d10, d12, d20). Or use the dice roller on the server.</li>
+<li><b>Your spell list</b> with a one-line note about each spell.</li>
+<li><b>A 10-second introduction</b> for your hero: name, what they are like, what they want.</li>
+<li><b>Pencil and paper</b> (or a notes app): names, places, loot.</li>
+<li><b>A quick message to the DM:</b> "I am new. Please tell me what I can do on my turn."</li>
+</ul>
+<h3>Table rules to remember</h3>
+<ul>
+<li>5e 2014 rules. Level 3, 900 XP. Anything official, no Unearthed Arcana.</li>
+<li>Ability scores: Standard Array, or roll 4d6 drop the lowest (reroll 1s). No point buy.</li>
+<li>Do not make something broken. The DMs can say no for the sake of fun.</li>
+</ul>
+${why(`<p>In a one-shot you have no time to learn slowly. That is why a ready-made build (Part 3) helps. You will pick a simple, strong character, learn its numbers, and have fun.</p>`)}
+`);
+
+add(1,"A short example of play",`
+<p>This is a made-up scene. Skippy is an artificer with Intelligence +3, Perception +2, and a light crossbow at +5 to hit (it has the Repeating Shot infusion). The numbers are the same as in build A in Part 3.</p>
+<div class="say"><span class="who">DM:</span> You step off the boat onto a dark beach. A cave mouth gapes ahead. Something glints inside. What do you do?</div>
+<div class="say"><span class="who">The player (as Skippy):</span> I stay quiet and look inside. Do I see anything?</div>
+<div class="say"><span class="who">DM:</span> Make a Perception check.</div>
+<div class="say"><span class="roll">The player rolls a d20: 12. Adds +2 (Wisdom 0, trained +2). Total 14.</span></div>
+<div class="say"><span class="who">DM:</span> The DC was 13, so you see it. Two goblins sit by a fire with a chest between them. One looks up. "Roll initiative!"</div>
+<div class="say"><span class="roll">Skippy rolls d20 + Dex +2: 14 + 2 = 16. The goblins roll 9 and 11. Skippy goes first.</span></div>
+<div class="say"><span class="who">The player:</span> I shoot my crossbow at the closer goblin.</div>
+<div class="say"><span class="who">DM:</span> That is a ranged weapon attack. Roll d20 + 5. The goblin has AC 15.</div>
+<div class="say"><span class="roll">The player rolls a d20: 16, adds 5 = 21. A hit! Damage is 1d8 + 3: the die shows 4, so 7 damage. The goblin has 7 HP. It falls.</span></div>
+<div class="say"><span class="who">DM:</span> The first goblin drops. The second one yells and charges at you. Next turn you could also build your cannon: that takes an action. After that, a bonus action each turn makes it fire.</div>
+<p><b>What happened:</b> the DM described, the player said what Skippy did, a few dice decided, and the story moved on. That is the whole game. {{PHB p.5-6}}</p>
+${why(`<p>You can already see the artificer pattern: an <b>action</b> for the spell or the gadget, a <b>bonus action</b> to run it, and Intelligence behind both. Goblin numbers are from the Monster Manual, which you do not own. They are only an example.</p>`)}
+`);
+
+/* ---------------- PART 2 ---------------- */
+add(2,"Step 1: the class, the artificer",`
+<p>You do not have to choose a class. The player already picked one: the <b>artificer</b>. This is what it is in five lines (T p.9-14). The long version is in <a href="guide.html">the Artificer guide</a>.</p>
+<ol>
+<li><b>An inventor who casts spells with tools.</b> No wand, no spellbook: you use thieves' tools or an artisan's kit as your [[focus]]. (T p.11)</li>
+<li><b>Half-caster.</b> You have a few spell slots (three at level 3) and two cantrips. (T p.10)</li>
+<li><b>Infusions.</b> From level 2, after a long rest you turn plain items into magic items for yourself and friends. (T p.12)</li>
+<li><b>Good armor.</b> Light and medium armor and shields. d8 hit die. (T p.10)</li>
+<li><b>A [[Specialist|specialist]] at level 3.</b> You pick Alchemist, Armorer, Artillerist or Battle Smith. (T p.13)</li>
+</ol>
+<p>The rule of thumb from the book: put your best score in <b>Intelligence</b>, second best in Constitution or Dexterity. (T p.10)</p>
+${why(`<p>The artificer is a <b>support and utility</b> hero. You are not the biggest damage dealer, but you make the team stronger and you can fix, build and detect things. For a pirate, that is the clever engineer who builds cannons, rigs, locks and gadgets.</p>`)}
+<div class="note"><b>Honest view (mine, not a rule):</b> medium difficulty for a first character. You will prepare spells and track infusions, but you will have few slots and a clear set of choices.</div>
+`);
+
+add(2,"Step 2: your specialist (subclass)",`
+<p>At level 3 you choose a [[specialist|specialist]]. It gives you extra spells that are <b>always prepared</b> (they do not count toward your 4), tool training, and one big feature. {{T p.13-20}}</p>
+<div class="tw"><table>
+<tr><th></th><th>Alchemist</th><th>Armorer</th><th>Artillerist</th><th>Battle Smith</th></tr>
+<tr><th>Big feature at level 3</th><td>Experimental Elixir: one random potion each day</td><td>Arcane Armor: magic armor with weapons, Guardian or Infiltrator</td><td>Eldritch Cannon: a small cannon that fires or shields</td><td>Steel Defender: a robot companion; Intelligence for weapon attacks</td></tr>
+<tr><th>Always-prepared spells</th><td>Healing word, Ray of sickness</td><td>Magic missile, Thunderwave</td><td>Shield, Thunderwave</td><td>Heroism, Shield</td></tr>
+<tr><th>Stats it likes</th><td>Int, Con. Dex 12-14 for AC</td><td>Int, Con. Dex 13+ for Infiltrator</td><td>Int, Con, Dex 13+ (crossbow)</td><td>Int, Con, Dex 14 for AC. No Strength needed.</td></tr>
+<tr><th>Needs a bonus action each turn?</th><td>No</td><td>No</td><td>Yes (cannon)</td><td>Yes (defender)</td></tr>
+<tr><th>Extra Attack at level 5?</th><td>No</td><td>Yes</td><td>No</td><td>Yes</td></tr>
+<tr><th>Pirate idea</th><td>The ship's cook and chemist. Rum flasks that heal or boost</td><td>A suit of iron like a diving bell, walking as the ship's hull</td><td><b>A small ship's cannon that appears by magic when you need it.</b> Fires on your command</td><td>A <b>clockwork parrot</b> or monkey, or an iron first mate that guards you</td></tr>
+<tr><th>Difficulty (my view)</th><td>Easy</td><td>Easiest</td><td>Medium</td><td>Medium</td></tr>
+</table></div>
+<p>All four <b>need the same ability scores</b>: Intelligence first, then Constitution, then Dexterity. They differ in what they do, not in the stats. The extra tool each one gives: Alchemist: alchemist's supplies. Armorer: smith's tools. Artillerist: woodcarver's tools. Battle Smith: smith's tools. (If you already have it, you pick another.)</p>
+<h3>What each does, in a few words</h3>
+<ul>
+<li><b>Alchemist.</b> Healing and support. Each long rest you make a potion with a random effect. Your healing spells and acid, fire, poison and necrotic spells get stronger at level 5. Weak damage.</li>
+<li><b>Armorer.</b> Your armor becomes part of you. <b>Guardian</b>: thunder gauntlets; a creature you hit has disadvantage when it attacks anyone except you (tank). {{T p.16}} <b>Infiltrator</b>: a lightning launcher at range, +5 speed, advantage on Stealth. Heavy armor too. Sturdiest.</li>
+<li><b>Artillerist.</b> Create a cannon (AC 18, 15 HP) and make it work with a bonus action: <b>Flamethrower</b> (cone of fire), <b>Force Ballista</b> (ranged force hit that pushes) or <b>Protector</b> (temporary HP for the team).</li>
+<li><b>Battle Smith.</b> Your steel defender (AC 15, 20 HP) attacks and guards. You hit with Intelligence if your weapon is magic (use the Enhanced Weapon infusion). Some healing at level 9.</li>
+</ul>
+${rec(`<p><b>The best fit for a "cool pirate" is the Artillerist.</b> A cannon is the most pirate thing in the game. It gets a free look: you choose its look and whether it has legs. Battle Smith is a close second: the steel defender can look like a mechanical parrot. (T p.19 says you decide how it looks.) Armorer is the sturdiest and Alchemist is the easiest healer.</p>`)}
+<p class="hint">Which one are you leaning towards? (This is saved for your summary.)</p>
+${chips("spec",["Alchemist","Armorer","Artillerist","Battle Smith"])}
+${why(`<p>Because the stats are the same for all four, you can pick by <b>fun</b>. The specialist is the biggest part of how your hero plays in a fight. Check that you are happy with the bonus action: Artillerist and Battle Smith ask for one every turn.</p>`)}
+`);
+
+add(2,"Step 3: ability scores",`
+<p>Your table lets you use the <b>Standard Array</b> or <b>roll</b>. There is <b>no point buy</b>. (docs/TABLE-RULES.md)</p>
+<ul>
+<li><b>Standard Array:</b> use these six numbers once each: <b>15, 14, 13, 12, 10, 8</b>. You assign each number to an ability. {{PHB p.13}}</li>
+<li><b>Roll:</b> for each ability, roll four d6, drop the lowest one, and add the other three. At your table you <b>reroll any 1</b>. {{PHB p.13}} Rolls can be better or worse than the array. I suggest the array for your first hero: it is safe.</li>
+</ul>
+<h3>Why Intelligence goes first (you were right)</h3>
+<p>Intelligence is the artificer's <b>spellcasting ability</b>. It sets four things: the <b>DC</b> of your spells, your <b>spell attack bonus</b>, <b>how many spells you can prepare</b>, and the <b>size of your healing</b>. It also boosts your Investigation and Arcana. Specialists use it too (the steel defender and the Armorer's weapons use Intelligence). (T p.11-12)</p>
+<h3>Then Constitution, then Dexterity</h3>
+<ul>
+<li><b>Constitution:</b> more hit points and a better saving throw to hold concentration. It is also one of your two saving throws.</li>
+<li><b>Dexterity:</b> adds to your AC (all of it in light armor, up to +2 in medium armor), your initiative and your crossbow. <b>Dex 14 gives +2</b>, and studded leather (light armor) uses all of it. If you ever raise Dex, studded leather keeps adding AC.</li>
+<li><b>Strength, Wisdom, Charisma:</b> can be low. Wisdom adds to Perception (watch for traps). Strength 12 gives a little muscle and a better Athletics. Strength 8 is also fine: you do not need to lift things.</li>
+</ul>
+<h3>An example spread (Standard Array)</h3>
+<div class="tw"><table><tr><th></th><th>Int</th><th>Dex</th><th>Con</th><th>Wis</th><th>Cha</th><th>Str</th></tr>
+<tr><td>Array pick</td><td>15</td><td>14</td><td>13</td><td>10</td><td>8</td><td>12</td></tr>
+<tr><td>+2 Int, +1 Con (next page)</td><td>17</td><td>14</td><td>14</td><td>10</td><td>8</td><td>12</td></tr>
+<tr><td>Modifier</td><td>+3</td><td>+2</td><td>+2</td><td>0</td><td>-1</td><td>+1</td></tr></table></div>
+<p class="hint">This is spread (a) of build A. The other spreads are in the side-by-side step in Part 3 (Str 8 with Wis 12 and Cha 10, or Half-Orc as written with Int 15). Change it if you pick them.</p>
+<p>Why 13 in Constitution and 14 in Dexterity? Because the +1 you get on Con makes it 14 and the modifier is +2. If you put the 14 in Con and the 13 in Dex, you would get Con 15 (still +2) but Dex 13 (+1 only). That wastes a point.</p>
+${why(`<p>This spread gives you: spell save DC 13, spell attack +5, AC 14 in studded leather (15 with Enhanced Defense), 24 HP, 4 prepared spells, and Strength +1. The price: Wisdom 10 (passive Perception 12) and Charisma 8 (-1). It is a strong, safe level-3 artificer.</p>`)}
+`);
+
+add(2,"Step 4: where the +2 and +1 come from",`
+<p>You said: <i>"I should get a +1 Con and +2 Int from backgrounds, that's the suggested route."</i> You are very close. Here is what the books say.</p>
+<div class="warn"><b>Short answer:</b> in the 2014 rules the bonuses do <b>not</b> come from the background. They come from your <b>race</b>. You can still get <b>+2 Int and +1 Con</b>, and it is easy.</div>
+<ul>
+<li><b>2014 Player's Handbook (the rules your table uses):</b> each race has an Ability Score Increase. Example: Rock Gnome gets Intelligence +2 and Constitution +1. A background gives <b>no</b> ability bonus. It gives skills, tools or languages, gear and a feature. {{PHB p.12, p.125}}</li>
+<li><b>Tasha's "Customizing Your Origin":</b> you may <b>ignore your race's bonuses and move them to scores you choose</b>. If your race gives +2 and +1, you can put the +2 on Intelligence and the +1 on Constitution. You cannot put two on the same score and cannot go over 20. {{T p.7}}</li>
+<li><b>2024 rules (the new Player's Handbook):</b> that is where backgrounds give the +2 and +1. That is probably where you heard it. <b>Your table uses 2014</b>, so we use race and Tasha's instead.</li>
+</ul>
+<h3>How you get +2 Int and +1 Con</h3>
+<div class="tw"><table><tr><th>Race</th><th>How</th></tr>
+<tr><td><b>Rock Gnome</b></td><td>It already gives +2 Int and +1 Con. Nothing to customize.</td></tr>
+<tr><td><b>Half-Orc, Tiefling</b></td><td>Customize with Tasha's: move the bonuses to Int +2, Con +1.</td></tr>
+<tr><td><b>Forest Gnome</b></td><td>Already Int +2 and Dex +1. Customize to put the +1 on Con if you like.</td></tr>
+<tr><td><b>Half-Elf</b></td><td>Customize: Int +2, Con +1, and one more +1 (put it on Dex).</td></tr>
+<tr><td><b>Variant Human</b></td><td>+1 Int and +1 Con. A feat as well.</td></tr></table></div>
+<p>The creator has a tick box for "Tasha's Customizing Your Origin". It does this for you.</p>
+${why(`<p>You do not need to pick your background to get the bonuses. <b>Pick the race for fun and look, pick the background for the story.</b> The numbers are the same either way. Ask the DM if Tasha's customizing is on (the table says "anything official", so it should be).</p>`)}
+`);
+
+add(2,"Step 5: race",`
+<p>A [[race|race]] is the people your hero belongs to. It gives {{PHB p.17-43}}:</p>
+<ul>
+<li><b>Ability bonuses</b> (+2 and +1 in most races).</li>
+<li><b>Size and speed.</b> Small heroes are 25 ft speed. Medium are usually 30 ft.</li>
+<li><b>Senses</b> like [[darkvision|darkvision]].</li>
+<li><b>Languages</b> and sometimes <b>skill, weapon or tool training</b>.</li>
+<li><b>Special traits</b> like resistance or a free cantrip.</li>
+</ul>
+<h3>Races that suit a pirate artificer</h3>
+<div class="tw"><table>
+<tr><th>Race</th><th>Normal bonuses</th><th>Ends at (Standard Array)</th><th>Good bits</th><th>Pirate feeling</th></tr>
+<tr><td><b>Half-Orc</b> {{PHB p.40}}</td><td>Str +2, Con +1</td><td>Int 17, Dex 14, Con 14 (customized)</td><td>Darkvision, Intimidation skill, Relentless Endurance (once per long rest, drop to 1 HP instead of 0)</td><td>Big, scary, tough</td></tr>
+<tr><td><b>Rock Gnome</b> {{PHB p.37}}</td><td>Int +2, Con +1</td><td>Int 17, Dex 14, Con 14 (no customizing)</td><td>Darkvision, advantage on Int/Wis/Cha saves against magic, gadget lore, makes clockwork toys</td><td>Little inventor, clockwork parrot</td></tr>
+<tr><td><b>Forest Gnome</b> {{PHB p.37}}</td><td>Int +2, Dex +1</td><td>Int 17, Dex 14, Con 14</td><td>Same gnome traits, plus <i>Minor illusion</i> cantrip (a ghost parrot or fake cannon)</td><td>Trickster</td></tr>
+<tr><td><b>Tiefling</b> {{PHB p.42}}</td><td>Cha +2, Int +1</td><td>Int 17, Dex 14, Con 14 (customized)</td><td>Darkvision, fire resistance, Thaumaturgy cantrip</td><td>Cursed, mysterious</td></tr>
+<tr><td><b>Half-Elf</b> {{PHB p.38}}</td><td>Cha +2, two other +1</td><td>Int 17, Dex 14, Con 15 (customized)</td><td>Darkvision, two free skills, charm resistance</td><td>Charming rogue</td></tr>
+<tr><td><b>Variant Human</b> {{PHB p.31}}</td><td>two +1</td><td>Int 16, Dex 14, Con 14 (+1 Int, +1 Con)</td><td>A <b>feat</b>, a free skill. 30 ft speed, no darkvision</td><td>Any pirate</td></tr>
+<tr><td><b>Custom Lineage</b> {{T p.8}}</td><td>+2 to one</td><td>Int 17, Dex 14, Con 13 (or swap Dex and Con)</td><td>A <b>feat</b>, darkvision or a skill, Small or Medium</td><td>You decide</td></tr>
+</table></div>
+<p class="hint">Notice that every race ends with Int +3. A 16 and a 17 both give +3. So the race is about the <b>extra traits</b> and the <b>look</b>, not the maths. Variant Human and Custom Lineage give a feat: feats are an optional rule, so ask the DM if they are on. {{PHB p.165}}</p>
+${rec(`<ol><li><b>Half-Orc (customized).</b> The coolest "big pirate" look, extra toughness, and Intimidation for free. It matches your "cool guy" wish.</li><li><b>Rock Gnome.</b> The easiest and the most artificer: it has exactly +2 Int +1 Con, no customizing, and the best tinker story.</li></ol><p>Both need no feat, so you do not need to ask the DM about feats.</p>`)}
+${orcBox()}
+<p class="hint">Which race is calling you?</p>
+${chips("race",["Half-Orc","Rock Gnome","Forest Gnome","Tiefling","Half-Elf","Variant Human","Custom Lineage"])}
+${why(`<p>Race decides your senses and speed. Darkvision matters if the party goes into a dark cave. Small means speed 25 and you cannot use <i>heavy</i> weapons well, but you do not need any. Tasha's also lets you swap languages and some proficiencies. (T p.7)</p>`)}
+`);
+
+add(2,"Step 6: background",`
+<p>A [[background|background]] is what your hero did before adventuring. It gives you {{PHB p.125}}:</p>
+<ul>
+<li><b>Two skills</b>,</li>
+<li><b>Tools or languages</b>,</li>
+<li><b>Starting equipment and a little gold</b>,</li>
+<li>A <b>feature</b> (a small helpful power in the story),</li>
+<li>Ideas for <b>personality</b>: traits, ideal, bond and flaw.</li>
+</ul>
+<p>It does <b>not</b> change your ability scores (see the last step). It is about story and skills. If you would get the same skill or tool twice, you pick another one. {{PHB p.125}}</p>
+<h3>Best backgrounds for a pirate artificer</h3>
+<div class="tw"><table>
+<tr><th>Background</th><th>Skills</th><th>Tools</th><th>Feature</th><th>For</th><th>Against</th></tr>
+<tr><td><b>Sailor, Pirate variant</b> {{PHB p.139}} <br><small>In your own Player's Handbook.</small></td><td>Athletics, Perception</td><td>Navigator's tools, water vehicles</td><td><b>Bad Reputation</b>: people fear you. In towns you get away with small crimes. (The normal Sailor feature is Ship's Passage: free rides on ships.)</td><td>The perfect pirate story. Perception helps spot danger.</td><td>Athletics uses Strength, a low score for most artificers (Skippy: Str 12, Athletics +3). No Int skill.</td></tr>
+<tr><td><b>Criminal</b> {{PHB p.129}}</td><td>Deception, Stealth</td><td>Thieves' tools (you have them, pick another), a gaming set</td><td>Criminal Contact: a friend in the underworld</td><td>Smuggler pirate. Stealth and Deception are useful.</td><td>No Perception. The thieves' tools overlap.</td></tr>
+<tr><td><b>Guild Artisan</b> {{PHB p.132}}</td><td>Insight, Persuasion</td><td>One artisan's tool, one language</td><td>Guild Membership: a guild helps you</td><td>The book's Quick Build pick for artificers. Good social skills.</td><td>Less pirate. Fits a ship's guild of carpenters or navigators.</td></tr>
+<tr><td><b>Urchin</b> {{PHB p.141}}</td><td>Sleight of Hand, Stealth</td><td>Disguise kit, thieves' tools (pick another)</td><td>City Secrets: you move fast in a city</td><td>A dock rat who grew up on the streets.</td><td>Thieves' tools overlap. Only 10 gp.</td></tr>
+<tr><td><b>Faction Agent</b> <span class="pg" style="border-color:var(--warn);color:var(--warn)">not in your books</span></td><td>Insight + one Int, Wis or Cha skill</td><td>None</td><td>Safe Haven. At your table: 3 renown, Rank 2 in a faction</td><td>Tied to the server's factions. Join one at the start.</td><td>It comes from the <i>Sword Coast Adventurer's Guide</i> (SCAG), which you do not own. I got the details from the web, so ask your DM. The creator already has it.</td></tr>
+</table></div>
+${rec(`<p><b>Sailor with the Pirate variant.</b> It is in your own Player's Handbook (p.139). It gives you Perception, a "people fear you" feature, navigator's tools and the pirate look. The creator has it as "Pirate (Sailor variant)". Pick <b>Faction Agent</b> only if you want a faction and its renown. Pick <b>Guild Artisan</b> if you want the book's "best fit" and you do not mind a less pirate look. <b>No background is required</b>.</p>`)}
+<p class="hint">Which background feels right?</p>
+${chips("bg",["Sailor (Pirate)","Criminal","Guild Artisan","Urchin","Faction Agent"])}
+${why(`<p>The background decides two of your skills. Pirate gives you Athletics and Perception. Since you also choose two artificer skills, you will end with <b>four or five skills</b>.</p>`)}
+`);
+
+add(2,"Step 7: alignment",`
+<p>[[Alignment|alignment]] is two words that sum up how your hero thinks. {{PHB p.122}} The first word is about <b>rules</b>: lawful, neutral or chaotic. The second is about <b>right and wrong</b>: good, neutral or evil.</p>
+<div class="tw"><table>
+<tr><th></th><th>Good</th><th>Neutral</th><th>Evil</th></tr>
+<tr><th>Lawful</th><td><b>Lawful good</b>: does the right thing and follows the rules. A knight.</td><td><b>Lawful neutral</b>: follows a code or the law, whatever the result. A judge, a soldier.</td><td><b>Lawful evil</b>: takes what they want, but follows rules. A cruel tyrant.</td></tr>
+<tr><th>Neutral</th><td><b>Neutral good</b>: helps people. No fuss about rules.</td><td><b>True neutral</b>: stays out of the big questions. Just lives.</td><td><b>Neutral evil</b>: does whatever they can get away with.</td></tr>
+<tr><th>Chaotic</th><td><b>Chaotic good</b>: follows their heart, not the rules. A rebel with a kind heart.</td><td><b>Chaotic neutral</b>: follows their whims. Freedom above all.</td><td><b>Chaotic evil</b>: violent and selfish. Not for a party.</td></tr>
+</table></div>
+<div class="note"><b>Alignment changes no numbers.</b> It is not a rule that stops you doing things. It is only a guide for how to play. No spell or item cares (in normal 2014 play). Evil alignments are usually not allowed at a group table.</div>
+<h3>The three you asked about, for a "cool" pirate</h3>
+<div class="tw"><table>
+<tr><th></th><th>At the table it looks like</th><th>In a group</th><th>Beginner trap</th></tr>
+<tr><td><b>Chaotic neutral</b></td><td>A free spirit who does things their own way. Jokes, takes a risk, talks their way out. "The code is more like guidelines."</td><td>Fun, but needs a reason to stay with the team.</td><td><b>The big one:</b> "I'm chaotic neutral, so I do random things" as an excuse to annoy the party or steal from friends. Do not do that.</td></tr>
+<tr><td><b>Lawful neutral</b></td><td>A pirate with a <b>code</b>: honors a deal, never leaves a crewmate, follows the captain's rules.</td><td>Easy to work with. Others can trust you.</td><td>Playing it as stiff and boring. Give the code some sparkle.</td></tr>
+<tr><td><b>True neutral</b></td><td>In it for the coin and the crew. No big causes. Practical.</td><td>Easy and flexible.</td><td>It can feel blank. Pick one thing your hero cares about.</td></tr>
+</table></div>
+${rec(`<p><b>Chaotic neutral, played as "a free spirit who always keeps their word to the crew".</b> It fits the Sailor's "Freedom" ideal (the sea is freedom) and the Bad Reputation feature, and it is the most "cool pirate" look. To avoid the trap: your hero breaks <b>rules</b> but not <b>promises</b>. If you want the safest first game, choose <b>lawful neutral (the pirate code)</b>. True neutral is a good middle. <b>The choice is yours.</b></p>`)}
+<p class="hint">Which alignment?</p>
+${chips("align",["Chaotic neutral","Lawful neutral","True neutral","Something else"])}
+${why(`<p>Alignment changes how you <b>roleplay</b>, and the DM may use it to guess what your hero would do. A clear reason to work with the party makes you a better teammate.</p>`)}
+`);
+
+add(2,"Step 8: skills and tools",`
+<p>You get skills from <b>three places</b>:</p>
+<ul>
+<li><b>Class:</b> artificers pick <b>2</b> from Arcana, History, Investigation, Medicine, Nature, Perception, Sleight of Hand. (T p.10)</li>
+<li><b>Race:</b> some give a skill (Half-Orc: Intimidation; Half-Elf: two of your choice; Variant Human: one).</li>
+<li><b>Background:</b> two skills (Pirate: Athletics and Perception).</li>
+</ul>
+<div class="warn"><b>The "same skill twice" rule:</b> if you would get a skill you already have, you pick <b>another one</b> instead. For example, the Pirate background gives Perception, so you cannot also pick Perception as your artificer skill. Take another. {{PHB p.125}}</div>
+<h3>Skills a pirate artificer wants</h3>
+<div class="tw"><table><tr><th>Skill</th><th>Why</th><th>Where from</th></tr>
+<tr><td><b>Arcana</b> (Int)</td><td>Know about magic and magic items. Your best.</td><td>Class</td></tr>
+<tr><td><b>Investigation</b> (Int)</td><td>Find clues, traps and secret doors.</td><td>Class</td></tr>
+<tr><td><b>Perception</b> (Wis)</td><td>Spot ships, ambushes, hidden doors.</td><td>Background (Pirate) or class</td></tr>
+<tr><td><b>Sleight of Hand</b> (Dex)</td><td>Pick pockets, plant things, work a trap.</td><td>Class or Urchin</td></tr>
+<tr><td><b>Intimidation</b> (Cha)</td><td>Scare a guard. Very pirate.</td><td>Half-Orc</td></tr>
+<tr><td><b>Athletics</b> (Str)</td><td>Climb rigging, swim. Uses Strength (Skippy: +3 with training).</td><td>Pirate</td></tr>
+<tr><td><b>Stealth, Deception</b></td><td>Sneak and bluff.</td><td>Criminal or Urchin</td></tr>
+</table></div>
+<h3>Tools</h3>
+<p>You always get <b>thieves' tools</b> and <b>tinker's tools</b>, and you pick <b>one more artisan's tool</b>. (T p.10) Good pirate picks: carpenter's tools (ship repairs), navigator's tools (from Pirate), brewer's supplies (rum) or <b>cartographer's tools (maps and sea charts; this is Skippy's pick: he maps every coast to find his lost captain)</b>. Your specialist adds one more tool (smith's, woodcarver's or alchemist's supplies).</p>
+<p>If a tool comes twice (Rock Gnome and Criminal both give a tool you already have), you pick another. {{PHB p.125}}</p>
+<p>Your [[focus|focus]] for casting is thieves' tools or any artisan's kit you know.</p>
+${why(`<p>For this build, choose <b>Arcana and Investigation</b> as your class skills, and let the background give you Perception. That makes you good at both the "smart" checks and the "spot" checks.</p>`)}
+`);
+
+add(2,"Step 9: equipment",`
+<p>The artificer starts with {{T p.10}}:</p>
+<ul>
+<li><b>Any two simple weapons</b>. (Skippy takes a <b>spear</b> and a <b>dagger</b>.)</li>
+<li><b>A light crossbow and 20 bolts</b>.</li>
+<li><b>Studded leather armor or scale mail</b>.</li>
+<li><b>Thieves' tools and a dungeoneer's pack</b> (rope, torches, crowbar and more; {{PHB p.151}}).</li>
+<li>Plus your background's gear. (Pirate: belaying pin that works as a club, 50 feet of silk rope, a lucky charm, common clothes and 10 gp.)</li>
+</ul>
+<p>Or you can skip the kit and take 5d4 x 10 gp to buy your own. A beginner should take the kit.</p>
+<h3>What matters: Armor Class</h3>
+<div class="tw"><table><tr><th>Armor</th><th>AC with Dex +2</th><th>Note</th></tr>
+<tr><td>Studded leather (light)</td><td>12 + 2 = <b>14</b></td><td>No Dex limit, no Stealth penalty.</td></tr>
+<tr><td>Scale mail (medium)</td><td>14 + 2 = <b>16</b></td><td>Dex adds max +2. Disadvantage on Stealth.</td></tr></table></div>
+<p>{{PHB p.145}} Scale mail gives 2 more AC at Dex 14, but it costs you Stealth. <b>Skippy takes studded leather</b>: it is light armor, so you can still sneak, and your whole Dex bonus counts. A <b>shield</b> adds +2 AC, but your crossbow needs two hands and your tools need one, so many artificers skip it (my view).</p>
+<p>The infusion <b>Enhanced Defense</b> adds +1 AC to your armor. (T p.21)</p>
+<h3>Weapons and tools in play</h3>
+<ul>
+<li><b>Light crossbow:</b> d8 damage, range 80 feet (up to 320 with disadvantage). Needs two hands and loading. <b>Repeating Shot</b> removes the loading, makes its own bolts and gives +1 to hit and damage. It needs [[attunement]]. (T p.22)</li>
+<li><b>Thieves' tools or an artisan's tool you are trained in</b> (tinker's, cartographer's, woodcarver's) is your [[focus|focus]]. You need one in your hand to cast. (T p.11) Ask the DM how it works with a two-handed crossbow.</li>
+</ul>
+${why(`<p>Armor Class is how many attacks miss you. Going from 12 (no armor, Dex +2) to 15 (studded leather plus Enhanced Defense) is a big difference at level 3. Dex 14 and studded leather keep you hard to hit and still quiet.</p>`)}
+`);
+
+add(2,"Step 10: personality",`
+<p>This is the fun part and there are no rules, only ideas. A background gives you four things to pick or invent. {{PHB p.123-125}} Here are <b>my own pirate ideas</b>. Make your own.</p>
+<div class="grid">
+<div class="box"><h4>Personality traits</h4><ul><li>I joke when it is dangerous, because it keeps people calm.</li><li>I name every gadget I build, and I talk to them.</li><li>I never say no to a bet.</li><li>I am calm and polite, even to enemies.</li></ul></div>
+<div class="box"><h4>Ideals (what you believe)</h4><ul><li><b>Freedom.</b> The open sea belongs to nobody.</li><li><b>Crew first.</b> We go home together or not at all.</li><li><b>Craft.</b> A well-made thing is worth more than gold.</li><li><b>Fairness.</b> A fair share for all.</li></ul></div>
+<div class="box"><h4>Bonds (who and what you care about)</h4><ul><li>My old ship's compass. I want to find the captain who lost it.</li><li>The crew I left behind.</li><li>A rival who stole my best design.</li><li>A debt to someone who saved me.</li></ul></div>
+<div class="box"><h4>Flaws (what gets you into trouble)</h4><ul><li>I cannot walk away from a puzzle, even a trap.</li><li>I love gunpowder too much.</li><li>My pride: I hate to ask for help.</li><li>I owe money to someone dangerous.</li></ul></div>
+</div>
+<p>The Pirate background has its own suggested characteristics in the book. {{PHB p.139}} Roll on them or pick. A flaw is not a bad thing: it gives the DM something to play with, and it makes your hero feel alive.</p>
+${why(`<p>Personality does not change numbers. But in a one-shot, one clear trait and one clear flaw are the easiest way to play a hero. Pick <b>one trait, one ideal, one bond, one flaw</b>. Write them in a single line each.</p>`)}
+`);
+
+add(2,"Step 11: everything you get (the summary table)",`
+<p>This is what <b>every level 3 artificer</b> has. Numbers use a Constitution modifier of +2 and an Intelligence modifier of +3. {{T p.10-13}}</p>
+<div class="tw"><table>
+<tr><th>Thing</th><th>What you get</th></tr>
+<tr><td>Level, XP</td><td>Level 3, 900 XP (table rule). Proficiency bonus +2.</td></tr>
+<tr><td>[[Hit points|hit points]]</td><td>d8 [[Hit Die|hit die]]. Level 1: 8 + Con. Levels 2 and 3: 5 + Con each. With Con +2: 10 + 7 + 7 = <b>24</b>.</td></tr>
+<tr><td>Saving throws</td><td>Constitution and Intelligence.</td></tr>
+<tr><td>Armor</td><td>Light armor, medium armor, shields.</td></tr>
+<tr><td>Weapons</td><td>Simple weapons (plus martial weapons if you are a Battle Smith).</td></tr>
+<tr><td>Tools</td><td>Thieves' tools, tinker's tools, one artisan's tool of your choice, plus your specialist's tool.</td></tr>
+<tr><td>Skills</td><td>Two from the class list (Arcana, History, Investigation, Medicine, Nature, Perception, Sleight of Hand), plus background and race.</td></tr>
+<tr><td>Spellcasting ability</td><td>Intelligence. Spell save DC = 8 + 2 + Int modifier = <b>13</b> with Int +3. Spell attack = <b>+5</b>.</td></tr>
+<tr><td>Cantrips</td><td>2 (you can swap one each level).</td></tr>
+<tr><td>Prepared spells</td><td>Int modifier + half level (rounded down) = 3 + 1 = <b>4</b>. Plus 2 always-prepared specialist spells.</td></tr>
+<tr><td>Spell slots</td><td>Three 1st-level slots.</td></tr>
+<tr><td>Infusions</td><td>Learn <b>4</b>. Keep <b>2</b> items infused at once.</td></tr>
+<tr><td>Level 1 features</td><td><b>Magical Tinkering</b>: give a tiny object a small trick (light, sound, a message). <b>Spellcasting.</b></td></tr>
+<tr><td>Level 2 feature</td><td><b>Infuse Item.</b></td></tr>
+<tr><td>Level 3 features</td><td><b>Artificer Specialist</b> (see below). <b>The Right Tool for the Job</b>: with thieves' tools or artisan's tools in hand, 1 hour of work (it can be during a rest) makes one set of artisan's tools. They are not magic, and they vanish when you use this feature again. (T p.13)</td></tr>
+<tr><td>Specialist (level 3)</td><td>Alchemist: Experimental Elixir. Armorer: Arcane Armor and an armor model. Artillerist: Eldritch Cannon. Battle Smith: Battle Ready and Steel Defender.</td></tr>
+</table></div>
+<p class="hint">Level 4 is not needed: your game is a one-shot, so you stop at level 3.</p>
+${why(`<p>This table is your cheat sheet. If you print one page for the game, make it the character sheet from the creator. This table helps you understand what each line on the sheet means.</p>`)}
+`);
+
+/* ---------------- PART 3 ---------------- */
+BUILDS.forEach(b=>add(3,"Build "+b.id+(b.rec?" (recommended): ":": ")+b.short,"@@BUILD:"+b.id));
+
+{ const iA=PAGES.findIndex(p=>p.body==="@@BUILD:A"); PAGES.splice(iA+1,0,{part:3,title:"Build A: three spreads side by side",body:"@@SBS"}); }
+add(3,"Finish: open the creator",`
+<p>The creator makes your character sheet and checks the rules for you. Open it and follow your picks.</p>
+<a class="btn big" href="creator.html" id="openCreator">Open the character creator</a>
+<p style="text-align:center"><a href="guide.html">Read the full artificer guide</a></p>
+<p style="text-align:center"><a href="exceptions.html">Why each exception is allowed</a> &middot; <a href="checklists.html">Checklists</a> &middot; <a href="combos.html">Combos</a></p>
+<h3>Your picks so far</h3>
+<div id="picksbox" class="note"></div>
+<h3>What to type into the creator (build A: Skippy)</h3>
+<ol>
+<li><b>Race:</b> Half-Orc. Tick <i>"Use Tasha's Customizing Your Origin"</i>. Put <b>+2 on Intelligence</b> and <b>+1 on Constitution</b>.</li>
+<li><b>Ability scores:</b> Standard Array. Int 15, Dex 14, Con 13, Str 12, Wis 10, Cha 8 (spread a). The creator adds your bonuses.</li>
+<li><b>Background:</b> Pirate (Sailor variant). If your creator shows only Sailor, pick Sailor and write "Pirate: Bad Reputation" in the notes.</li>
+<li><b>Skills and tools:</b> artificer skills Arcana and Investigation. Artisan's tools: Cartographer's tools.</li>
+<li><b>Languages:</b> Common and Draconic (Tasha's swap for Orc, T p.7). If the creator shows Orc, change it to Draconic.</li>
+<li><b>Equipment:</b> studded leather, light crossbow and 20 bolts, spear and dagger.</li>
+<li><b>Spells and infusions:</b> cantrips Shocking grasp and Guidance. Prepare Cure wounds, Faerie fire, False life, Detect magic. Infusions: Enhanced Defense, Repeating Shot, Enhanced Weapon, Mind Sharpener.</li>
+<li><b>Specialist:</b> Artillerist.</li>
+<li><b>Check the sheet</b> shows: 24 HP, AC 15 (14 without Enhanced Defense on the studded leather), spell save DC 13, spell attack +5, initiative +2, passive Perception 12.</li>
+</ol>
+<p class="hint">For builds B or C, use the same steps with the choices shown on their pages.</p>
+<div class="note"><b>Change if you pick spread (b) or (c):</b> (b) Str 8, Wis 12, Cha 10; the sheet then shows passive Perception 13. (c) Do <b>not</b> tick Tasha's customizing. Use Int 15, Dex 14, Con 13, Wis 12, Cha 10, Str 8; the sheet then shows Int 15, Str 10, Con 14, spell save DC 12, spell attack +4, 3 prepared spells and passive Perception 13.</div>
+<h3>Ask your DM before the game</h3>
+<ul>
+<li>Is Tasha's "Customizing Your Origin" on? (It should be: official books are allowed.)</li>
+<li>Do feats work? (Only if you pick Variant Human or Custom Lineage.)</li>
+<li>Can the Pirate variant background be used, and does Bad Reputation work in the DM's world?</li>
+<li>Is the firearm line in the artificer description okay with the Gunslinger rules? (Not needed for these builds.)</li>
+<li>Can I make my steel defender look like a parrot, or my cannon like a ship's gun? (T p.17-19 says the look is your choice.)</li>
+</ul>
+<div class="ok">You made it. You now know how the game works and have a pirate artificer. The DM is there to help.</div>
+`);
+
+/* ================== APP ================== */
+const total=PAGES.length;
+let S={page:0,seen:[],picks:{}};
+function load(){ try{ const t=localStorage.getItem(KEY); if(t){ const o=JSON.parse(t); if(o && typeof o==="object"){ S.page=Math.min(Math.max(+o.page||0,0),total-1); S.seen=Array.isArray(o.seen)?o.seen.filter(n=>n>=0&&n<total):[]; S.picks=o.picks&&typeof o.picks==="object"?o.picks:{}; } } }catch(e){} }
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
+const $=id=>document.getElementById(id);
+
+function pageNumberLabel(i){ return "Step "+(i+1)+" of "+total; }
+function render(){
+  const p=PAGES[S.page];
+  let body=p.body;
+  const m=/^@@BUILD:(.)$/.exec(body);
+  let html;
+  if(body==='@@SBS') html=sbsHtml();
+  else if(m) html=buildPage(BUILDS.find(b=>b.id===m[1]));
+  else html=fmt('<p class="part">Part '+p.part+' &middot; '+["","How the game works","Make your character","Your pirate"][p.part]+'</p><h2>'+p.title+'</h2>'+body);
+  $("app").innerHTML='<div class="card">'+html+'</div>';
+  if(!S.seen.includes(S.page)) S.seen.push(S.page);
+  $("barfill").style.width=Math.round((S.page+1)/total*100)+"%";
+  $("bar").setAttribute("aria-valuenow",Math.round((S.page+1)/total*100));
+  $("progtxt").textContent=pageNumberLabel(S.page);
+  $("progpart").textContent=["","Part 1: How the game works","Part 2: Make your character","Part 3: Your pirate"][p.part];
+  $("mid").textContent=(S.page+1)+" / "+total;
+  $("back").disabled=S.page===0;
+  $("next").disabled=S.page===total-1;
+  renderList(); setupPage(); save();
+  try{ history.replaceState(null,"","#s"+(S.page+1)); }catch(e){}
+  window.scrollTo(0,0); hideTip();
+}
+function renderList(){
+  const parts=["","Part 1: How the game works","Part 2: Make your character","Part 3: Your pirate"];
+  let h="",last=0;
+  PAGES.forEach((p,i)=>{
+    if(p.part!==last){ h+='<h4>'+parts[p.part]+'</h4>'; last=p.part; }
+    h+='<button data-go="'+i+'" class="'+(i===S.page?'cur ':'')+(S.seen.includes(i)?'seen':'')+'">'+(i+1)+'. '+p.title+'</button>';
+  });
+  $("steplist").innerHTML=h;
+}
+function go(i){ S.page=Math.min(Math.max(i,0),total-1); render(); }
+
+function setupPage(){
+  // chips (my picks)
+  document.querySelectorAll(".chip").forEach(c=>{
+    const g=c.dataset.pick; if(S.picks[g]===c.dataset.val) c.classList.add("on");
+  });
+  // dice
+  const db=$("dicebox");
+  if(db){
+    [4,6,8,10,12,20].forEach(n=>{ const b=document.createElement("button"); b.className="btn sec"; b.textContent="d"+n; b.onclick=()=>{ const r=1+Math.floor(Math.random()*n); $("diceout").textContent="d"+n+" rolled: "+r+(n===20?(r===20?"  (natural 20!)":r===1?"  (natural 1)":""):""); }; db.appendChild(b); });
+    const b2=document.createElement("button"); b2.className="btn"; b2.textContent="Roll 2d6+3"; b2.onclick=()=>{ const a=1+Math.floor(Math.random()*6), b=1+Math.floor(Math.random()*6); $("diceout").textContent="2d6+3: "+a+" + "+b+" + 3 = "+(a+b+3); }; db.appendChild(b2);
+  }
+  // picks summary
+  const pb=$("picksbox");
+  if(pb){
+    const lab={spec:"Specialist",race:"Race",bg:"Background",align:"Alignment"}; let any=false, t="";
+    for(const k in lab){ if(S.picks[k]){ any=true; t+="<b>"+lab[k]+":</b> "+S.picks[k]+"<br>"; } }
+    pb.innerHTML=any?t+'<span class="hint">Choose again on the earlier steps if you change your mind. Skippy (build A) is Half-Orc, Pirate, Artillerist, Chaotic neutral.</span>':'You have not marked any picks yet. You can mark them on steps 2 and 5 to 7 in Part 2. Skippy (build A) is Half-Orc, Pirate, Artillerist, Chaotic neutral.';
+  }
+}
+
+/* events */
+document.addEventListener("click",e=>{
+  const t=e.target;
+  const g=t.closest&&t.closest(".g");
+  if(g){ e.preventDefault(); showTip(g); return; }
+  if(t.id!=="tip") hideTip();
+  const ch=t.closest&&t.closest(".chip");
+  if(ch){ const grp=ch.dataset.pick,val=ch.dataset.val; S.picks[grp]=(S.picks[grp]===val)?undefined:val; if(S.picks[grp]===undefined) delete S.picks[grp]; save(); document.querySelectorAll('.chip[data-pick="'+grp+'"]').forEach(c=>c.classList.toggle("on",S.picks[grp]===c.dataset.val)); return; }
+  const gb=t.closest&&t.closest("[data-go]");
+  if(gb){ go(+gb.dataset.go); if(window.innerWidth<900) $("stepsbox").open=false; }
+});
+document.addEventListener("mouseover",e=>{ const g=e.target.closest&&e.target.closest(".g"); if(g && window.matchMedia("(hover:hover)").matches) showTip(g); });
+document.addEventListener("mouseout",e=>{ const g=e.target.closest&&e.target.closest(".g"); if(g && window.matchMedia("(hover:hover)").matches) hideTip(); });
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape") hideTip();
+  if((e.key==="Enter"||e.key===" ") && e.target.classList && e.target.classList.contains("g")){ e.preventDefault(); showTip(e.target); }
+  if(e.target.tagName==="INPUT"||e.target.tagName==="BUTTON"||e.target.tagName==="A") return;
+  if(e.key==="ArrowRight") go(S.page+1);
+  if(e.key==="ArrowLeft") go(S.page-1);
+});
+$("back").onclick=()=>go(S.page-1);
+$("next").onclick=()=>go(S.page+1);
+window.addEventListener("hashchange",()=>{ const m=/^#s(\d+)$/.exec(location.hash); if(m){ const i=+m[1]-1; if(i>=0&&i<total&&i!==S.page) go(i); } });
+
+function showTip(el){
+  const k=el.dataset.g, d=GL[k]; if(!d) return;
+  const tip=$("tip"); tip.innerHTML="<b>"+d[0]+"</b><br>"+d[1]; tip.style.display="block";
+  const r=el.getBoundingClientRect(), tw=tip.offsetWidth;
+  let left=r.left; left=Math.min(left,document.documentElement.clientWidth-tw-8); left=Math.max(left,8);
+  let top=r.bottom+6; if(top+tip.offsetHeight>window.innerHeight-8) top=Math.max(8,r.top-tip.offsetHeight-6);
+  tip.style.left=left+"px"; tip.style.top=top+"px";
+}
+function hideTip(){ $("tip").style.display="none"; }
+window.addEventListener("scroll",hideTip,{passive:true});
+
+load();
+const hm=/^#s(\d+)$/.exec(location.hash); if(hm){ const i=+hm[1]-1; if(i>=0&&i<total) S.page=i; }
+if(window.innerWidth>=900) $("stepsbox").open=true;
+render();
+</script>
+</body>
+</html>
