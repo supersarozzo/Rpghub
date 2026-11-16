@@ -455,6 +455,55 @@ html.dock .xcols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
 html.dock .xa,html.dock .xb{display:block;min-width:0}
 html.dock .fgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (min-width:1300px){html.dock .hh .hpgo{grid-template-columns:124px 140px 124px}}
+/* Journey: Now / Log / Map (task 6.35) */
+.tabs.jsub>.tabbar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:0 0 10px;border-bottom:1px solid var(--line)}
+.tabs.jsub>.tabbar label{justify-content:center;padding:4px 0 0}
+.fld.w select,.fld.w textarea{width:100%;font:400 16px/1.3 var(--body);text-transform:none;letter-spacing:0;border:1px solid var(--line2);border-radius:6px;background:var(--bg);color:var(--text);padding:6px 10px}
+.fld.w select{min-height:44px}.fld.w textarea{resize:vertical;min-height:72px}
+.jlog,.jmap{display:block}.jl-a,.jl-b,.jl-c,.jm-a,.jm-b{min-width:0}
+html.dock .jlog{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,4fr);column-gap:12px;grid-template-areas:"ev st" "lg st";align-items:start}
+html.dock .jl-b{grid-area:ev}html.dock .jl-c{grid-area:lg}html.dock .jl-a{grid-area:st}
+html.dock .jmap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:12px;align-items:start}
+#jstrip svg,#jstrip2 svg{width:100%;height:auto;display:block;touch-action:manipulation}
+.jhex polygon{fill:var(--raised);stroke:var(--line2);stroke-width:1.5}
+.jhex g[data-do]{cursor:pointer}
+.jhex .done polygon{fill:#243541}
+.jhex .here polygon{fill:var(--accent);stroke:#fff}
+.jhex .sel polygon{stroke:var(--accent-t);stroke-width:3.5}
+.jhex text{fill:var(--text);font:700 13px var(--body);text-anchor:middle;pointer-events:none}
+.jhex .tn{fill:var(--muted);font:600 9px var(--cond);letter-spacing:.06em}
+.jhex .here text{fill:#fff}.jhex .here .tn{fill:#fff}
+.jhex .evd{fill:var(--warn);stroke:var(--surface);stroke-width:1.5}
+.jhex .ev2{fill:#10171c;font:700 8px var(--body)}
+.jleg{margin:8px 0 6px}
+.jsel{margin-top:8px;padding:8px 10px;border-radius:6px;background:var(--raised)}
+.jsel .seg3{background:var(--surface);margin-bottom:0}.jsel .fld.w{margin:8px 0}
+.jterr .sgb.on small{color:var(--text)}
+.jdays{margin:8px 0;padding:8px 10px;border-radius:6px;background:var(--raised);font-weight:600}
+.jdays small{display:block;font-weight:400;color:var(--muted)}
+.jev{display:flex;align-items:center;gap:10px;min-height:52px;padding:6px 0;border-top:1px solid var(--line)}
+.jev:first-child{border-top:0}
+.jev .n{flex:none;width:28px;height:28px;border-radius:50%;border:1px solid var(--warn);color:var(--warn);display:flex;align-items:center;justify-content:center;font:700 13px var(--body)}
+.jev .tx{flex:1;min-width:0;font-size:14.5px}.jev .tx small{display:block;color:var(--muted);font-size:13px;line-height:1.3}
+.jev .tag{display:inline-block;margin-left:4px;padding:0 6px;border:1px solid var(--line2);border-radius:4px;color:var(--muted);font:600 11px var(--cond);letter-spacing:.05em;text-transform:uppercase;vertical-align:1px}
+.jev .tag.me{border-color:var(--accent);color:var(--accent-t)}.jev .tag.ok{border-color:var(--ok);color:var(--ok)}
+.jev .x,.jpr .x{flex:none;width:44px;height:44px;border:0;border-radius:6px;background:none;color:var(--muted);font:22px/1 var(--body);cursor:pointer}
+.jlast{margin:8px 0;padding:8px 10px;border-radius:6px;background:var(--raised);box-shadow:inset 3px 0 0 var(--warn)}.jlast:empty{display:none}
+.jlast p{margin:0 0 6px;font-weight:600}.jlast .ub{background:var(--surface)}
+.jman{margin-top:8px}.jman>summary{list-style:none}.jman>summary::-webkit-details-marker{display:none}
+.jmf{padding:6px 0}
+.jsumt{width:100%;margin:8px 0 0;padding:8px 10px;border:1px solid var(--line2);border-radius:6px;background:var(--bg);color:var(--text);font:13px/1.4 ui-monospace,Consolas,monospace;resize:vertical}
+.jleg2,.jpr{display:flex;align-items:center;gap:10px;min-height:48px;padding:4px 0;border-top:1px solid var(--line)}
+.jleg2:first-child,.jpr:first-child{border-top:0}
+.jleg2 button.go{flex:1;min-width:0;min-height:44px;padding:6px 10px;border:0;border-radius:6px;background:none;color:var(--text);text-align:left;font:inherit;cursor:pointer}
+.jleg2 button.go small{display:block;color:var(--muted);font-size:13px}
+.jleg2.on button.go{background:var(--raised);box-shadow:inset 3px 0 0 var(--accent)}
+.jpr .dot{flex:none;width:44px;height:44px;border:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.jpr .dot i{width:16px;height:16px;border-radius:50%;border:2px dashed var(--line2);background:var(--raised)}
+.jpr .dot.v i{background:var(--ok);border:2px solid var(--ok)}.jpr .dot.h i{background:var(--accent);border:2px solid #fff}
+.jpr .tx{flex:1;min-width:0;font-size:14.5px}.jpr .tx small{display:block;color:var(--muted);font-size:13px}
+#jlands{margin-top:6px;font-size:14px}#jlands div{padding:4px 0;border-top:1px solid var(--line)}#jlands b{color:var(--accent-t);font-family:var(--cond);letter-spacing:.04em}
+.jempty{margin:6px 0;color:var(--muted);font-size:14px}
 </style><style>html.iosgap{--safe-t:calc(env(safe-area-inset-top,0px) + var(--ios-pad,0px));--safe-b:0px}@media (display-mode:standalone){html{background:var(--surface)}}html.iosgap{background:var(--surface)}</style><script>(function(){var d=document.documentElement;function fit(){var g=0;try{if(navigator.standalone){var a=screen.width,b=screen.height,L=innerWidth>innerHeight,W=L?Math.max(a,b):Math.min(a,b),H=L?Math.min(a,b):Math.max(a,b);if(Math.abs(innerWidth-W)<2){g=Math.round(H-innerHeight);if(g<8||g>80)g=0}}}catch(e){}d.style.setProperty("--ios-gap",g+"px");d.style.setProperty("--ios-pad",(g>=40?28:0)+"px");d.classList.toggle("iosgap",g>0)}fit();addEventListener("resize",fit);addEventListener("orientationchange",function(){setTimeout(fit,350)})})()</script>
 </head>
 <body>
@@ -538,7 +587,7 @@ html.dock .fgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
  <button type="button" class="tok" data-do="tog" data-a="buck"><span><b>Buckler</b><em class="y">in hand · Parry 18</em><em class="n">away · two hands</em></span></button></div>
  <p class="hint">Taking the helm off is a secondary action: Load 17 → 13, Protection 3d → 2d <span class="pg">p.97</span>. Spear in two hands: Injury 16, but no buckler (our reading; ask the Loremaster). Picking up a dropped weapon or shield is a main action.</p></div></div><div class="eco2 "><h3>Leaving a fight <span class="pg">p.104</span></h3><div class="gp"><p>Go <b>Rearward</b>, then leave on your turn with no roll.</p><p>Or fight <b>Defensive</b> and roll an attack: a hit lets you get away instead of doing damage.</p></div></div><div class="eco2 "><h3><span class="stn">6</span>After the fight <small><span class="pg">p.71</span></small></h3><div class="gp">
  <p>No Endurance comes back by itself. A short rest (about an hour, once a day) gives back 4 (Strength), none if Wounded. A night's rest gives back all of it (4 if Wounded).</p>
- <div class="ubs js-only"><button type="button" class="ub" data-do="srest">Short rest: +4 Endurance</button><label class="ub" for="rest-open">Night's rest and more ›</label></div></div></div><a class="go" href="tom-combos.html"><span><b>Tom's combos</b><small>Eight "if this happens, do this" fight plans</small></span></a></div></div></div><div class="panel"><div class="xcols"><div class="xa"><div class="eco2 "><h3><span class="stn">1</span>Tom's role <small><span class="pg">p.109</span></small></h3><div class="roles"><button type="button" class="rolebtn" data-do="role" data-a="scout"><span class="an"><b>Scout</b><small>his best role: maps give 1 more die</small></span><span class="av">Explore <b data-v="rk_explore">1</b><small>TN 13</small></span></button><button type="button" class="rolebtn" data-do="role" data-a="lookout"><span class="an"><b>Look-out</b><small>watch for danger on the way</small></span><span class="av">Awareness <b data-v="rk_awareness">1</b><small>TN 16</small></span></button><button type="button" class="rolebtn" data-do="role" data-a="hunter"><span class="an"><b>Hunter</b><small>find food and game</small></span><span class="av">Hunting <b data-v="rk_hunting">1</b><small>TN 16</small></span></button><button type="button" class="rolebtn" data-do="role" data-a="guide"><span class="an"><b>Guide</b><small>leads the route; only one Guide</small></span><span class="av">Travel <b data-v="rk_travel">1</b><small>TN 16</small></span></button></div><p class="hint gpx">All four roles must be covered; in a small Company heroes take two.</p></div><div class="eco2 "><h3><span class="stn">2</span>Marching <small>the Guide rolls <span class="pg">p.110</span></small></h3><div class="gp">
+ <div class="ubs js-only"><button type="button" class="ub" data-do="srest">Short rest: +4 Endurance</button><label class="ub" for="rest-open">Night's rest and more ›</label></div></div></div><a class="go" href="tom-combos.html"><span><b>Tom's combos</b><small>Eight "if this happens, do this" fight plans</small></span></a></div></div></div><div class="panel"><div class="tabs jsub"><input type="radio" name="jt" id="jt-0" checked data-r="jt"><input type="radio" name="jt" id="jt-1" data-r="jt"><input type="radio" name="jt" id="jt-2" data-r="jt"><div class="tabbar" role="tablist"><label for="jt-0">Now</label><label for="jt-1">Log</label><label for="jt-2">Map</label></div><div class="panels"><div class="panel"><div class="xcols"><div class="xa"><div class="eco2 "><h3><span class="stn">1</span>Tom's role <small><span class="pg">p.109</span></small></h3><div class="roles"><button type="button" class="rolebtn" data-do="role" data-a="scout"><span class="an"><b>Scout</b><small>his best role: maps give 1 more die</small></span><span class="av">Explore <b data-v="rk_explore">1</b><small>TN 13</small></span></button><button type="button" class="rolebtn" data-do="role" data-a="lookout"><span class="an"><b>Look-out</b><small>watch for danger on the way</small></span><span class="av">Awareness <b data-v="rk_awareness">1</b><small>TN 16</small></span></button><button type="button" class="rolebtn" data-do="role" data-a="hunter"><span class="an"><b>Hunter</b><small>find food and game</small></span><span class="av">Hunting <b data-v="rk_hunting">1</b><small>TN 16</small></span></button><button type="button" class="rolebtn" data-do="role" data-a="guide"><span class="an"><b>Guide</b><small>leads the route; only one Guide</small></span><span class="av">Travel <b data-v="rk_travel">1</b><small>TN 16</small></span></button></div><p class="hint gpx">All four roles must be covered; in a small Company heroes take two.</p></div><div class="eco2 "><h3><span class="stn">2</span>Marching <small>the Guide rolls <span class="pg">p.110</span></small></h3><div class="gp">
  <p>The Guide rolls Travel. Pass: the next event comes after 3 hexes, +1 per icon. Fail: after 2 hexes (spring, summer) or 1 (autumn, winter). After each event the Guide rolls again, until the hexes run out: arrival <span class="pg">p.111</span>.</p>
  <p class="gonly box">Tom is the Guide: Travel <b data-v="rk_travel">1</b>, TN 16.</p>
  <p class="hint">Days: 1 per hex, +1 per hard-terrain hex; all riding halves it. A forced march does 2 hexes a day but costs everyone 1 Fatigue a day <span class="pg">p.111</span>.</p></div></div></div><div class="xb"><div class="eco2 "><h3><span class="stn">3</span>An event <small><span class="pg">p.112</span> <span class="pg">p.113</span></small></h3><div class="gp js-block">
@@ -547,10 +596,43 @@ html.dock .fgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
  <p class="lab2">What happens <small>the Loremaster rolls the Feat die</small></p><div class="evs"><button type="button" class="evb" data-do="jev" data-a="0"><span class="fd">Eye</span><span class="an"><b>Terrible Misfortune</b><small>fail: the hero rolling is Wounded</small></span><span class="ef">+3<small>Fatigue</small></span></button><button type="button" class="evb" data-do="jev" data-a="1"><span class="fd">1</span><span class="an"><b>Despair</b><small>fail: everyone gains 1 Shadow (Dread)</small></span><span class="ef">+2<small>Fatigue</small></span></button><button type="button" class="evb" data-do="jev" data-a="2"><span class="fd">2-3</span><span class="an"><b>Ill Choices</b><small>fail: the hero rolling gains 1 Shadow (Dread)</small></span><span class="ef">+2<small>Fatigue</small></span></button><button type="button" class="evb" data-do="jev" data-a="3"><span class="fd">4-7</span><span class="an"><b>Mishap</b><small>fail: +1 day, and the hero rolling gains 1 more Fatigue</small></span><span class="ef">+2<small>Fatigue</small></span></button><button type="button" class="evb" data-do="jev" data-a="4"><span class="fd">8-9</span><span class="an"><b>Short Cut</b><small>pass: the journey is 1 day shorter</small></span><span class="ef">+1<small>Fatigue</small></span></button><button type="button" class="evb" data-do="jev" data-a="5"><span class="fd">10</span><span class="an"><b>Chance-meeting</b><small>pass: no Fatigue, and someone helpful</small></span><span class="ef">+1<small>Fatigue</small></span></button><button type="button" class="evb" data-do="jev" data-a="6"><span class="fd">Rune</span><span class="an"><b>Joyful Sight</b><small>pass: everyone gets 1 Hope back</small></span><span class="ef">+0<small>Fatigue</small></span></button></div>
  <div class="ubs jres"><button type="button" class="ub" data-do="jres" data-a="1">Passed</button><button type="button" class="ub" data-do="jres" data-a="0">Failed</button></div>
  <p class="hint">Everyone gains the Fatigue shown. Hard-terrain hex: −1 die; on a road: +1 die. One friend in the same role may support (and shares the result). Shadow from Dread: a Valour test may cut it <span class="pg">p.138</span>.</p>
- <p class="hint" id="jcount">Events this journey: <b data-v="jn">0</b></p></div></div><div class="eco2 "><h3><span class="stn">4</span>Fatigue <small><span class="pg">p.111</span></small></h3><div class="gp"><div class="stx"><span class="sl"><b>Fatigue</b><small>from the journey; adds to Load</small></span><button type="button" class="stp" data-do="step" data-k="fat" data-a="-1" aria-label="Fatigue minus 1">−</button><b class="sv" data-v="fat">0</b><button type="button" class="stp" data-do="step" data-k="fat" data-a="1" aria-label="Fatigue plus 1">+</button></div>
+ <p class="hint" id="jcount">Events this journey: <b data-v="jn">0</b></p>
+ <div class="ubs js-only"><label class="ub" for="jt-1">Add it to the journey log ›</label></div></div></div><div class="eco2 "><h3><span class="stn">4</span>Fatigue <small><span class="pg">p.111</span></small></h3><div class="gp"><div class="stx"><span class="sl"><b>Fatigue</b><small>from the journey; adds to Load</small></span><button type="button" class="stp" data-do="step" data-k="fat" data-a="-1" aria-label="Fatigue minus 1">−</button><b class="sv" data-v="fat">0</b><button type="button" class="stp" data-do="step" data-k="fat" data-a="1" aria-label="Fatigue plus 1">+</button></div>
  <p class="wln2">Weary line: Load <b data-v="load">17</b> + Fatigue <b data-v="fat">0</b> = <b data-v="wl">17</b>. Tom is Weary at that Endurance or less <span class="pg">p.69</span>. Journey Fatigue stays until the journey ends.</p></div></div><div class="eco2 "><h3><span class="stn">5</span>Arrival <small><span class="pg">p.111</span></small></h3><div class="gp">
  <p>First a mount's Vigour comes off the Fatigue (Tin is missing, so none). Then Tom rolls Travel <b data-v="rk_travel">1</b> (TN 16): a pass takes off 1 Fatigue, +1 per icon. The rest goes 1 point per night of safe rest.</p>
- <div class="ubs js-only"><button type="button" class="ub" data-do="step" data-k="fat" data-a="-1">Travel passed: Fatigue −1</button><button type="button" class="ub" data-do="step" data-k="fat" data-a="-1">Each icon: −1 more</button><label class="ub" for="rest-open">Night of safe rest ›</label><button type="button" class="ub rm" data-do="jnew">New journey</button></div></div></div></div></div></div><div class="panel"><div class="xcols"><div class="xa"><div class="eco2 "><h3><span class="stn">1</span>Goal and Resistance <small><span class="pg">p.105</span></small></h3><div class="gp js-block">
+ <div class="ubs js-only"><button type="button" class="ub" data-do="step" data-k="fat" data-a="-1">Travel passed: Fatigue −1</button><button type="button" class="ub" data-do="step" data-k="fat" data-a="-1">Each icon: −1 more</button><label class="ub" for="rest-open">Night of safe rest ›</label><label class="ub" for="jt-2">Open the map ›</label><button type="button" class="ub rm" data-do="jnew">New journey</button></div></div></div></div></div></div><div class="panel"><p class="hint nojs-only gpx">The journey log needs a browser with JavaScript.</p><div class="jlog"><div class="jl-a"><div class="eco2 "><h3>Path <small>tap a hex</small></h3><div class="gp js-block">
+ <div id="jstrip"></div>
+ <p class="hint jleg">S start · D destination · red = the Company · amber dot = an event <span class="pg">p.110</span></p>
+ <div class="jsel"><p class="lab2" id="jsel">Hex 0</p>
+  <div class="seg3 jterr"><button type="button" class="sgb" data-do="jterr" data-a="o"><b>Open</b></button><button type="button" class="sgb" data-do="jterr" data-a="r"><b>Road</b><small>+1 die</small></button><button type="button" class="sgb" data-do="jterr" data-a="h"><b>Hard</b><small>−1 die, +1 day</small></button></div>
+  <label class="fld w"><span class="lab2">Landmark here <small>a word or two</small></span><input type="text" id="jland" data-jf="land" maxlength="40" autocomplete="off" placeholder="ford, ruin, inn..."></label>
+  <div class="ubs"><button type="button" class="ub" data-do="jhere">The Company is here</button></div></div></div></div></div><div class="jl-b"><div class="eco2 "><h3>Events <small><span class="pg">p.112</span></small></h3><div class="gp js-block">
+ <div id="jevs"></div>
+ <div id="jlast" class="jlast"></div>
+ <details class="jman"><summary class="ub">Add an event by hand</summary>
+  <div class="jmf"><label class="fld w"><span class="lab2">Who faced it</span><select id="jm-t"><option value="scout">Scouts</option><option value="lookout">Look-outs</option><option value="hunter">Hunters</option></select></label>
+  <label class="fld w"><span class="lab2">What happened</span><select id="jm-e"><option value="0">Terrible Misfortune</option><option value="1">Despair</option><option value="2">Ill Choices</option><option value="3">Mishap</option><option value="4">Short Cut</option><option value="5">Chance-meeting</option><option value="6">Joyful Sight</option></select></label>
+  <label class="fld w"><span class="lab2">Result</span><select id="jm-r"><option value="1">Passed</option><option value="0">Failed</option></select></label>
+  <button type="button" class="ub" data-do="jadd">Add to the log</button>
+  <p class="hint">This only writes the row. It does not change Tom's Fatigue, Shadow or Hope: use "An event" in Now for that.</p></div></details></div></div></div><div class="jl-c"><div class="eco2 "><h3>This leg <small><span class="pg">p.110</span></small></h3><div class="gp js-block">
+ <label class="fld w"><span class="lab2">From</span><input type="text" id="jfrom" data-jf="from" maxlength="60" autocomplete="off"></label>
+ <label class="fld w"><span class="lab2">To</span><input type="text" id="jto" data-jf="to" maxlength="60" autocomplete="off"></label>
+ <label class="fld w"><span class="lab2">Season <small>decides the first march if it fails</small></span><select id="jsea" data-jf="sea"><option value="">Not set</option><option>Spring</option><option>Summer</option><option>Autumn</option><option>Winter</option></select></label>
+ <div class="stx"><span class="sl"><b>Path hexes</b><small>without the start</small></span><button type="button" class="stp" data-do="jnn" data-a="-1" aria-label="Path hexes minus 1">−</button><b class="sv" id="jnv">10</b><button type="button" class="stp" data-do="jnn" data-a="1" aria-label="Path hexes plus 1">+</button></div>
+ <div class="ubs"><button type="button" class="ub dnt" data-do="jrid" id="jrid">Everyone rides: off</button><button type="button" class="ub dnt" data-do="jfor" id="jfor">Forced march: off</button></div>
+ <p class="jdays" id="jdays"></p>
+ <p class="hint">Forced march: 2 hexes a day, but each hero gains 1 Fatigue per day. Add that with the Fatigue stepper in Now <span class="pg">p.111</span>.</p>
+ <label class="fld w"><span class="lab2">Notes <small>what the Company saw and did</small></span><textarea id="jnote" data-jf="notes" rows="3" maxlength="400"></textarea></label>
+ <div class="ubs"><button type="button" class="ub" data-do="jsum">Copy summary</button><button type="button" class="ub" data-do="jnext">Start the next leg</button></div>
+ <p class="hint" id="jmsg"></p>
+ <textarea id="jsumt" class="jsumt" readonly rows="5" hidden aria-label="Summary text"></textarea>
+ <p class="lab2">Legs <small>tap one to open it</small></p><div id="jpast"></div></div></div></div></div></div><div class="panel"><p class="hint nojs-only gpx">The map needs a browser with JavaScript.</p><div class="jmap"><div class="jm-a"><div class="eco2 "><h3>Where the Company is</h3><div class="gp js-block"><p class="jdays" id="jwhere"></p><div id="jstrip2"></div>
+ <p class="hint">Change the path, terrain and landmarks in the Log tab.</p><div id="jlands"></div></div></div></div><div class="jm-b"><div class="eco2 "><h3>Places <small>tap the dot: planned, visited, we are here</small></h3><div class="gp js-block">
+ <div id="jpl"></div>
+ <label class="fld w"><span class="lab2">New place</span><input type="text" id="jpn" maxlength="40" autocomplete="off" placeholder="Name"></label>
+ <label class="fld w"><span class="lab2">Note <small>optional</small></span><input type="text" id="jpt" maxlength="80" autocomplete="off" placeholder="what happened or who we met"></label>
+ <div class="ubs"><button type="button" class="ub" data-do="jpadd">Add the place</button></div>
+ <p class="hint">The paper map stays with the Loremaster. This list is only your own notes.</p></div></div></div></div></div></div></div></div><div class="panel"><div class="xcols"><div class="xa"><div class="eco2 "><h3><span class="stn">1</span>Goal and Resistance <small><span class="pg">p.105</span></small></h3><div class="gp js-block">
  <p>Agree on what you ask and what you offer. The Loremaster sets the Resistance: the successes you need.</p><div class="seg3"><button type="button" class="sgb" data-do="cores" data-a="3"><b>3</b><small>reasonable</small></button><button type="button" class="sgb" data-do="cores" data-a="6"><b>6</b><small>bold</small></button><button type="button" class="sgb" data-do="cores" data-a="9"><b>9</b><small>outrageous</small></button></div></div></div><div class="eco2 "><h3><span class="stn">2</span>Introduction <small>one spokesperson, one roll <span class="pg">p.106</span></small></h3><div class="gp">
  <div class="tsk one"><div><b class="rk" data-v="rk_courtesy">3</b><span>Courtesy<small>polite, best with friends; can stay vague about who you are</small></span><small>TN 16</small></div><div><b class="rk z" data-v="rk_awe">0</b><span>Awe<small>a strong first impression, but shows who you are</small></span><small>TN 16</small></div><div><b class="rk" data-v="rk_riddle">2</b><span>Riddle<small>learn much, say little; a bad roll breeds mistrust</small></span><small>TN 13</small></div></div>
  <p>Pass: tries = Resistance, +1 per icon. Fail: tries = Resistance, and a failed council becomes a Disaster.</p>
@@ -620,11 +702,14 @@ R.classList.add("js");
 function $(i){return d.getElementById(i);}
 function cls(el,c,on){if(el)el.classList[on?"add":"remove"](c);}
 function cl(v,lo,hi){v=Math.round(Number(v)||0);if(v<lo)v=lo;if(hi!==undefined&&v>hi)v=hi;return v;}
+// journey log (task 6.35): one record per leg; hexes 0 (start) to n (destination); events are rows {h,t,e,r,f,d}
+function NL(){return {from:"",to:"",sea:"",n:10,rid:false,forced:false,terr:{},land:{},here:0,sel:0,ev:[],notes:"",done:false};}
 var START={end:H.endMax,hope:H.hopeMax,sh:0,sc:0,fat:0,tre:H.tre0,mis:false,wnd:false,buck:true,helm:false,
  inj:0,ap:H.ap,sp:H.sp,val:H.val,wis:H.wis,pool:0,poolMax:0,srest:false,safe:true,
  patron:"",haven:"",focus:"",flaws:"",virt:"",rew:"",notes:"",rk:{},amt:4,ep:0,stance:"",fight:false,round:0,
  used:{main:false,sec:false,kb:false},role:"",co:{res:0,suc:0,tries:0,mood:0,fail:false,intro:false},daunt:false,
  jr:{n:0,tgt:"",ev:-1,lt:"",le:-1,lr:-1,lf:0},
+ journey:{cur:0,logged:0,legs:[NL()],places:[]},
  set:{still:false,big:false,wake:false},ui:{},log:[]};
 function clone(o){return JSON.parse(JSON.stringify(o));}
 var st=clone(START);
@@ -632,7 +717,18 @@ function merge(o){st=clone(START);if(!o||typeof o!=="object")return;
  for(var k in START){if(!(k in o))continue;var a=START[k],b=o[k];
   if(Array.isArray(a)){if(Array.isArray(b))st[k]=b.slice(-8);}
   else if(a&&typeof a==="object"){if(b&&typeof b==="object"&&!Array.isArray(b))for(var j in b)st[k][j]=b[j];}
-  else if(typeof a===typeof b)st[k]=b;}}
+  else if(typeof a===typeof b)st[k]=b;}
+ fixJ();}
+function fixJ(){var J=st.journey;if(!J||typeof J!=="object"||Array.isArray(J))J=st.journey={cur:0,logged:0,legs:[],places:[]};
+ if(!Array.isArray(J.legs))J.legs=[];if(!Array.isArray(J.places))J.places=[];
+ J.legs=J.legs.slice(-12).map(function(l){var b=NL();if(l&&typeof l==="object")for(var k in b){if(l[k]!==null&&k in l&&typeof l[k]===typeof b[k]&&Array.isArray(l[k])===Array.isArray(b[k]))b[k]=l[k];}
+  b.n=cl(b.n,1,20);b.here=cl(b.here,0,b.n);b.sel=cl(b.sel,0,b.n);
+  b.ev=b.ev.slice(-30).filter(function(e){return e&&typeof e==="object";}).map(function(e){var t=e.t==="scout"||e.t==="lookout"||e.t==="hunter"?e.t:"";return {h:cl(e.h,0,b.n),t:t,e:cl(e.e,0,6),r:e.r?1:0,f:cl(e.f,0,9),d:cl(e.d,-1,1)};});
+  var tr={},ln={};for(var i=0;i<=b.n;i++){if(b.terr[i]==="r"||b.terr[i]==="h")tr[i]=b.terr[i];if(typeof b.land[i]==="string"&&b.land[i])ln[i]=b.land[i].slice(0,40);}
+  b.terr=tr;b.land=ln;b.from=b.from.slice(0,60);b.to=b.to.slice(0,60);b.notes=b.notes.slice(0,400);return b;});
+ if(!J.legs.length)J.legs.push(NL());
+ J.places=J.places.slice(-40).filter(function(p){return p&&typeof p==="object";}).map(function(p){return {n:String(p.n||"").slice(0,40),t:String(p.t||"").slice(0,80),s:cl(p.s,0,2)};});
+ J.cur=cl(J.cur,0,J.legs.length-1);J.logged=cl(J.logged,0,99999);}
 function load(){try{var raw=localStorage.getItem(KEY);if(raw)merge(JSON.parse(raw));}catch(e){st=clone(START);}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
 // ---- numbers that follow from the trackers
@@ -722,12 +818,63 @@ function render(){var v=V(),M={};
  renderPad();
  var hl=$("hlog");hl.innerHTML=st.log.slice().reverse().map(function(s){return "<li>"+s+"</li>";}).join("")||"<li>Nothing yet.</li>";
  $("amt").value=st.amt;
+ renderJ();
  colh();
 }
 // ---- toast with Undo
 var tEl,tTxt,tUndo,snap=null,tT=0;
 function toast(msg,s){if(!tEl)return;tTxt.innerHTML=msg;snap=s||null;tUndo.hidden=!s;cls(tEl,"on",true);clearTimeout(tT);tT=setTimeout(function(){cls(tEl,"on",false);},5000);}
 function logE(s){st.log.push(s);if(st.log.length>8)st.log=st.log.slice(-8);}
+// ---- journey log and map (task 6.35)
+var TNJ={scout:"Scouts",lookout:"Look-outs",hunter:"Hunters"};
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function leg(){var J=st.journey;return J.legs[J.cur];}
+function hardN(l){var c=0;for(var i=1;i<=l.n;i++)if(l.terr[i]==="h")c++;return c;}
+function daysOf(l){var adj=0;l.ev.forEach(function(e){adj+=e.d;});var hd=hardN(l),base=(l.forced?Math.ceil(l.n/2):l.n)+hd;if(l.rid)base=Math.ceil(base/2);return {base:base,adj:adj,hard:hd,tot:Math.max(0,base+adj)};}
+function evDays(e,r){return e===3&&r===0?1:(e===4&&r===1?-1:0);}
+function evFat(e,r,t){var f=EV[e].f;if(e===5&&r)f=0;if(e===3&&!r&&t&&t===st.role)f++;return f;}
+function hexSvg(l,act){var cols=6,r=26,w=r*1.732,cells=l.n+1,rows=Math.ceil(cells/cols),W=cols*w+w/2+6,Hh=rows*r*1.5+r*0.5+8,o='<svg class="jhex" viewBox="0 0 '+W.toFixed(0)+' '+Hh.toFixed(0)+'" role="group" aria-label="Journey path, '+l.n+' hexes">';
+ for(var i=0;i<cells;i++){var row=Math.floor(i/cols),c=i%cols;if(row%2)c=cols-1-c;var cx=3+w/2+c*w+(row%2?w/2:0),cy=4+r+row*r*1.5,pts=[];
+  for(var k=0;k<6;k++){var a=Math.PI/180*(60*k-30);pts.push((cx+r*Math.cos(a)).toFixed(1)+","+(cy+r*Math.sin(a)).toFixed(1));}
+  var cn=(i<l.here?"done ":"")+(i===l.here?"here ":"")+(act&&i===l.sel?"sel":""),lab=i===0?"S":(i===l.n?"D":String(i)),tn=l.terr[i]==="h"?"HARD":l.terr[i]==="r"?"ROAD":"";
+  var ne=0;l.ev.forEach(function(e){if(e.h===i)ne++;});
+  o+='<g class="'+cn+'"'+(act?' data-do="jhex" data-a="'+i+'" role="button" aria-label="Hex '+i+(tn?", "+tn.toLowerCase():"")+(ne?", "+ne+" event"+(ne>1?"s":""):"")+(i===l.here?", the Company is here":"")+'"':"")+'><polygon points="'+pts.join(" ")+'"/><text x="'+cx.toFixed(1)+'" y="'+(cy+(tn?1:5)).toFixed(1)+'">'+lab+'</text>'+(tn?'<text class="tn" x="'+cx.toFixed(1)+'" y="'+(cy+14).toFixed(1)+'">'+tn+'</text>':"");
+  if(ne)o+='<circle class="evd" cx="'+(cx+r*0.6).toFixed(1)+'" cy="'+(cy-r*0.55).toFixed(1)+'" r="7"/>'+(ne>1?'<text class="ev2" x="'+(cx+r*0.6).toFixed(1)+'" y="'+(cy-r*0.55+3).toFixed(1)+'">'+ne+'</text>':"");
+  o+='</g>';}
+ return o+'</svg>';}
+function setv(id,v){var el=$(id);if(el&&d.activeElement!==el&&el.value!==v)el.value=v;}
+function renderJ(){var J=st.journey,l=leg(),dy=daysOf(l),left=l.n-l.here,sel=l.sel;if(!$("jstrip"))return;
+ $("jstrip").innerHTML=hexSvg(l,true);$("jstrip2").innerHTML=hexSvg(l,false);
+ var tr=l.terr[sel]||"o";
+ $("jsel").innerHTML="Hex <b>"+sel+"</b>"+(sel===0?" · the start":sel===l.n?" · the destination":"")+(l.here===sel?" · the Company is here":"");
+ var tb=d.querySelectorAll(".jterr .sgb");for(var i=0;i<tb.length;i++){var a=tb[i].getAttribute("data-a");cls(tb[i],"on",sel>0&&a===tr);tb[i].disabled=sel<1;}
+ setv("jland",l.land[sel]||"");setv("jfrom",l.from);setv("jto",l.to);setv("jnote",l.notes);setv("jsea",l.sea);
+ $("jnv").textContent=l.n;
+ $("jrid").textContent="Everyone rides: "+(l.rid?"on":"off");cls($("jrid"),"on",l.rid);
+ $("jfor").textContent="Forced march: "+(l.forced?"on":"off");cls($("jfor"),"on",l.forced);
+ var why=(l.forced?l.n+" hexes at 2 a day":l.n+" hexes")+(dy.hard?" + "+dy.hard+" hard":"")+(l.rid?", halved for riding":"")+(dy.adj?", "+(dy.adj>0?"+":"−")+Math.abs(dy.adj)+" from events":"");
+ $("jdays").innerHTML="About <b>"+dy.tot+" "+(dy.tot===1?"day":"days")+"</b><small>"+why+"</small>";
+ $("jwhere").innerHTML=(l.from||l.to?"<b>"+esc(l.from||"?")+" → "+esc(l.to||"?")+"</b>"+(l.sea?" · "+l.sea:"")+"<br>":"")+"Hex <b>"+l.here+"</b> of "+l.n+(left?" · "+left+" to go":" · arrived")+" · about "+dy.tot+" days";
+ var evs=l.ev.map(function(e,i){var E=EV[e.e],me=!!e.t&&e.t===st.role;
+  return '<div class="jev"><span class="n">'+(i+1)+'</span><div class="tx"><b>'+esc(E.n)+'</b><span class="tag '+(e.r?"ok":"")+'">'+(e.r?"Passed":"Failed")+'</span>'+(me?'<span class="tag me">Tom rolled</span>':"")+'<small>Hex '+e.h+' · '+(TNJ[e.t]||"no target picked")+' · Fatigue +'+e.f+(e.d?' · '+(e.d>0?'+1 day':'−1 day'):"")+'</small></div><button type="button" class="x" data-do="jdel" data-a="'+i+'" aria-label="Remove event '+(i+1)+'">×</button></div>';}).join("");
+ $("jevs").innerHTML=evs||'<p class="jempty">No events on this leg yet. Resolve one under "An event" in Now, then add it here.</p>';
+ var j=st.jr,jl=$("jlast");
+ if(j.le>=0&&j.n>0&&J.logged!==j.n)jl.innerHTML="<p>Last event in Now: <b>"+esc(EV[j.le].n)+"</b>, "+(TNJ[j.lt]||"no target picked")+", "+(j.lr===1?"passed":"failed")+", Fatigue +"+j.lf+".</p><button type=\"button\" class=\"ub\" data-do=\"jaddlast\">Add it at hex "+sel+"</button>";
+ else jl.innerHTML="";
+ $("jpast").innerHTML=J.legs.map(function(g,i){return '<div class="jleg2'+(i===J.cur?" on":"")+'"><button type="button" class="go" data-do="jopen" data-a="'+i+'"><b>Leg '+(i+1)+': '+esc(g.from||"?")+' → '+esc(g.to||"?")+'</b><small>hex '+g.here+' of '+g.n+' · '+g.ev.length+' event'+(g.ev.length===1?"":"s")+(g.done?" · done":"")+'</small></button></div>';}).join("");
+ var lm=[];for(var h2=0;h2<=l.n;h2++)if(l.land[h2])lm.push('<div><b>Hex '+h2+'</b> · '+esc(l.land[h2])+'</div>');
+ $("jlands").innerHTML=lm.join("");
+ $("jpl").innerHTML=J.places.map(function(p,i){return '<div class="jpr"><button type="button" class="dot'+(p.s===1?" v":p.s===2?" h":"")+'" data-do="jpst" data-a="'+i+'" aria-label="'+esc(p.n)+': '+(p.s===1?"visited":p.s===2?"we are here":"planned")+'"><i></i></button><div class="tx"><b>'+esc(p.n)+'</b><small>'+(p.s===1?"Visited":p.s===2?"We are here":"Planned")+(p.t?" · "+esc(p.t):"")+'</small></div><button type="button" class="x" data-do="jpdel" data-a="'+i+'" aria-label="Remove '+esc(p.n)+'">×</button></div>';}).join("")||'<p class="jempty">No places yet.</p>';}
+function jText(){var l=leg(),dy=daysOf(l),L=[];
+ L.push("Journey: "+(l.from||"?")+" to "+(l.to||"?")+(l.sea?" ("+l.sea+")":"")+(l.rid?", everyone riding":"")+(l.forced?", forced march":""));
+ L.push("Path: "+l.n+" hexes, "+dy.hard+" hard. The Company is at hex "+l.here+(l.here>=l.n?" (arrived)":", "+(l.n-l.here)+" to go")+". About "+dy.tot+" days.");
+ l.ev.forEach(function(e,i){L.push("Event "+(i+1)+": hex "+e.h+", "+EV[e.e].n+", "+(TNJ[e.t]||"no target")+", "+(e.r?"passed":"failed")+", Fatigue +"+e.f+(e.d?", "+(e.d>0?"+1 day":"-1 day"):""));});
+ var lm=[];for(var h2=0;h2<=l.n;h2++)if(l.land[h2])lm.push("hex "+h2+" "+l.land[h2]);if(lm.length)L.push("Landmarks: "+lm.join("; "));
+ var pv=st.journey.places.filter(function(p){return p.s>0;}).map(function(p){return p.n+(p.s===2?" (here)":"");});if(pv.length)L.push("Places: "+pv.join(", "));
+ L.push("Tom: Fatigue "+st.fat+", Endurance "+st.end+" of "+H.endMax+", Hope "+st.hope+", Shadow "+V().ss+".");
+ if(l.notes)L.push("Notes: "+l.notes);return L.join("\n");}
+function jCopy(){var t=$("jsumt");t.hidden=false;t.value=jText();t.select();var ok=false;try{ok=d.execCommand("copy");}catch(e){}
+ try{if(navigator.clipboard){navigator.clipboard.writeText(t.value).catch(function(){});ok=true;}}catch(e){}$("jmsg").textContent=ok?"Copied. Paste it to the Loremaster or a chat.":"Select the text below and copy it.";}
 // ---- actions (each returns the message for the toast, or "" for none)
 function endChange(nv,why){var o=st.end;nv=cl(nv,0,H.endMax);st.end=nv;var v=V();
  var m="Endurance "+o+" → <b>"+nv+"</b>"+(why?" ("+why+")":"");logE("Endurance "+o+" → "+nv+(why?" ("+why+")":""));
@@ -799,7 +946,26 @@ var A={
   if(ok&&j.ev===4)p.push("1 day shorter");if(!ok&&j.ev===3)p.push("1 more day");if(ok&&j.ev===5)p.push("someone helpful");
   j.n++;j.lt=j.tgt;j.le=j.ev;j.lr=ok?1:0;j.lf=f;j.ev=-1;j.tgt="";logE(E.n+(ok?" passed":" failed"));
   return E.n+(ok?" passed: ":" failed: ")+(p.length?p.join(" · "):"nothing changes for Tom")+".";},
- jnew:function(){st.jr={n:0,tgt:"",ev:-1,lt:"",le:-1,lr:-1,lf:0};return "New journey: the event count is back to 0.";},
+ jnew:function(){st.jr={n:0,tgt:"",ev:-1,lt:"",le:-1,lr:-1,lf:0};st.journey.logged=0;return "New journey: the event count is back to 0.";},
+ jhex:function(a){var l=leg();l.sel=cl(a,0,l.n);return "";},
+ jterr:function(a){var l=leg();if(l.sel<1)return "The start hex has no terrain.";if(a==="o")delete l.terr[l.sel];else l.terr[l.sel]=a;return "";},
+ jhere:function(){var l=leg();l.here=l.sel;var left=l.n-l.here;return "The Company is at hex <b>"+l.here+"</b> of "+l.n+(left?": "+left+" to go.":". The journey is over: see Arrival in Now.");},
+ jnn:function(a){var l=leg();l.n=cl(l.n+(+a),1,20);l.here=cl(l.here,0,l.n);l.sel=cl(l.sel,0,l.n);for(var k in l.terr)if(+k>l.n)delete l.terr[k];for(var k2 in l.land)if(+k2>l.n)delete l.land[k2];l.ev.forEach(function(e){if(e.h>l.n)e.h=l.n;});return "";},
+ jrid:function(){var l=leg();l.rid=!l.rid;return l.rid?"Everyone rides: the days are halved (rounded up). Only on roads and good paths.":"On foot: the days are not halved.";},
+ jfor:function(){var l=leg();l.forced=!l.forced;return l.forced?"Forced march: 2 hexes a day, but each hero gains 1 Fatigue for each day. Add it in Now.":"No forced march.";},
+ jaddlast:function(){var j=st.jr,J=st.journey,l=leg();if(j.le<0||!j.n)return "No event in Now yet.";if(J.logged===j.n)return "That event is already in the log.";
+  if(l.ev.length>=30)return "This leg has 30 events. Start the next leg.";var r=j.lr===1?1:0;
+  l.ev.push({h:l.sel,t:j.lt,e:j.le,r:r,f:cl(j.lf,0,9),d:evDays(j.le,r)});J.logged=j.n;if(l.sel>l.here)l.here=l.sel;
+  return EV[j.le].n+" added at hex <b>"+l.sel+"</b>."+(l.here===l.sel?" The Company is there now.":"");},
+ jadd:function(){var l=leg(),t=$("jm-t").value,e=cl($("jm-e").value,0,6),r=+$("jm-r").value?1:0;if(l.ev.length>=30)return "This leg has 30 events. Start the next leg.";
+  l.ev.push({h:l.sel,t:t,e:e,r:r,f:evFat(e,r,t),d:evDays(e,r)});if(l.sel>l.here)l.here=l.sel;return EV[e].n+" added at hex <b>"+l.sel+"</b>. Tom's numbers did not change.";},
+ jdel:function(a){var l=leg(),i=+a;if(!l.ev[i])return "";l.ev.splice(i,1);return "Event removed.";},
+ jnext:function(){var J=st.journey,l=leg();if(J.legs.length>=12){J.legs.shift();}l=J.legs[J.legs.length-1]||l;l.done=true;var n=NL();n.from=l.to;n.sea=l.sea;J.legs.push(n);J.cur=J.legs.length-1;return "New leg"+(n.from?" from "+esc(n.from):"")+". The old one stays in Legs.";},
+ jopen:function(a){var J=st.journey;J.cur=cl(a,0,J.legs.length-1);return "";},
+ jpadd:function(){var n=$("jpn").value.trim().slice(0,40),t=$("jpt").value.trim().slice(0,80),P=st.journey.places;if(!n)return "Type the place name first.";if(P.length>=40)return "The list is full (40 places). Remove one first.";
+  P.push({n:n,t:t,s:0});$("jpn").value="";$("jpt").value="";return "Place added: <b>"+esc(n)+"</b>.";},
+ jpst:function(a){var P=st.journey.places,p=P[+a];if(!p)return "";p.s=(p.s+1)%3;if(p.s===2)P.forEach(function(q,i){if(i!==+a&&q.s===2)q.s=1;});return "";},
+ jpdel:function(a){var P=st.journey.places;if(!P[+a])return "";var n=P[+a].n;P.splice(+a,1);return "Removed <b>"+esc(n)+"</b>.";},
  conew:function(){st.co={res:0,suc:0,tries:0,mood:0,fail:false,intro:false};return "New council.";},
  rank:function(a,k){var r=rank(k),n=cl(r+(+a),k==="val"||k==="wis"?1:0,6);if(n===r)return "";if(k==="val")st.val=n;else if(k==="wis")st.wis=n;else st.rk[k]=n;
   logE(H.names[k]+" set to "+n+" by hand");return H.names[k]+" "+r+" → <b>"+n+"</b> (by hand, no points spent)";},
@@ -810,7 +976,7 @@ var A={
  halve:function(){padMode="lose";padN=String(Math.ceil((+padN||st.amt)/2));if(st.fight)st.used.kb=true;return "";},
  pad:function(){var n=+padN||0;if(padMode==="set")return endChange(n,"set");return endChange(padMode==="lose"?st.end-n:st.end+n,(padMode==="lose"?"lost ":"regained ")+n);}
 };
-var REDRAW={amt:1,stance:1,role:1,cores:1,comood:1,use:1,halve:1,jtgt:1,jev:1};
+var REDRAW={amt:1,stance:1,role:1,cores:1,comood:1,use:1,halve:1,jtgt:1,jev:1,jhex:1,jterr:1,jopen:1,jpst:1,jnn:1,jrid:1,jfor:1};
 var EV=[{"n": "Terrible Misfortune", "f": 3}, {"n": "Despair", "f": 2}, {"n": "Ill Choices", "f": 2}, {"n": "Mishap", "f": 2}, {"n": "Short Cut", "f": 1}, {"n": "Chance-meeting", "f": 1}, {"n": "Joyful Sight", "f": 0}];
 function run(name,a,k,el){var f=A[name];if(!f)return;var before=JSON.stringify(st);var m=f(a,k,el);var changed=JSON.stringify(st)!==before;
  if(changed)save();render();if(m)toast(m,changed&&!REDRAW[name]?before:null);
@@ -827,7 +993,7 @@ d.addEventListener("click",function(e){var t=e.target.closest?e.target.closest("
  if(t.hasAttribute("data-toastx")){cls(tEl,"on",false);return;}
  if(t.hasAttribute("data-undo")){if(snap){merge(JSON.parse(snap));snap=null;save();render();}cls(tEl,"on",false);return;}
  var name=t.getAttribute("data-do");
- if(name==="reset"){return resetTap(t);}if(name==="bkcopy"){return bkCopy();}if(name==="bkload"){return bkLoad(t);}
+ if(name==="reset"){return resetTap(t);}if(name==="bkcopy"){return bkCopy();}if(name==="bkload"){return bkLoad(t);}if(name==="jsum"){return jCopy();}
  run(name,t.getAttribute("data-a"),t.getAttribute("data-k"),t);});
 // opening the pad from the amount box: start from the amount
 d.addEventListener("change",function(e){var t=e.target;
@@ -837,7 +1003,12 @@ d.addEventListener("change",function(e){var t=e.target;
  if(t.id&&SHEETS.indexOf(t.id)>=0&&t.checked){SHEETS.forEach(function(s){if(s!==t.id)$(s).checked=false;});}});
 var SHEETS=["st-open","end-open","hope-open","rest-open"];
 $("amt").addEventListener("click",function(){$("end-open").checked=true;padN="";padMode="lose";renderPad();});
-d.addEventListener("input",function(e){var t=e.target;if(t.hasAttribute&&t.hasAttribute("data-t")){st[t.getAttribute("data-t")]=t.value.slice(0,200);save();var w=d.querySelectorAll('[data-v="flawsw"]');for(var i=0;i<w.length;i++)w[i].textContent=st.flaws||"none yet";}});
+d.addEventListener("input",function(e){var t=e.target;
+ if(t.hasAttribute&&t.hasAttribute("data-jf")){var l=leg(),f=t.getAttribute("data-jf");
+  if(f==="land"){var v=t.value.slice(0,40);if(v.trim())l.land[l.sel]=v;else delete l.land[l.sel];}
+  else if(f==="from"||f==="to")l[f]=t.value.slice(0,60);else if(f==="notes")l.notes=t.value.slice(0,400);else if(f==="sea")l.sea=t.value;
+  save();renderJ();return;}
+ if(t.hasAttribute&&t.hasAttribute("data-t")){st[t.getAttribute("data-t")]=t.value.slice(0,200);save();var w=d.querySelectorAll('[data-v="flawsw"]');for(var i=0;i<w.length;i++)w[i].textContent=st.flaws||"none yet";}});
 d.addEventListener("keydown",function(e){if(e.key==="Escape")SHEETS.forEach(function(s){$(s).checked=false;});});
 // ---- reset, backup
 var armed=false,armT=0;
