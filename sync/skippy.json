@@ -2,10 +2,10 @@
  "app": "rpg-hub",
  "who": "skippy",
  "v": 1,
- "at": 1794793455348,
- "from": "iPad",
+ "at": 1794793777803,
+ "from": "iPhone",
  "st": {
-  "hp": 24,
+  "hp": 19,
   "temp": 0,
   "cb": {},
   "r": {},
@@ -16,6 +16,7 @@
    "u": {},
    "t": {},
    "log": [
+    "01:49 · Took 5 damage (24 to 19).",
     "01:44 · Healed to 24.",
     "00:37 · Took 5 damage (24 to 19).",
     "00:32 · Shield (my spell) removed.",
