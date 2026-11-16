@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="rpg-icon-180.png"><meta name="theme-color" content="#10171c">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tom Bin Combos</title>
+<style>
+/* Look: see docs/DESIGN.md (One Ring kit tokens). One file, no outside links. */
+:root{
+  --bg:#f4ecd8; --card:#fbf7ea; --subtle:#ece2c6; --line:#d4c7a0;
+  --ink:#2a241a; --muted:#5e5442;
+  --accent:#2f4a2a; --deep:#1e2f1c; --tint:#e6ecd6; --on:#ffffff; --navlink:#dfe8d2; --focus:#f5c542;
+  --warn:#7a3e00; --warn-bg:#fdf0d8; --ex:#5c4700; --ex-bg:#fbf3d3; --ex-rule:#b8922a;
+  --rune:#2f4a2a; --eye:#8a2a22; --icon:#7a5c00; --hope:#8a6a00; --shadow:#4a3a6a;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:12px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow-wrap:break-word}
+nav.site{background:var(--deep);display:flex;flex-wrap:wrap;align-items:center;gap:2px;padding:6px 12px;font:600 14px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+nav.site .brand{color:var(--on);font-weight:700;margin-right:10px;padding:6px 0;letter-spacing:.02em;white-space:nowrap}
+nav.site a{color:var(--navlink);text-decoration:none;padding:8px 10px;border-radius:6px;display:inline-flex;align-items:center;min-height:36px;white-space:nowrap}
+nav.site a:hover{background:rgba(255,255,255,.12);color:var(--on)}
+nav.site a[aria-current="page"]{background:var(--bg);color:var(--deep)}
+nav.site a:focus-visible,.toc a:focus-visible{outline:3px solid var(--focus);outline-offset:1px}
+header.top{background:var(--accent);color:var(--on);padding:14px 16px}
+header.top>div,.wrap{max-width:860px;margin:0 auto}
+header.top h1{margin:0;font-size:1.35rem;line-height:1.25}
+header.top p{margin:2px 0 0;font-size:.9rem}
+.wrap{padding:12px 16px 56px}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 14px}
+.toc a{padding:6px 10px;border:1px solid var(--line);background:var(--card);border-radius:999px;color:var(--accent);text-decoration:none;font-size:.9rem;min-height:36px;display:inline-flex;align-items:center}
+h2{margin:0 0 4px;font-size:1.3rem;line-height:1.3}
+h3{margin:12px 0 4px;font-size:1.05rem;line-height:1.3}
+p{margin:6px 0}
+ul,ol{margin:6px 0;padding-left:22px}
+li{margin:3px 0}
+a{color:var(--accent)}
+.lead{color:var(--muted);margin:2px 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0}
+.card h3{margin-top:0}
+.block{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:8px;padding:12px 14px;margin:0 0 18px;scroll-margin-top:12px}
+.block .when{margin:2px 0 10px}
+.block .when b{color:var(--accent)}
+.then{margin:0;padding-left:0;list-style:none;counter-reset:s}
+.then>li{counter-increment:s;margin:8px 0;padding-left:32px;position:relative}
+.then>li::before{content:counter(s);position:absolute;left:0;top:1px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--on);font-size:.8rem;font-weight:700;text-align:center;line-height:22px}
+.cost{display:flex;flex-wrap:wrap;gap:4px;margin:10px 0 0}
+.chip{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:0 6px;font-size:.85rem;font-weight:700;background:var(--bg);white-space:nowrap}
+.chip.hope{color:var(--hope);border-color:var(--hope)}
+.chip.shadow{color:var(--shadow);border-color:var(--shadow)}
+.why{margin:10px 0 0;font-size:.95rem}
+.why b{color:var(--accent)}
+.note,.warn,.ex{padding:8px 12px;margin:10px 0 0;font-size:.95rem;border-left:4px solid var(--accent);background:var(--tint);border-radius:0 6px 6px 0}
+.warn{border-color:var(--warn);background:var(--warn-bg);color:var(--warn)}
+.ex{border-color:var(--ex-rule);background:var(--ex-bg);color:var(--ex)}
+.ex strong,.warn strong{color:inherit}
+.pg{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:0 6px;font-size:.78rem;font-weight:700;color:var(--muted);background:var(--card);white-space:nowrap;vertical-align:baseline}
+.odds{display:inline-block;border:1px dashed var(--ex-rule);border-radius:4px;padding:0 5px;font-size:.82rem;color:var(--ex);background:var(--ex-bg);white-space:nowrap}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{border:1px solid var(--line);padding:5px 7px;text-align:left;vertical-align:top;background:var(--card)}
+th{background:var(--subtle)}
+.tw{overflow-x:auto;max-width:100%;margin:8px 0}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px;margin:8px 0}
+.nums .card{margin:0}
+.nums dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:.93rem}
+.nums dt{font-weight:700}
+.nums dd{margin:0}
+.small{font-size:.9rem;color:var(--muted)}
+@media (max-width:640px){
+  nav.site{padding:4px 8px}
+  nav.site .brand{width:100%;padding:4px 2px 2px}
+  nav.site a{padding:6px 8px;font-size:13px}
+  .wrap{padding:8px 16px 40px}
+  .block{padding:12px}
+}
+@media print{
+  @page{size:Letter portrait;margin:.6in}
+  nav.site,.toc{display:none!important}
+  body{background:#fff;color:#000;font-size:10.5pt}
+  header.top{background:#fff;color:#000;border-bottom:2px solid #000;padding:0 0 6px}
+  .wrap{padding:6px 0 0}
+  .block{break-inside:avoid;margin-bottom:12px;border-top-color:#000}
+  .card,.note,.warn,.ex,table{break-inside:avoid}
+  h2,h3,.lead{break-after:avoid}
+  .block,.card,.note,.warn,.ex,th,td,.chip,.odds{background:#fff}
+  a{color:#000;text-decoration:none}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+@media screen{:root{--bg:#10171c;--card:#18222a;--subtle:#212d36;--line:#2c3a45;--ink:#e7edf1;--muted:#97a8b4;--accent:#d0392f;--deep:#18222a;--tint:#212d36;--on:#ffffff;--navlink:#e7edf1;--focus:#f2c14e;--warn:#e7b65a;--warn-bg:#2b2619;--ex:#e7b65a;--ex-bg:#2b2619;--ex-rule:#e7b65a;--rune:#e7edf1;--eye:#f2695e;--icon:#e7b65a;--hope:#e7b65a;--shadow:#b9a7ea}body{background:#10171c;color:#e7edf1}a{color:#f2695e}nav.site{background:#18222a;border-bottom:1px solid #2c3a45}nav.site a[aria-current="page"]{background:#2c3a45;color:#ffffff}header.top{background:#18222a;color:#e7edf1;border-bottom:1px solid #2c3a45}h2{border-bottom-color:#3b4c58}.tag.book{background:#d0392f;border-color:#d0392f;color:#ffffff}.toc a{color:#f2695e}}</style>
+</head>
+<body><style>.rpg-back{display:flex;align-items:center;min-height:44px;padding:0 16px;background:#18222a;border-bottom:1px solid #2c3a45;color:#f2695e;font:700 13px/1 "Bahnschrift SemiCondensed","Arial Narrow",system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase;text-decoration:none}@media print{.rpg-back{display:none}}</style><a class="rpg-back" href="onering.html">&lsaquo; The One Ring</a>
+<nav class="site" aria-label="Tom Bin pages"><span class="brand">The One Ring &middot; Tom Bin</span><a href="tom.html">Tom's page</a><a href="tom-roleplay.html">Roleplay</a><a href="tom-combos.html" aria-current="page">Combos</a></nav>
+<header class="top"><div>
+  <h1>Tom Bin combos: "if this happens, do this"</h1>
+  <p>Eight situations for your Man of Bree Treasure Hunter, one card each, with his exact numbers. Works offline. Prints on paper.</p>
+</div></header>
+
+<main class="wrap">
+
+<p class="lead">Numbers like <span class="pg">p.96</span> are printed pages in the core rulebook, <em>The One Ring</em> 2nd edition. Rules are short summaries in my own words. Chances like <span class="odds">about 50%</span> are my own count over every dice result; they are not in the book. If the Loremaster rules differently, the Loremaster wins.</p>
+
+<div class="nums">
+  <div class="card">
+    <h3>Rolls</h3>
+    <dl>
+      <dt>Strength 4</dt><dd>TN 16: attacks, Awareness, Hunting, Craft</dd>
+      <dt>Heart 4</dt><dd>TN 16: Courtesy, Insight, Enhearten, Travel</dd>
+      <dt>Wits 6</dt><dd>TN 13 (Prowess): Stealth, Scan, Persuade, Riddle, Explore</dd>
+    </dl>
+    <p class="small">TN = 20 minus the Attribute <span class="pg">p.18</span>. Prowess lowers one TN by 1 <span class="pg">p.80</span>.</p>
+  </div>
+  <div class="card">
+    <h3>Body and spirit</h3>
+    <dl>
+      <dt>Endurance</dt><dd>24</dd>
+      <dt>Load</dt><dd>17 (13 with the helm off)</dd>
+      <dt>Weary at</dt><dd>Endurance 17 or less <span class="pg">p.22</span></dd>
+      <dt>Hope</dt><dd>14 &middot; Shadow 0</dd>
+      <dt>Parry</dt><dd>18 with buckler (16 without)</dd>
+      <dt>Protection</dt><dd>3d (corslet 2d + helm 1d)</dd>
+    </dl>
+  </div>
+  <div class="card">
+    <h3>Weapons and best skills</h3>
+    <dl>
+      <dt>Spear</dt><dd>Spears 2 &middot; Damage 4 &middot; Injury 14, or 16 in two hands</dd>
+      <dt>Bow</dt><dd>Bows 1 &middot; Damage 3 &middot; Injury 14</dd>
+      <dt>Favoured</dt><dd>Stealth 3, Scan 3, Insight 2</dd>
+      <dt>Talk</dt><dd>Courtesy 3, Persuade 2, Riddle 2, Enhearten 2</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Words used on the cards</h3>
+  <div class="tw"><table>
+    <tr><th>Word</th><th>What it means</th></tr>
+    <tr><td>Feat die</td><td>The 12-sided die you always roll. The <strong>rune</strong> face is an automatic success. The <strong>Eye</strong> face counts as 0 <span class="pg">p.17</span>.</td></tr>
+    <tr><td>Success dice, icon</td><td>The 6-sided dice: one per rank. A 6 also shows an <strong>icon</strong>, a bonus you can spend <span class="pg">p.18</span>.</td></tr>
+    <tr><td>+1d</td><td>Roll 1 extra Success die. "Lose 1d" means roll 1 fewer <span class="pg">p.20</span> <span class="pg">p.21</span>.</td></tr>
+    <tr><td>Favoured</td><td>Roll 2 Feat dice and keep the better one <span class="pg">p.20</span>.</td></tr>
+    <tr><td>Hope bonus</td><td>Spend 1 Hope before a roll: +1d. Only once per roll <span class="pg">p.20</span>.</td></tr>
+    <tr><td>Inspired</td><td>Name a Distinctive Feature that fits a <em>skill</em> roll (Rustic, Inquisitive or Burglary). Then 1 Hope gives +2d instead of +1d <span class="pg">p.20</span> <span class="pg">p.67</span>.</td></tr>
+    <tr><td>Main / secondary action</td><td>In each combat round you get one main action (an attack or a task) and one quick secondary action <span class="pg">p.97</span>.</td></tr>
+  </table></div>
+</div>
+
+<nav class="toc" aria-label="Situations">
+  <a href="#c1">1. A fight is coming</a>
+  <a href="#c2">2. Stay back and shoot</a>
+  <a href="#c3">3. Enemy in my face</a>
+  <a href="#c4">4. I'm getting tired</a>
+  <a href="#c5">5. Badly hit, or time to go</a>
+  <a href="#c6">6. Hope is running low</a>
+  <a href="#c7">7. Sneak, search, slip in</a>
+  <a href="#c8">8. On the road and in the hall</a>
+</nav>
+
+<section class="block" id="c1">
+  <h2>1. A fight is coming</h2>
+  <p class="when"><b>When:</b> the Loremaster says a fight is about to start, and there is still some distance between the two sides.</p>
+  <ol class="then">
+    <li><strong>Opening volley.</strong> Each side usually gets at least one shot before the melee <span class="pg">p.94</span>. Shoot the bow: Feat die + 1 Success die against TN 16 + the enemy's Parry. An enemy's Parry is a number like +1 or +2 added to your TN <span class="pg">p.98</span> <span class="pg">p.144</span>. A hit costs the enemy 3 Endurance.</li>
+    <li><strong>Or throw the spear.</strong> The spear can be thrown <span class="pg">p.48</span> <span class="pg">p.94</span>. It rolls 2 Success dice and does 4 damage, but then it is gone. Picking it up again costs a main action <span class="pg">p.97</span>.</li>
+    <li><strong>Raise the buckler.</strong> If you see the shots coming, your shield bonus doubles during the volleys: Parry <strong>20</strong> instead of 18 <span class="pg">p.94</span>.</li>
+    <li><strong>Pick a stance for round 1</strong> <span class="pg">p.95</span> <span class="pg">p.96</span>:</li>
+  </ol>
+  <div class="tw"><table>
+    <tr><th>Stance</th><th>What it does</th><th>Its task, for Tom</th></tr>
+    <tr><td><strong>Forward</strong></td><td>Your attacks +1d. Attacks on you +1d too.</td><td>Intimidate Foe uses Awe 0. Weak for Tom <span class="pg">p.102</span>.</td></tr>
+    <tr><td><strong>Open</strong></td><td>No change either way.</td><td>Rally Comrades uses Enhearten 2, TN 16 <span class="pg">p.102</span>.</td></tr>
+    <tr><td><strong>Defensive</strong></td><td>Attacks on you lose 1d. Your attacks lose 1d for each enemy on you.</td><td>Protect Companion uses Battle 0. Weak for Tom <span class="pg">p.103</span>.</td></tr>
+    <tr><td><strong>Rearward</strong></td><td>Bow only. Only shooters can hit you.</td><td>Prepare Shot uses <strong>Scan 3, Favoured</strong>, TN 13. Tom's best <span class="pg">p.103</span>.</td></tr>
+  </table></div>
+  <div class="cost"><span class="chip">no Hope needed</span><span class="chip">bow <span class="odds">about 8%</span> vs TN 17</span><span class="chip">thrown spear <span class="odds">about 21%</span> vs TN 17</span></div>
+  <p class="why"><b>Why:</b> Tom is a light fighter, not a warrior. The volley is a free try, and the buckler makes him harder to hit while the enemy closes in. His real choice is the stance.</p>
+  <p class="ex"><strong>Example:</strong> Four Orc soldiers (Parry +1, so TN 17 <span class="pg">p.150</span>) come out of the trees. Tom shoots: Feat 9 + Success 5 = 14. Miss. Arrows fly back at him, but his Parry is 20 for the volley. Next round he picks Rearward (card 2).</p>
+</section>
+
+<section class="block" id="c2">
+  <h2>2. Stay back and shoot</h2>
+  <p class="when"><b>When:</b> your friends can hold the front line. Rearward is allowed only if the enemies are no more than twice the number of heroes, and only if two other heroes fight in close combat for each hero in Rearward <span class="pg">p.96</span>.</p>
+  <ol class="then">
+    <li><strong>Choose Rearward.</strong> You use the bow only, and only enemy shooters can target you <span class="pg">p.96</span>.</li>
+    <li><strong>Main action: Prepare Shot.</strong> Roll Scan: Scan 3, Favoured, against Wits TN 13 <span class="odds">about 90%</span>. On a success your next bow shot gets +1d, plus 1d more for each icon <span class="pg">p.103</span>.</li>
+    <li><strong>Next round: shoot.</strong> Feat die + 1 Success die + the bonus, against TN 16 + Parry. Add Hope for one more die <span class="pg">p.20</span>.</li>
+    <li><strong>If you hit and roll an icon:</strong> spend it on <strong>Pierce</strong>. A bow adds +2 to the Feat die number, so a Feat die of 8 or more becomes a Piercing Blow (normally only 10 or the rune) <span class="pg">p.99</span>. The enemy must then roll to avoid a Wound against Injury 14 <span class="pg">p.99</span>.</li>
+  </ol>
+  <div class="cost"><span class="chip">Prepare Shot <span class="odds">about 90%</span></span><span class="chip">shot +1d <span class="odds">about 21%</span> vs TN 17</span><span class="chip hope">+1 Hope: <span class="odds">about 46%</span></span></div>
+  <p class="why"><b>Why:</b> Tom's bow is weak (rank 1), but his Scan is excellent. Preparing turns one bad shot into a fair one. Most of all, Rearward keeps him away from swords. Note: the wind-proof lantern does not help here, because useful items work only outside combat <span class="pg">p.49</span>.</p>
+  <p class="ex"><strong>Example:</strong> Round 2: Tom rolls Scan, Feat dice 4 and 9 (keeps 9) + 2, 5, 6. Total 22, with an icon: +2d on his next shot. Round 3: he shoots with 3 Success dice and spends 1 Hope for a 4th.</p>
+</section>
+
+<section class="block" id="c3">
+  <h2>3. An enemy in my face</h2>
+  <p class="when"><b>When:</b> an enemy is fighting Tom up close, and running is not an option yet.</p>
+  <ol class="then">
+    <li><strong>Pick the stance.</strong> <strong>Open</strong> if you want a fair fight. <strong>Forward</strong> if the enemy must fall fast (+1d to your attack, but +1d to theirs). <strong>Defensive</strong> if you only need to last until help comes <span class="pg">p.96</span>.</li>
+    <li><strong>Attack with the spear</strong> (main action): Feat die + 2 Success dice (3 in Forward), against TN 16 + the enemy's Parry <span class="pg">p.98</span>. A hit costs the enemy <strong>4 Endurance</strong> <span class="pg">p.98</span>.</li>
+    <li><strong>Spend each icon from a hit on one of these</strong> <span class="pg">p.99</span>:
+      <ul>
+        <li><strong>Pierce:</strong> +3 to the Feat die number with a spear. A Feat die of 7 or more becomes a Piercing Blow. The enemy rolls against Injury 14 (16 in two hands).</li>
+        <li><strong>Heavy Blow:</strong> the enemy loses 4 more Endurance (your Strength), or 5 with the spear in two hands.</li>
+        <li><strong>Fend Off:</strong> +3 to your Parry for this round (18 becomes 21).</li>
+      </ul>
+    </li>
+    <li><strong>Their turn:</strong> enemies must reach your <strong>Parry 18</strong> to hit you <span class="pg">p.98</span>.</li>
+  </ol>
+  <div class="cost"><span class="chip">Open <span class="odds">about 21%</span> vs TN 17</span><span class="chip">Forward <span class="odds">about 46%</span></span><span class="chip hope">Forward +1 Hope: <span class="odds">about 72%</span></span></div>
+  <p class="why"><b>Why:</b> with only 2 dice, Tom misses often in Open. Forward almost doubles his chance, but he gets hit more. Use Forward when a friend is also on the same enemy, or when it is nearly beaten.</p>
+  <div class="note"><strong>One hand or two?</strong> The spear works in one or two hands <span class="pg">p.48</span>. Two hands give Injury 16 and a bigger Heavy Blow. Our reading: two hands means the buckler is not in use, so Parry drops to 16. The book does not spell this out; ask your Loremaster.</div>
+</section>
+
+<section class="block" id="c4">
+  <h2>4. I'm getting tired</h2>
+  <p class="when"><b>When:</b> Tom's Endurance is <strong>17 or less</strong>. That is his Load, so he is <strong>Weary</strong> <span class="pg">p.22</span> <span class="pg">p.69</span>. Only 7 points of damage take him there.</p>
+  <p>While Weary, every Success die that shows 1, 2 or 3 counts as 0 <span class="pg">p.22</span>. Even his great Stealth drops from <span class="odds">about 90%</span> to <span class="odds">about 70%</span>.</p>
+  <ol class="then">
+    <li><strong>Take off the helm</strong> (a secondary action) <span class="pg">p.97</span> <span class="pg">p.48</span>. Load drops from 17 to <strong>13</strong>. Weary ends as soon as Endurance is above Load again, so at 14 to 17 Endurance he is fine again <span class="pg">p.71</span>. The price: Protection drops from 3d to 2d.</li>
+    <li><strong>Roll with a big hit (Knockback).</strong> Once per round, when a hit lands, you can halve the Endurance you lose (round up). You then spend your next main action getting back into position <span class="pg">p.98</span> <span class="pg">p.99</span>.</li>
+    <li><strong>After the fight, rest.</strong> A short rest (about an hour, once a day) gives back 4 Endurance (his Strength). A night's sleep gives back all of it. If Wounded: nothing from a short rest, and only 4 from a night <span class="pg">p.71</span>.</li>
+  </ol>
+  <div class="cost"><span class="chip">helm off: Load 13, Protection 2d</span><span class="chip">Knockback: half damage, lose a main action</span></div>
+  <p class="why"><b>Why:</b> Tom's Load is high for his Endurance. The helm is the one piece the book lets him drop in combat. Do it early, before the next hit.</p>
+  <div class="warn"><strong>Journeys make this worse.</strong> Fatigue from travel raises your Load until you shake it off, so you become Weary sooner <span class="pg">p.69</span> <span class="pg">p.111</span>.</div>
+</section>
+
+<section class="block" id="c5">
+  <h2>5. Badly hit, or time to go</h2>
+  <p class="when"><b>When:</b> the Loremaster says Tom took a <strong>Piercing Blow</strong>, or a friend is down, or the fight is lost.</p>
+  <ol class="then">
+    <li><strong>Protection roll.</strong> Roll the Feat die + 3 Success dice (2 with the helm off), against the Injury of the enemy's weapon, often 14 or 16 <span class="pg">p.99</span> <span class="pg">p.150</span>. If it fails, Tom is <strong>Wounded</strong>.</li>
+    <li><strong>First Wound:</strong> tick the Wounded box and roll a Feat die for how bad it is. The Eye means Tom is Dying <span class="pg">p.101</span>. A <strong>second</strong> Wound drops him to 0 Endurance, unconscious and Dying <span class="pg">p.101</span>.</li>
+    <li><strong>Get out, way A:</strong> next round, choose Rearward. On your turn you leave the fight. No roll <span class="pg">p.104</span>.</li>
+    <li><strong>Get out, way B:</strong> choose Defensive and attack. If the attack hits, you do no damage, but you get away. If it misses, you stay engaged <span class="pg">p.104</span>.</li>
+    <li><strong>Friend down:</strong> carrying a fallen friend to safety is a main action <span class="pg">p.97</span>. A Dying hero needs a successful Healing roll within about an hour <span class="pg">p.101</span>. Tom has Healing 0, so let a friend with Healing roll.</li>
+  </ol>
+  <div class="cost"><span class="chip">Protection 3d <span class="odds">about 54%</span> vs 16</span><span class="chip">3d <span class="odds">about 69%</span> vs 14</span><span class="chip">helm off 2d <span class="odds">about 27%</span> vs 16</span></div>
+  <p class="why"><b>Why:</b> losing Endurance is normal. Only a Piercing Blow can kill <span class="pg">p.71</span>. So when an enemy is scoring Piercing Blows, keep the helm on, and think about leaving. Way A is safest, if Rearward is allowed.</p>
+</section>
+
+<section class="block" id="c6">
+  <h2>6. Hope is running low</h2>
+  <p class="when"><b>When:</b> you are about to spend Hope, or Tom's Hope (max 14) is getting close to his Shadow.</p>
+  <ol class="then">
+    <li><strong>Best value: be Inspired.</strong> On a skill roll, name a feature that fits: <strong>Inquisitive</strong> (spotting a lie, a clue), <strong>Rustic</strong> (seeing through fancy show), <strong>Burglary</strong> (locks, pockets, getting in). Then 1 Hope gives +2d <span class="pg">p.20</span> <span class="pg">p.67</span>.</li>
+    <li><strong>Spend where it changes the result.</strong> Hope helps most on rolls that are about 50-50. Persuade goes from <span class="odds">about 50%</span> to <span class="odds">about 76%</span> with Hope, and <span class="odds">about 92%</span> Inspired. Awareness (1 die, TN 16) only goes from <span class="odds">about 10%</span> to <span class="odds">about 27%</span>.</li>
+    <li><strong>Help a friend.</strong> Spend 1 Hope so a friend gains 1d, if Tom has at least 1 rank in a fitting skill. Only one helper per roll. If the friend is Tom's Fellowship Focus (a chosen close friend), they gain 2d <span class="pg">p.20</span> <span class="pg">p.21</span> <span class="pg">p.55</span>.</li>
+    <li><strong>Get Hope back.</strong> When resting, the Company can spend Fellowship points for Hope. In the Fellowship phase Tom gets back 4 (his Heart). At 0 Hope, a night's rest gives back 1 <span class="pg">p.71</span>.</li>
+  </ol>
+  <div class="cost"><span class="chip hope">1 Hope = +1d</span><span class="chip hope">1 Hope Inspired = +2d</span><span class="chip shadow">Shadow at or above Hope = Miserable</span></div>
+  <p class="why"><b>Why:</b> when Shadow is equal to or higher than his current Hope, Tom is <strong>Miserable</strong>: an Eye on the Feat die then fails the roll, whatever the total <span class="pg">p.22</span>. Every Hope spent brings that line closer. At 0 Hope, he cannot push himself at all <span class="pg">p.71</span>.</p>
+</section>
+
+<section class="block" id="c7">
+  <h2>7. Sneak, search, slip in</h2>
+  <p class="when"><b>When:</b> no fight yet. Tom wants to go unseen, spot something, or get into a closed place. This is where he shines.</p>
+  <ol class="then">
+    <li><strong>Sneak:</strong> Stealth 3, Favoured, against Wits TN 13 <span class="odds">about 90%</span> <span class="pg">p.65</span>.</li>
+    <li><strong>Search or keep watch:</strong> Scan 3, Favoured, TN 13 <span class="odds">about 90%</span>. In the dark, his wind-proof lantern can give +1d if the Loremaster agrees <span class="pg">p.49</span>.</li>
+    <li><strong>Locks, pockets, getting in:</strong> the Loremaster says which skill fits. Name <strong>Burglary</strong> to be Inspired <span class="pg">p.45</span> <span class="pg">p.67</span>.</li>
+    <li><strong>Spend icons</strong> on a success: go quietly, make haste, or gain extra information (for example, spot a guard) <span class="pg">p.19</span>.</li>
+    <li><strong>Ambush:</strong> every hero rolls Stealth, and all must succeed. Then the enemies get no volley and no actions in round 1 <span class="pg">p.95</span>. Spend Hope to support a friend with a low Stealth <span class="pg">p.20</span> <span class="pg">p.21</span>.</li>
+  </ol>
+  <div class="cost"><span class="chip">no Hope needed</span><span class="chip hope">+1 Hope: <span class="odds">about 98%</span></span><span class="chip">while Weary <span class="odds">about 70%</span></span></div>
+  <p class="why"><b>Why:</b> Stealth and Scan are Tom's two best rolls by far. Use them to avoid fights or to start them on your terms.</p>
+  <div class="warn"><strong>Being ambushed is different.</strong> Then everyone rolls Awareness (Strength TN 16). Tom has Awareness 1 <span class="odds">about 10%</span>. If he fails, he gets no volley and no action in round 1 <span class="pg">p.95</span>. <strong>Taking things</strong> from innocent folk can count as theft, a Misdeed worth 3 Shadow <span class="pg">p.139</span>.</div>
+</section>
+
+<section class="block" id="c8">
+  <h2>8. On the road and in the hall</h2>
+  <p class="when"><b>When:</b> the Company sets out on a journey, or meets someone important in a formal talk (a <strong>council</strong>).</p>
+  <h3>Journey</h3>
+  <ol class="then">
+    <li><strong>Take the Scout role.</strong> There are four roles: Guide, Hunter, Look-out and Scout <span class="pg">p.109</span>. Events test Scouts with Explore, Look-outs with Awareness, and Hunters with Hunting <span class="pg">p.112</span>.</li>
+    <li><strong>As Scout:</strong> Explore 1 against Wits TN 13, plus 1d from his homemade maps if the Loremaster agrees <span class="pg">p.49</span>. With the maps <span class="odds">about 50%</span>; with Hope <span class="odds">about 76%</span>.</li>
+    <li><strong>Avoid</strong> Look-out, Hunter and Guide: they roll Awareness, Hunting or Travel, all at TN 16 with rank 1 <span class="odds">about 10%</span> <span class="pg">p.110</span> <span class="pg">p.112</span>.</li>
+  </ol>
+  <h3>Council</h3>
+  <ol class="then">
+    <li><strong>Know the goal.</strong> The Loremaster sets the Resistance: the number of successes the group needs. It is 3 if the hosts lose nothing by agreeing, 6 if the group gains more than the hosts, and 9 if the ask is risky for the hosts <span class="pg">p.104</span> <span class="pg">p.105</span>.</li>
+    <li><strong>Introduction:</strong> one spokesperson rolls. A success gives the group as many tries as the Resistance, plus 1 per icon. A failure gives the same tries, but a failed council becomes a Disaster <span class="pg">p.106</span>. Courtesy suits friendly hosts; Riddle suits doubtful ones <span class="pg">p.106</span>.</li>
+    <li><strong>Talk:</strong> Persuade 2 or Riddle 2 (TN 13), Courtesy 3 or Insight 2 Favoured (TN 16). Each icon counts as an extra success <span class="pg">p.106</span>. Good roleplay on points that matter to the hosts can give +1d or +2d <span class="pg">p.107</span>.</li>
+  </ol>
+  <div class="cost"><span class="chip">Persuade <span class="odds">about 50%</span></span><span class="chip">Courtesy <span class="odds">about 54%</span></span><span class="chip">Insight <span class="odds">about 44%</span></span><span class="chip hope">Inspired Persuade <span class="odds">about 92%</span></span></div>
+  <p class="why"><b>Why:</b> as Scout, Tom's maps and Wits finally pay off on the road. In a council, he is a solid second voice. Let the friendliest speaker introduce, then Tom pushes with Persuade or digs with Riddle.</p>
+  <p class="ex"><strong>Example:</strong> In the Dunland hall the group asks for news of a masked donkey (Resistance 3). A friend opens with Courtesy and succeeds: 3 tries. Tom says "I'm nosy, I know" and names Inquisitive, spends 1 Hope, and rolls Riddle with 4 dice.</p>
+</section>
+
+<p class="small">Numbers match Tom's character sheet of 2026-11-16. Every page reference was checked in the core rulebook on 2026-11-16. Orc numbers in the examples are from the Orc Soldier <span class="pg">p.150</span>. Chances are my own count: the rune counts as a success, the Eye as 0, Favoured keeps the better of 2 Feat dice. Rounded to whole percent. Not checked: what the Loremaster decides about one or two hands with the buckler, and which skill fits a lock.</p>
+
+</main>
+<script>if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol)){try{navigator.serviceWorker.register("sw.js").catch(function(){});}catch(e){}}</script></body>
+</html>

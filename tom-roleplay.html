@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="rpg-icon-180.png"><meta name="theme-color" content="#10171c">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roleplay Tom Bin</title>
+<style>
+/* Look: see docs/DESIGN.md (One Ring kit tokens). One file, no outside links. */
+:root{
+  --bg:#f4ecd8; --card:#fbf7ea; --subtle:#ece2c6; --line:#d4c7a0;
+  --ink:#2a241a; --muted:#5e5442;
+  --accent:#2f4a2a; --deep:#1e2f1c; --tint:#e6ecd6; --on:#ffffff; --navlink:#dfe8d2; --focus:#f5c542;
+  --warn:#7a3e00; --warn-bg:#fdf0d8; --ex:#5c4700; --ex-bg:#fbf3d3; --ex-rule:#b8922a;
+  --rune:#2f4a2a; --eye:#8a2a22; --icon:#7a5c00; --hope:#8a6a00; --shadow:#4a3a6a;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:12px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow-wrap:break-word}
+nav.site{background:var(--deep);display:flex;flex-wrap:wrap;align-items:center;gap:2px;padding:6px 12px;font:600 14px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+nav.site .brand{color:var(--on);font-weight:700;margin-right:10px;padding:6px 0;letter-spacing:.02em;white-space:nowrap}
+nav.site a{color:var(--navlink);text-decoration:none;padding:8px 10px;border-radius:6px;display:inline-flex;align-items:center;min-height:36px;white-space:nowrap}
+nav.site a:hover{background:rgba(255,255,255,.12);color:var(--on)}
+nav.site a[aria-current="page"]{background:var(--bg);color:var(--deep)}
+nav.site a:focus-visible,.toc a:focus-visible{outline:3px solid var(--focus);outline-offset:1px}
+header.top{background:var(--accent);color:var(--on);padding:14px 16px}
+header.top>div,.wrap{max-width:860px;margin:0 auto}
+header.top h1{margin:0;font-size:1.35rem;line-height:1.25}
+header.top p{margin:2px 0 0;font-size:.9rem}
+.wrap{padding:12px 16px 56px}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}
+.toc a{padding:6px 10px;border:1px solid var(--line);background:var(--card);border-radius:999px;color:var(--accent);text-decoration:none;font-size:.9rem;min-height:36px;display:inline-flex;align-items:center}
+h2{margin:26px 0 6px;font-size:1.3rem;line-height:1.3;border-bottom:2px solid var(--accent);padding-bottom:4px}
+h3{margin:14px 0 4px;font-size:1.05rem;line-height:1.3}
+p{margin:6px 0}
+ul,ol{margin:6px 0;padding-left:22px}
+li{margin:3px 0}
+a{color:var(--accent)}
+.lead{color:var(--muted);margin:2px 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0}
+.card h3{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:8px 0}
+.grid .card{margin:0}
+.note,.warn,.ex{padding:8px 12px;margin:10px 0;font-size:.95rem;border-left:4px solid var(--accent);background:var(--tint);border-radius:0 6px 6px 0}
+.warn{border-color:var(--warn);background:var(--warn-bg);color:var(--warn)}
+.ex{border-color:var(--ex-rule);background:var(--ex-bg);color:var(--ex)}
+.ex strong,.warn strong{color:inherit}
+.pg{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:0 6px;font-size:.78rem;font-weight:700;color:var(--muted);background:var(--card);white-space:nowrap;vertical-align:baseline}
+.chip{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:0 6px;font-size:.85rem;font-weight:700;background:var(--card);white-space:nowrap}
+.chip.hope{color:var(--hope);border-color:var(--hope)}
+.chip.shadow{color:var(--shadow);border-color:var(--shadow)}
+/* source labels: always a word, never colour alone */
+.tag{display:inline-block;border-radius:4px;padding:0 6px;font-size:.78rem;font-weight:700;white-space:nowrap;vertical-align:baseline;border:1px solid}
+.tag.book{background:var(--accent);border-color:var(--accent);color:var(--on)}
+.tag.lore{background:var(--card);border-color:var(--shadow);color:var(--shadow)}
+.tag.idea{background:var(--ex-bg);border-color:var(--ex-rule);color:var(--ex)}
+/* sayable lines */
+.say{margin:6px 0;padding:6px 10px;background:var(--bg);border:1px solid var(--line);border-left:4px solid var(--ex-rule);border-radius:0 6px 6px 0;font-style:italic}
+.say b{font-style:normal}
+.stats{display:flex;flex-wrap:wrap;gap:4px 6px;margin:6px 0}
+.stats span{border:1px solid var(--line);background:var(--bg);border-radius:4px;padding:1px 7px;font-size:.88rem;white-space:nowrap}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top;background:var(--card)}
+th{background:var(--subtle)}
+.tw{overflow-x:auto;max-width:100%;margin:8px 0}
+.dd{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:8px 0}
+.dd div{padding:8px 10px;background:var(--card);border-top:1px solid var(--line);font-size:.95rem}
+.dd div:nth-child(odd){border-right:1px solid var(--line)}
+.dd .h{background:var(--subtle);font-weight:700;border-top:0}
+.moment h3{margin-bottom:2px}
+.small{font-size:.9rem;color:var(--muted)}
+@media (max-width:640px){
+  nav.site{padding:4px 8px}
+  nav.site .brand{width:100%;padding:4px 2px 2px}
+  nav.site a{padding:6px 8px;font-size:13px}
+  .wrap{padding:8px 16px 40px}
+  .dd{grid-template-columns:1fr}
+  .dd div:nth-child(odd){border-right:0}
+  .dd .h:nth-child(2){display:none}
+  .dd div.no::before{content:"Not this: ";font-weight:700}
+  .dd div.yes::before{content:"Do this: ";font-weight:700}
+  table.scenes thead{display:none}
+  table.scenes,table.scenes tbody,table.scenes tr,table.scenes td{display:block;width:100%}
+  table.scenes tr{border:1px solid var(--line);border-radius:8px;margin:0 0 8px;overflow:hidden}
+  table.scenes td{border:0;border-top:1px solid var(--line)}
+  table.scenes td:first-child{border-top:0;background:var(--subtle)}
+  table.scenes td:nth-child(3)::before{content:"Rules: ";font-weight:700}
+  table.scenes td:nth-child(2)::before{content:"Our idea";display:inline-block;border:1px solid var(--ex-rule);background:var(--ex-bg);color:var(--ex);border-radius:4px;padding:0 6px;font-size:.78rem;font-weight:700;margin-right:6px}
+}
+@media print{
+  @page{size:Letter portrait;margin:.6in}
+  nav.site,.toc{display:none!important}
+  body{background:#fff;color:#000;font-size:10.5pt}
+  header.top{background:#fff;color:#000;border-bottom:2px solid #000;padding:0 0 6px}
+  .wrap{padding:6px 0 0}
+  .card,.note,.warn,.ex,.say,table,.dd{break-inside:avoid}
+  h2,h3,.lead{break-after:avoid}
+  .card,.note,.warn,.ex,.say,.dd div,th,td{background:#fff}
+  .tag.book{background:#fff;color:#000;border-color:#000}
+  a{color:#000;text-decoration:none}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+@media screen{:root{--bg:#10171c;--card:#18222a;--subtle:#212d36;--line:#2c3a45;--ink:#e7edf1;--muted:#97a8b4;--accent:#d0392f;--deep:#18222a;--tint:#212d36;--on:#ffffff;--navlink:#e7edf1;--focus:#f2c14e;--warn:#e7b65a;--warn-bg:#2b2619;--ex:#e7b65a;--ex-bg:#2b2619;--ex-rule:#e7b65a;--rune:#e7edf1;--eye:#f2695e;--icon:#e7b65a;--hope:#e7b65a;--shadow:#b9a7ea}body{background:#10171c;color:#e7edf1}a{color:#f2695e}nav.site{background:#18222a;border-bottom:1px solid #2c3a45}nav.site a[aria-current="page"]{background:#2c3a45;color:#ffffff}header.top{background:#18222a;color:#e7edf1;border-bottom:1px solid #2c3a45}h2{border-bottom-color:#3b4c58}.tag.book{background:#d0392f;border-color:#d0392f;color:#ffffff}.toc a{color:#f2695e}}</style>
+</head>
+<body><style>.rpg-back{display:flex;align-items:center;min-height:44px;padding:0 16px;background:#18222a;border-bottom:1px solid #2c3a45;color:#f2695e;font:700 13px/1 "Bahnschrift SemiCondensed","Arial Narrow",system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase;text-decoration:none}@media print{.rpg-back{display:none}}</style><a class="rpg-back" href="onering.html">&lsaquo; The One Ring</a>
+<nav class="site" aria-label="Tom Bin pages"><span class="brand">The One Ring &middot; Tom Bin</span><a href="tom.html">Tom's page</a><a href="tom-roleplay.html" aria-current="page">Roleplay</a><a href="tom-combos.html">Combos</a></nav>
+<header class="top"><div>
+  <h1>How to roleplay Tom Bin</h1>
+  <p>A Man of Bree, a Treasure Hunter, and a would-be map-maker chasing his runaway donkey. A guideline, not a rulebook. Works offline. Prints on paper.</p>
+</div></header>
+
+<main class="wrap">
+
+<p class="lead">This page gives ideas for how Tom talks, acts and feels. Roleplay has no wrong answers. Take what is fun and drop the rest. Numbers like <span class="pg">p.40</span> are printed pages in the core rulebook, <em>The One Ring</em> 2nd edition. Book facts are short summaries in my own words.</p>
+
+<div class="card">
+  <h3>Source labels (read this first)</h3>
+  <ul>
+    <li><span class="tag book">Book</span> comes from the core rulebook. The page number is next to it. Each one was checked in the book.</li>
+    <li><span class="tag lore">Lore</span> is Middle-earth knowledge from Tolkien's books, from memory. It was not checked against the core book. Ask your Loremaster before you rely on it.</li>
+    <li><span class="tag idea">Our idea</span> is made for Tom by his player and this kit. It is in no book. Change it freely.</li>
+  </ul>
+  <p class="small">Game words: the <strong>Loremaster</strong> is the person who runs the game (the game master) <span class="pg">p.8</span>. A <strong>Culture</strong> is your hero's people. A <strong>Calling</strong> is what drives your hero to adventure, like a class in other games <span class="pg">p.24</span>. A <strong>TN</strong> (Target Number) is the number a roll must reach <span class="pg">p.18</span>.</p>
+</div>
+
+<nav class="toc" aria-label="On this page">
+  <a href="#look">Tom in one look</a>
+  <a href="#culture">His Culture</a>
+  <a href="#calling">Calling and Shadow</a>
+  <a href="#flavour">Habits and hooks</a>
+  <a href="#play">How to play him</a>
+  <a href="#fun">Keep it fun</a>
+</nav>
+
+<h2 id="look">1. Tom in one look</h2>
+<div class="card">
+  <p><span class="tag idea">Our idea</span> Tom Bin is 21, a plain farm lad from a village in the Bree-land. He is friendly, a bit clumsy, and good with animals. He calls himself a <strong>cartographer</strong> (a map-maker), but he never learned how. So he asks people, he guesses, and he draws a homemade map of every place he has already searched. He talks easily. He tells tall tales just as easily.</p>
+  <p><span class="tag idea">Our idea</span> A year ago, a storm scared off his donkey, <strong>Tin</strong>. Tin has a silvery, shiny coat (that is where the name comes from) and a black mask around his eyes, like a raccoon. Tom has followed every rumour of "the masked donkey" since. Tin is always one step ahead. The trail has led Tom south, to the hall of a small Dunland tribe at the foot of the Misty Mountains.</p>
+  <div class="stats" aria-label="Tom's key numbers">
+    <span>Strength 4 (TN 16)</span><span>Heart 4 (TN 16)</span><span>Wits 6 (TN 13)</span><span>Endurance 24</span><span>Hope 14</span><span>Parry 18 with buckler</span>
+  </div>
+</div>
+<div class="grid">
+  <div class="card"><h3>What he wants</h3><p><span class="tag idea">Our idea</span> To catch Tin, go home with a full purse, and never be laughed at again.</p></div>
+  <div class="card"><h3>What he fears</h3><p><span class="tag idea">Our idea</span> That someone else gets to Tin before he does. And that one day, his stories stop being believed.</p></div>
+  <div class="card"><h3>His heart</h3><p><span class="tag idea">Our idea</span> Warm, honest with animals, less honest with people. He means well, mostly. Treasure makes his eyes shine a little too much.</p></div>
+</div>
+<h3>Three lines to start with</h3>
+<p class="say">"Tom Bin, cartographer. Well, I make maps. Well, I make <b>a</b> map. Have you seen a donkey with a mask?"</p>
+<p class="say">"Don't mind me. I'm just marking where I've already looked."</p>
+<p class="say">"That donkey is all I have left of my old gran. Or my mother. It's a long story. It's a sad one, I promise."</p>
+
+<h2 id="culture">2. His Culture: Men of Bree</h2>
+<p class="lead">A short summary of Tom's people, and how others see him.</p>
+<div class="card">
+  <h3>The Bree-folk in short</h3>
+  <ul>
+    <li><span class="tag book">Book</span> Their families have been in the Bree-land since the earliest days of Men in Eriador. Big roads meet at Bree, so news and stories from far away pass through its inn <span class="pg">p.40</span>.</li>
+    <li><span class="tag book">Book</span> Picture sturdy, cheerful country folk. Easy-going on the outside, but nobody's servant and nobody's fool <span class="pg">p.40</span>.</li>
+    <li><span class="tag book">Book</span> Few Bree-folk ever go adventuring. The few who do set out young and are expected home, settled, before middle age <span class="pg">p.40</span>. Tom, at 21, fits this well.</li>
+    <li><span class="tag book">Book</span> Bree is a peaceful place. Its people fight with the kind of gear a farmer or a hunter already knows <span class="pg">p.40</span>. Tom's spear and bow fit this.</li>
+    <li><span class="tag book">Book</span> Their own old language is gone. They speak the Common Tongue with a Bree flavour, and their names are short and homely, much like Hobbit names. "Tom" is a typical Bree name <span class="pg">p.41</span>.</li>
+    <li><span class="tag book">Book</span> Bree is the biggest of four villages; the others are Staddle, Combe and Archet. A hedge and a ditch ring the town. Men and Hobbits share it and get on well, and everyone loves a traveller's tale <span class="pg">p.180</span> <span class="pg">p.181</span>.</li>
+  </ul>
+</div>
+<div class="card">
+  <h3>His Cultural Blessing: Bree-blood</h3>
+  <p><span class="tag book">Book</span> Bree-folk are used to strangers of every kind, so Tom mixes well with other peoples. The rule: with Tom in the group, the Company's Fellowship pool is 1 point bigger <span class="pg">p.40</span>. (The <strong>Company</strong> is your group of heroes. <strong>Fellowship</strong> is a shared pool of points the group spends to get Hope back while resting <span class="pg">p.54</span> <span class="pg">p.71</span>.)</p>
+  <p><span class="tag idea">Our idea</span> Play this as Tom being easy to like. He shares his pipe, asks after people's families, and remembers names. He is the one who says hello first.</p>
+  <p class="say">"An Elf! At my fire! Wait till they hear this at home. Sit, sit. Mind the map."</p>
+</div>
+<div class="card">
+  <h3>Sayings and customs from home</h3>
+  <ul>
+    <li><span class="tag book">Book</span> One of the Bree Virtues is named after an old saying, "Strange as News from Bree" <span class="pg">p.88</span>. Tom can use it about anything odd: "Well, that's strange as news from Bree."</li>
+    <li><span class="tag book">Book</span> Pipe-weed is closely tied to Bree; there is even a Bree Virtue about smoking <span class="pg">p.88</span>. A pipe at the fire suits Tom, even without that Virtue.</li>
+    <li><span class="tag book">Book</span> Bree's famous inn is the Prancing Pony <span class="pg">p.181</span>. Tom compares every hall, ale and bed to "the Pony", and they always lose.</li>
+    <li><span class="tag idea">Our idea</span> Homely words, not an accent: "reckon", "aye", "fair enough", "bless me", "that's a rum thing". One or two per scene is plenty.</li>
+  </ul>
+</div>
+<div class="card">
+  <h3>How others see him</h3>
+  <ul>
+    <li><span class="tag idea">Our idea</span> <strong>In the Dunland hall</strong>, he is a foreigner from the north: harmless, a bit comic, and useful. He chops wood, fixes things, and talks. The tribe may find his stories funny, or start to doubt them.</li>
+    <li><span class="tag lore">Lore</span> In Tolkien's books, Dunland lies in the west, below the southern end of the Misty Mountains. Its people, the Dunlendings, have old grudges against the Men of Rohan. From memory, not checked. The core rulebook names Dunland only once and gives no rules for it <span class="pg">p.219</span>.</li>
+    <li><span class="tag lore">Lore</span> Tolkien's appendices hint that the Men of Bree and the Dunlendings may share very old roots. From memory, not checked. If your Loremaster likes it, it is a lovely hook: "My gran said our folk came from the south, long ago."</li>
+    <li><span class="tag idea">Our idea</span> <strong>To Elves and Dwarves</strong>, he is a friendly country lad who asks too many questions.</li>
+  </ul>
+</div>
+
+<h2 id="calling">3. His Calling and his Shadow Path</h2>
+<div class="card">
+  <h3>Treasure Hunter</h3>
+  <p><span class="tag book">Book</span> A Treasure Hunter goes after the lost riches of old kingdoms, even into very dangerous places <span class="pg">p.45</span>. They get two Favoured skills from Explore, Scan and Stealth. Tom picked <strong>Scan</strong> and <strong>Stealth</strong> <span class="pg">p.45</span>. (A <strong>Favoured</strong> skill rolls two Feat dice and keeps the better one <span class="pg">p.20</span>.)</p>
+  <p><span class="tag book">Book</span> The Calling also gives the Distinctive Feature <strong>Burglary</strong>: a thief's knack, such as light fingers, locks, and getting into places that are shut <span class="pg">p.45</span>.</p>
+  <p><span class="tag idea">Our idea</span> Tom does not think of himself as a treasure hunter. He thinks of himself as a donkey hunter who keeps finding interesting things on the way. His "treasure" talk is about maps: "Every map has a spot nobody has drawn yet."</p>
+  <p class="say">"I'm not saying it's a hidden door. I'm saying I've drawn this wall three times, and it's shorter on the outside."</p>
+</div>
+<div class="card">
+  <h3>His Distinctive Features: Rustic, Inquisitive, Burglary</h3>
+  <p><span class="tag book">Book</span> These three words sum up Tom. Let them guide what he does <span class="pg">p.67</span>.</p>
+  <ul>
+    <li><span class="tag book">Book</span> <strong>Rustic:</strong> plain country manners; fancy show does not impress him <span class="pg">p.68</span>.</li>
+    <li><span class="tag book">Book</span> <strong>Inquisitive:</strong> nosy, and that nosiness makes him hard to trick <span class="pg">p.68</span>.</li>
+    <li><span class="tag book">Book</span> <strong>Burglary:</strong> see above <span class="pg">p.45</span>.</li>
+  </ul>
+  <p><span class="tag book">Book</span> <strong>Why they matter in play:</strong> before a skill roll, you can name a feature that plausibly helps. Then Tom is <strong>Inspired</strong>: if he spends 1 Hope on that roll, he gets 2 bonus Success dice instead of 1 <span class="pg">p.67</span> <span class="pg">p.20</span>. So describe Tom through his features. It is good roleplay, and it is good rules.</p>
+  <p class="say">"I'm nosy, I know. Let me look at that letter. Just the seal. Just a peek." <span class="small">(Inquisitive, on an Insight or Scan roll)</span></p>
+</div>
+<div class="card">
+  <h3>Shadow Path: Dragon-sickness</h3>
+  <p><span class="tag book">Book</span> In one word: greed. The longer Tom hunts treasure, the more he may care about owning things, and the less about people <span class="pg">p.46</span>.</p>
+  <p><span class="tag book">Book</span> How Shadow comes: touching tainted treasure from an old hoard can give Shadow points through <strong>Greed</strong>. Tom can resist it with a <strong>Wisdom</strong> roll against his Wits TN 13 <span class="pg">p.138</span> <span class="pg">p.29</span>. His Wisdom is 1, so that is 1 Success die, or 2 if he spends Hope <span class="pg">p.20</span>.</p>
+  <p><span class="tag book">Book</span> Some wrong acts (<strong>Misdeeds</strong>) give Shadow, and no roll can stop it. A lie told to harm someone is a small one, 1 point. Stealing is a big one, 3 points <span class="pg">p.138</span> <span class="pg">p.139</span>. The Loremaster should warn you first <span class="pg">p.138</span>.</p>
+  <p><span class="tag book">Book</span> When Shadow reaches his maximum Hope (14), he has a <strong>bout of madness</strong>: a short loss of control that clears his Shadow but moves him one step down his Shadow Path <span class="pg">p.139</span>. Each step gives him a <strong>Flaw</strong>, a bad trait. The first one he would meet is <strong>Grasping</strong>: wanting riches just to have them. Later steps get darker, towards suspicion, lies and theft <span class="pg">p.140</span> <span class="pg">p.141</span>. A Flaw makes fitting rolls Ill-favoured <span class="pg">p.141</span>. (Ill-favoured means two Feat dice, keep the worse <span class="pg">p.20</span>.)</p>
+  <div class="note"><strong>Play it as a temptation, not a punishment.</strong> <span class="tag idea">Our idea</span> The fun is in the pull. Let the table see Tom want something, and let him sometimes win against it. A Shadow point is a story beat, not a failure.</div>
+  <p><span class="tag idea">Our idea</span> Small ways to show the pull:</p>
+  <ul>
+    <li>He counts the shared coins twice, then pushes one more to his friend. "Fair's fair."</li>
+    <li>He picks up a shiny thing "for luck" and holds it a moment too long.</li>
+    <li>When treasure is near, his stories get shorter and his eyes stay on the chest.</li>
+    <li>When he resists, say it out loud: "No. Tin first. Always Tin first."</li>
+  </ul>
+  <p class="say">"Lovely, that. Somebody should keep it safe. I'm somebody."</p>
+  <p class="say">"...No. You hold it. I'll only stare at it."</p>
+</div>
+
+<h2 id="flavour">4. Habits, hooks and small details</h2>
+<p class="lead">Things Tom does that cost no rules and make him memorable.</p>
+<div class="grid">
+  <div class="card">
+    <h3>His homemade maps</h3>
+    <p><span class="tag book">Book</span> A useful item linked to a skill gives 1 bonus Success die on a fitting roll outside combat, if the Loremaster agrees <span class="pg">p.49</span>. Tom's maps are linked to <strong>Explore</strong>.</p>
+    <p><span class="tag idea">Our idea</span> They are scraps of hide and bark, tied with string. He marks searched places with a cross. Every map has a tiny donkey drawn in a corner. He asks strangers to "add a bit" to his map.</p>
+    <p class="say">"Could you draw your valley for me? Just roughly. No, the river goes the other way. Ah. You're right."</p>
+  </div>
+  <div class="card">
+    <h3>The wind-proof lantern</h3>
+    <p><span class="tag book">Book</span> A wind-proof lantern linked to <strong>Scan</strong> is one of the book's own examples of a useful item <span class="pg">p.50</span>.</p>
+    <p><span class="tag idea">Our idea</span> It is his pride. He polishes it while he talks. He holds it up at every dark doorway, even in daylight, out of habit.</p>
+    <p class="say">"Storms, wind, a sneeze from a troll: this lantern stays lit. Best thing I own. After Tin."</p>
+  </div>
+  <div class="card">
+    <h3>Tin, the missing donkey</h3>
+    <p><span class="tag idea">Our idea</span> Tom asks everyone about a donkey with a mask. He carries a dried apple "for when I find him". He has a special whistle he swears Tin knows. Every rumour of a masked donkey makes him stand up mid-sentence.</p>
+    <p><span class="tag book">Book</span> A mount lowers your Fatigue at the end of a journey by its Vigour rating <span class="pg">p.50</span> <span class="pg">p.111</span>. While Tin is lost, Tom has no help there. Ask your Loremaster what Tin's Vigour is when he comes back.</p>
+  </div>
+  <div class="card">
+    <h3>His sad stories</h3>
+    <p><span class="tag idea">Our idea</span> Tom tells sad stories about why the donkey matters so much. They rarely match. Pick one each time:</p>
+    <ol>
+      <li>"He was Grandad's last gift, the day before he died."</li>
+      <li>"He was my late mother's. She raised him from a foal."</li>
+      <li>"He pulled me out of the river when I was a boy."</li>
+      <li>"I promised him to my sweetheart. No donkey, no wedding."</li>
+    </ol>
+    <p><span class="tag idea">Our idea</span> The joke works best when another player notices: "Last week it was your mother." Tom: "...Both. It was both of them."</p>
+  </div>
+</div>
+<div class="warn"><strong>Tall tales and the Shadow.</strong> <span class="tag book">Book</span> Malicious lies count as a Misdeed and give 1 Shadow point <span class="pg">p.138</span> <span class="pg">p.139</span>. <span class="tag idea">Our idea</span> Harmless tall tales for sympathy are flavour. A lie told to cheat or hurt someone is a different thing. If you are not sure, ask your Loremaster before Tom says it.</div>
+
+<h2 id="play">5. How to roleplay him</h2>
+<p class="lead">Ready lines for common scenes. Say them in your normal voice. That is real roleplay.</p>
+<div class="tw"><table class="scenes">
+  <thead><tr><th>Scene</th><th>Tom says or does <span class="tag idea">Our idea</span></th><th>Rules that fit</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Meeting strangers</strong></td><td>"Evening! Tom Bin, from the Bree-land. Lovely hall. Have you seen a donkey?" He offers a seat, a pipe, or a hand with the work.</td><td>Courtesy 3 (Heart, TN 16) <span class="pg">p.106</span>. Persuade 2 (Wits, TN 13) <span class="pg">p.107</span>.</td></tr>
+    <tr><td><strong>The chieftain</strong> (or any lord)</td><td>Hat in hand, too many words: "Begging your pardon, my lord, sir, chief. I've a small matter. A donkey-shaped matter."</td><td>In a formal meeting (a council), the first roll sets how many tries the group gets <span class="pg">p.106</span>. Courtesy works best with friends <span class="pg">p.106</span>.</td></tr>
+    <tr><td><strong>The children</strong> of the hall</td><td>He draws them a map of "the Land of Bree, where the donkeys are silver". He lets them hold the lantern.</td><td>No roll needed. Good for Insight 2 (Favoured, TN 16) to learn what the children know <span class="pg">p.107</span>.</td></tr>
+    <tr><td><strong>Someone lies to him</strong></td><td>He squints, smiles, and asks the same question a different way. "So the donkey was <em>never</em> here. And the hoofprints?"</td><td>Insight 2, Favoured <span class="pg">p.107</span>. Name <strong>Inquisitive</strong> to be Inspired <span class="pg">p.67</span>.</td></tr>
+    <tr><td><strong>Danger</strong></td><td>He goes pale, grips the spear, and stays. "I'm not brave. I'm just slow at running."</td><td>See the combos page. A good scene for Stealth 3 to slip away, or the bow from the back <span class="pg">p.96</span>.</td></tr>
+    <tr><td><strong>Treasure</strong></td><td>He goes quiet, then very cheerful. "Well! Let's be fair about this. Let's be <em>very</em> fair."</td><td>Greed can give Shadow; resist with Wisdom vs TN 13 <span class="pg">p.138</span>.</td></tr>
+    <tr><td><strong>Rest by the fire</strong></td><td>He updates his map by the fire, tells one sad story, and falls asleep mid-sentence.</td><td>Resting is when the group can spend Fellowship for Hope <span class="pg">p.71</span>.</td></tr>
+    <tr><td><strong>A rumour of Tin</strong></td><td>He is on his feet at once. "Where? When? Which way was he facing?"</td><td>Riddle 2 (TN 13) to gather news without giving much away <span class="pg">p.106</span> <span class="pg">p.107</span>.</td></tr>
+    <tr><td><strong>Caught in a lie</strong></td><td>He does not argue. He adds more. "Ah, well, that was his <em>other</em> mother."</td><td>No rule. Let the table laugh.</td></tr>
+  </tbody>
+</table></div>
+
+<h3>Five table moments</h3>
+<div class="grid">
+  <div class="card moment">
+    <h3>The map check</h3>
+    <p><strong>Set-up:</strong> the group reaches a new place.</p>
+    <p class="say">"Hold on." (He unrolls a scrap, licks a charcoal stick, draws.) "There. Now it exists."</p>
+    <p class="small">Ten seconds. It reminds the table he is a map-maker.</p>
+  </div>
+  <div class="card moment">
+    <h3>The donkey whistle</h3>
+    <p><strong>Set-up:</strong> a quiet moment outdoors.</p>
+    <p class="say">(Two short notes, one long.) "...Worth a try. He always comes. Eventually. Sometimes."</p>
+    <p class="small">The Loremaster may answer with a far-off bray. Or not.</p>
+  </div>
+  <div class="card moment">
+    <h3>The wrong story</h3>
+    <p><strong>Set-up:</strong> someone asks why the donkey matters.</p>
+    <p class="say">"He was my grandad's. ...My mother's grandad's. It's complicated."</p>
+    <p class="small">Fun when a friend at the table remembers last week's version.</p>
+  </div>
+  <div class="card moment">
+    <h3>The shiny thing</h3>
+    <p><strong>Set-up:</strong> the group finds treasure.</p>
+    <p class="say">(Picks up a ring. Stares. Puts it down. Picks it up.) "I'll just carry it. For safety."</p>
+    <p class="small">This shows the dragon-sickness without any rules.</p>
+  </div>
+  <div class="card moment">
+    <h3>The kind lie</h3>
+    <p><strong>Set-up:</strong> a scared child, or a sad friend.</p>
+    <p class="say">"Don't worry. I've been lost loads of times. Look, here's the map. We're right here. Probably."</p>
+    <p class="small">Shows his warm side. A good moment for Enhearten 2 if a roll is needed.</p>
+  </div>
+</div>
+
+<h2 id="fun">6. Keep it fun, not annoying</h2>
+<div class="dd" role="table" aria-label="Do this, not that">
+  <div class="h" role="columnheader">Not this</div><div class="h" role="columnheader">Do this</div>
+  <div class="no">A Bree accent all evening.</div><div class="yes">One homely word per scene: "reckon", "aye", "bless me".</div>
+  <div class="no">A new sad story every five minutes.</div><div class="yes">One story per session, when someone asks.</div>
+  <div class="no">Long lectures about maps.</div><div class="yes">One line, then show the map.</div>
+  <div class="no">Taking a friend's share of treasure.</div><div class="yes">Wanting it, out loud, then sharing it. The temptation is the scene.</div>
+  <div class="no">Lying to the Company to cheat them.</div><div class="yes">Tall tales for strangers. With friends, he is clumsy but loyal.</div>
+  <div class="no">Stopping the game to hunt for Tin.</div><div class="yes">Ask about Tin in every place, then follow the group's plan.</div>
+  <div class="no">Pretending to be brave.</div><div class="yes">Being scared and staying anyway. That is a Bree hero.</div>
+</div>
+<p class="small">Easy check: if your friends at the table are smiling, keep going. If they look at the clock, shorten it. You never need a voice. Saying "Tom polishes his lantern and asks about the donkey" is real roleplay.</p>
+<p class="small">Not checked: the <span class="tag lore">Lore</span> items (Dunland, Bree and Dunlending roots) come from memory, not from the core book. All <span class="tag book">Book</span> pages were checked in the core rulebook on 2026-11-16. Tom's numbers match his character sheet of 2026-11-16.</p>
+
+</main>
+<script>if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol)){try{navigator.serviceWorker.register("sw.js").catch(function(){});}catch(e){}}</script></body>
+</html>

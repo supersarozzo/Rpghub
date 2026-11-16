@@ -1,15 +1,18 @@
 // RPG Hub service worker (made by make-ipad.py --site). It keeps every file below on the device.
 // VERSION changes whenever any file changes, so a phone that has the old copy picks up the new one.
-const VERSION = "12bd786b5a";
+const VERSION = "6279ac90dd";
 const CACHE = "rpg-hub-" + VERSION;
 const FILES = [
  "./",
  "Skippy-combos.pdf",
  "Skippy-exceptions.pdf",
  "Skippy-roleplay.pdf",
+ "Tom-combos.pdf",
+ "Tom-roleplay.pdf",
  "checklists.html",
  "combos.html",
  "creator.html",
+ "dnd.html",
  "exceptions.html",
  "guide.html",
  "index.html",
@@ -20,6 +23,7 @@ const FILES = [
  "landscape/Skippy-roleplay-landscape.pdf",
  "landscape/Skippy-sheet-landscape.pdf",
  "manifest.webmanifest",
+ "onering.html",
  "roleplay.html",
  "rpg-icon-180.png",
  "rpg-icon-192.png",
@@ -37,7 +41,10 @@ const FILES = [
  "skippy-iphone-old.html",
  "skippy-iphone.html",
  "skippy.html",
- "start-here.html"
+ "start-here.html",
+ "tom-combos.html",
+ "tom-roleplay.html",
+ "tom.html"
 ];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(FILES); }).then(function () { return self.skipWaiting(); }));
