@@ -2,10 +2,10 @@
  "app": "rpg-hub",
  "who": "skippy",
  "v": 1,
- "at": 1794880142190,
- "from": "computer (level 5 update)",
+ "at": 1794912780322,
+ "from": "iPad",
  "st": {
-  "hp": 33,
+  "hp": 38,
   "temp": 0,
   "cb": {},
   "r": {},
@@ -14,20 +14,19 @@
    "4": {
     "h": 7,
     "m": "feat",
-    "f": "Fey Touched",
-    "p": [
-     3
-    ]
+    "f": "Fey Touched"
    },
    "5": {
     "h": 7
    }
   },
   "note": "",
+  "xp": 6900,
   "play": {
    "u": {},
    "t": {},
    "log": [
+    "10:53 · Healed to 38.",
     "01:49 · Level 5 (Fey Touched, HP max 38, 6,900 XP), set on the computer.",
     "01:49 · Took 5 damage (24 to 19).",
     "01:44 · Healed to 24.",
@@ -41,7 +40,6 @@
     "00:31 · Blinded removed."
    ]
   },
-  "xp": 6900,
   "d": 2,
   "ed": {
    "arm": "breastplate",
