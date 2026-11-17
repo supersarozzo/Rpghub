@@ -100,7 +100,7 @@ nav.site{background:#18222a;border-bottom:1px solid #2c3a45}nav.site a{color:#97
   <p>Tick boxes. They are remembered on this device. Works offline.</p>
 </header>
 <div class="wrap">
-  <div class="note"><b>Your numbers:</b> HP 24 &middot; AC 15 (14 without Enhanced Defense) &middot; spell DC 13 &middot; spell attack +5 &middot; initiative +2 &middot; speed 30 ft &middot; three 1st-level slots. <span class="hint">Page tags: PHB = Player's Handbook, T = Tasha's. Rules are in my own words.</span></div>
+  <div class="note"><b>Your numbers:</b> HP 38 &middot; AC 17 (16 without Enhanced Defense) &middot; spell DC 15 &middot; spell attack +7 &middot; initiative +2 &middot; speed 30 ft &middot; four 1st-level and two 2nd-level slots. <span class="hint">Page tags: PHB = Player's Handbook, T = Tasha's. Rules are in my own words.</span></div>
   <nav class="jump" id="jump"></nav>
   <main id="app"></main>
   <div class="row"><button class="btn" id="clearall">Clear all lists</button></div>
@@ -114,50 +114,50 @@ nav.site{background:#18222a;border-bottom:1px solid #2c3a45}nav.site a{color:#97
    =================================================================== */
 const CONFIG = {
   infusionA: "Enhanced Defense",   // active infusion 1 (default)
-  infusionB: "Repeating Shot",     // active infusion 2 (default)
-  intimidation: "+1"               // kept (the player's decision 18)
+  infusionB: "Homunculus Servant", // active infusion 2 (default)
+  intimidation: "+2"               // kept (the player's decision 18)
 };
 const KEY = "checklists.v1";
 
 /* Tags: A action, B bonus action, R reaction, M movement, S spell slot, C concentration */
 const LISTS = [
  {id:"rest", title:"After a long rest", sub:"Do this every morning, before the day starts.", items:[
-  ["Prepare 4 spells: Cure Wounds, Faerie Fire, False Life, Detect Magic.","You can change them only after a long rest. Shield and Thunderwave are always ready.","T p.11"],
-  ["Pick 2 infusions to be active: "+CONFIG.infusionA+" and "+CONFIG.infusionB+".","You can only have 2 items infused at once. Enhanced Weapon (spear) or Mind Sharpener (armor) are the swaps.","T p.12-13"],
-  ["Touch each item and put the infusion in it.","An item holds only one infusion. Armor holds Enhanced Defense OR Mind Sharpener, not both.","T p.12-13"],
-  ["Attune to the crossbow if it has Repeating Shot.","Repeating Shot only works when you are attuned to the item.","T p.22"],
-  ["Hold thieves' tools or an artisan's kit when you cast.","They are your spell focus. No tool in hand, no spell.","T p.11"],
+  ["Prepare 6 spells: Cure Wounds, Faerie Fire, False Life, Detect Magic, Absorb Elements, Heat Metal.","You can change them only after a long rest. Shield, Thunderwave, Scorching Ray and Shatter are always ready.","T p.11"],
+  ["Pick 2 infusions to be active: "+CONFIG.infusionA+" (breastplate) and "+CONFIG.infusionB+" (the 100 gp gem).","You can only have 2 items infused at once. Mind Sharpener or Replicate Magic Item are the swaps.","T p.12-13"],
+  ["Touch each item and put the infusion in it.","An item holds only one infusion. The breastplate holds Enhanced Defense OR Mind Sharpener, not both.","T p.12-13"],
+  ["Misty Step and the Fey spell are free again.","Fey Touched: each once per long rest with no slot.","T p.79"],
+  ["Hold the rod (Arcane Firearm) when you cast.","It is your spell focus and adds 1d8 to one damage roll. Tools work as a focus too.","T p.11, p.18"],
   ["Check your free Eldritch Cannon is back.","One free cannon per long rest. After that it costs a spell slot.","T p.17-18"],
-  ["Count 3 spell slots (1st level).","Slots come back after a long rest. Shield and Thunderwave also use them.","T p.11"],
+  ["Count 4 level-1 and 2 level-2 slots.","Slots come back after a long rest. The always-ready spells use them too.","T p.11"],
   ["Do NOT cast False Life yet.","It lasts 1 hour. If you cast it at dawn, it is gone before the fight.","PHB p.239"],
   ["Optional: cast Detect Magic as a ritual in new places.","A ritual takes 10 extra minutes but costs no slot. You keep the slot for fights.","PHB p.231, T p.12"],
   ["Remember: Relentless Endurance is back.","Once per long rest you drop to 1 HP instead of 0.","PHB p.41"]
  ]},
  {id:"explore", title:"Before exploring or travelling", sub:"Before you leave town or walk into the wild.", items:[
-  ["Tell the DM your marching order (who walks first).","You have 24 HP, so you are not a front-line fighter. Stay behind the tougher friends.","PHB p.182"],
+  ["Tell the DM your marching order (who walks first).","You have 38 HP, so you are not a front-line fighter. Stay behind the tougher friends.","PHB p.182"],
   ["Ask who is the scout and who reads the map.","You have cartographer's tools and navigator's tools. Offer to be the map person.","PHB p.154"],
-  ["Remind yourself: passive Perception is 12.","The DM uses it to see if you notice things without rolling.","PHB p.175"],
-  ["Decide: Guidance on whoever makes the first big check.","d4 added to one ability check. It uses concentration, so cast it just before the roll.","PHB p.248"],
+  ["Remind yourself: passive Perception is 13.","The DM uses it to see if you notice things without rolling.","PHB p.175"],
+  ["Send the homunculus ahead as a scout.","It flies, sees in the dark, Perception +6. Order it with your bonus action.","T p.21-22"],
   ["Cast Detect Magic (ritual) at odd doors, statues and chests.","It shows magic nearby. As a ritual it costs no slot.","PHB p.231"],
   ["Keep thieves' tools in hand.","You can pick locks and disarm traps with them (you are trained).","T p.10"],
-  ["Know your light: you have darkvision 60 ft.","You see dim and grey in the dark. Friends may still need a torch.","PHB p.41"],
-  ["Check your slots (3) and temp HP plan.","Save at least 1 slot for Shield or Cure Wounds.","T p.11"]
+  ["Know your light: you have darkvision 60 ft.","You see dim and gray in the dark. Friends may still need a torch.","PHB p.41"],
+  ["Check your slots (4 + 2) and temp HP plan.","Save at least 1 slot for Shield or Cure Wounds.","T p.11"]
  ]},
  {id:"dungeon", title:"Before entering a dungeon or a dark place", sub:"At the door, before you step in.", items:[
-  ["Light a torch or lantern for friends who cannot see in the dark.","Your darkvision is 60 ft, grey only. Colours and fine detail are lost.","PHB p.183"],
+  ["Light a torch or lantern for friends who cannot see in the dark.","Your darkvision is 60 ft, gray only. Colors and fine detail are lost.","PHB p.183"],
   ["Cast Detect Magic if you have not (ritual, 10 minutes).","It can show magic traps and items. It needs concentration while it runs.","PHB p.231"],
-  ["Agree who checks for traps (Investigation +5, Perception +2).","Your Investigation is better. Use it to search for hidden catches and wires.","PHB p.177"],
+  ["Agree who checks for traps (Investigation +7, Perception +3).","Your Investigation is better. Use it to search for hidden catches and wires.","PHB p.177"],
   ["Plan where the cannon will go if a fight starts.","Corridors are good: enemies line up for the Flamethrower cone.","T p.17-18"],
-  ["Do NOT cast Faerie Fire or Guidance early.","Both use concentration. They end when you cast another concentration spell.","PHB p.203"],
-  ["Keep 2 of your 3 slots for emergencies (Shield, Cure Wounds).","Long dungeons have many fights. Slots are your safety net.","T p.11"],
+  ["Do NOT cast Faerie Fire or Heat Metal early.","Both use concentration. They end when you cast another concentration spell.","PHB p.203"],
+  ["Keep 2 of your 6 slots for emergencies (Shield, Cure Wounds).","Long dungeons have many fights. Slots are your safety net.","T p.11"],
   ["Decide the retreat: where do you run if it goes wrong?","Know the way out before you need it.","PHB p.195"],
   ["Ask the DM if there is a short-rest spot.","A short rest (1 hour) lets you spend Hit Dice to heal.","PHB p.186"]
  ]},
  {id:"precombat", title:"Before a fight you can see coming", sub:"Enemies are close, but nothing has started.", items:[
   ["Cast False Life now (1 action, 1st-level slot).","You get 1d4+4 temp HP for 1 hour. Temp HP are lost first. No concentration.","PHB p.239"],
   ["Or keep the slot and let the cannon's Protector give temp HP later.","Temp HP do not stack. You keep the bigger pile only.","PHB p.198"],
-  ["Use Guidance only if you must pass a check (Stealth, a climb).","Guidance does NOT help attack rolls or saves. It uses concentration.","PHB p.248"],
-  ["Place your cannon (action, woodcarver's tools in hand) on flat ground within 5 ft, in cover.","AC 18 and 15 HP. If it dies, you lose the free one for the day.","T p.17-18"],
+  ["Misty Step is your escape (bonus action, 30 ft).","Free once per long rest, then a level-2 slot.","PHB p.260"],
+  ["Make your cannon (action, woodcarver's tools in hand) on flat ground within 5 ft.","AC 18 and 25 HP. Then lift it to your shoulder (free) or leave it as a turret.","T p.17-18"],
   ["Choose its type: Force Ballista for one target, Flamethrower for a group, Protector for temporary hit points.","You choose when you create it. You cannot change it after.","T p.17-18"],
   ["Stand behind a friend or wall.","Cover gives +2 AC (half) or +5 (three-quarters).","PHB p.196"],
   ["Keep 1 slot free for Shield. Keep your reaction unused.","Shield is a reaction for +5 AC. Do not spend your reaction on anything else.","PHB p.275"],
@@ -166,24 +166,24 @@ const LISTS = [
  {id:"turn1", title:"Turn 1, and every turn after", sub:"Read this at the start of each of your turns.", items:[
   ["Look at the battlefield first. Who is hurt? Who is close?","A free look costs nothing. A bad first step costs a lot.","PHB p.189"],
   ["MOVEMENT (up to 30 ft): get cover or space before you act.","You can split your move around your action. Do not stop next to enemies.","PHB p.190"],
-  ["ACTION: pick one. Crossbow +5, 1d8+3. Or Shocking Grasp +5, 1d8. Or a spell.","Ranged attacks next to an enemy have disadvantage, so step away first.","PHB p.195, p.275"],
-  ["BONUS ACTION: activate the cannon. It fires, or pulses temp HP. No legs: it fires from your shoulder, or from where you set it down.","You must be within 60 ft of it. If you do not activate it, it does nothing. Do not forget it.","T p.17-18"],
-  ["Cannon: Force Ballista +5, 2d8 force. Flamethrower DC 13 Dex, 2d8 fire. Protector 1d8+3 temp HP.","These are the numbers of your build. Check no friend is in the cone (on your shoulder, the cone starts at you). To shoot the crossbow, set the cannon down first (free).","T p.18"],
-  ["REACTION: hold it for Shield (+5 AC).","If you spent your slots, remember you cannot cast Shield. Dodge or hide instead.","PHB p.275"],
-  ["Concentrating? Check what you are holding.","If you are hit, you roll a Con save (+4) against DC 10 or half the damage.","PHB p.203"],
-  ["Hurt friend at 0 HP? Cure Wounds is your action: 1d8+3.","Healing at 0 HP wakes them. Temp HP from the cannon does not.","PHB p.197, p.198"],
+  ["ACTION: pick one. Fire Bolt +7, 2d10 (+1d8 rod). Or Shocking Grasp +7, 2d8. Or a spell.","Ranged attacks next to an enemy have disadvantage, so step away first.","PHB p.195, p.275"],
+  ["BONUS ACTION: activate the cannon. No legs: it fires from your shoulder, or from where you set it down.","You must be within 60 ft of it. If you do not activate it, it does nothing.","T p.17-18"],
+  ["Cannon: Force Ballista +7, 2d8 force. Flamethrower DC 15 Dex, 2d8 fire. Protector 1d8+4 temp HP.","Check no friend is in the cone (on your shoulder, the cone starts at you). To shoot the crossbow, set the cannon down first (free).","T p.18"],
+  ["REACTION: hold it for Shield (+5 AC).","If you spent your slots, you cannot cast Shield. Dodge or hide instead.","PHB p.275"],
+  ["Concentrating? Check what you are holding.","If you are hit, you roll a Con save (+5) against DC 10 or half the damage.","PHB p.203"],
+  ["Hurt friend at 0 HP? Cure Wounds is your action: 1d8+4.","Healing at 0 HP wakes them. Temp HP from the cannon does not.","PHB p.197, p.198"],
   ["End of turn: say what you did, and what you still hold (slots, concentration).","A short note keeps the next turn quick.","PHB p.189"]
  ]},
  {id:"after", title:"After combat, and on a short rest", sub:"The fight is over. Slow down.", items:[
-  ["Check your friends first. Anyone at 0 HP or hurt?","Cure Wounds heals 1d8+3 by touch. It costs a slot. Hit Dice are free.","PHB p.230"],
-  ["Is anyone dying? Stabilise with a Medicine check (DC 10) or heal them.","Your Medicine is +0. Cure Wounds is a safer choice.","PHB p.197"],
-  ["Take a short rest if the DM allows (1 hour).","Spend Hit Dice (d8+2 each) to heal. You have 3 Hit Dice.","PHB p.186"],
+  ["Check your friends first. Anyone at 0 HP or hurt?","Cure Wounds heals 1d8+4 by touch. It costs a slot. Hit Dice are free.","PHB p.230"],
+  ["Is anyone dying? Use the healer's kit (stable at once) or heal them.","Your Medicine is +0; the kit needs no roll.","PHB p.151, p.197"],
+  ["Take a short rest if the DM allows (1 hour).","Spend Hit Dice (d8+2 each) to heal. You have 5 Hit Dice.","PHB p.186"],
   ["Note the cannon: it vanishes after 1 hour.","If the fight is over, you do not need to keep it. Next fight, create a new one.","T p.17"],
-  ["Count your spell slots left (of 3).","Plan the next fight around the number you have.","T p.11"],
-  ["Re-check infusions and attunement.","Infusions stay until you change them after a long rest. Mind Sharpener charges come back at dawn.","T p.22"],
-  ["Search the area for loot and clues (Investigation +5).","Dead enemies and rooms often hold useful things.","PHB p.178"],
+  ["Count your spell slots left (of 4 + 2).","Plan the next fight around the number you have.","T p.11"],
+  ["Check the homunculus.","Mending heals it 2d6. If it died, the gem is left: infuse it again after a long rest.","T p.21-22"],
+  ["Search the area for loot and clues (Investigation +7).","Dead enemies and rooms often hold useful things.","PHB p.178"],
   ["Cast Detect Magic (ritual) on odd loot.","Cheap and safe. Do not use unknown magic items before the DM says it is fine.","PHB p.231"],
-  ["Ask the DM if a long rest is possible soon.","A long rest gives back all slots, the free cannon and Relentless Endurance.","PHB p.186"]
+  ["Ask the DM if a long rest is possible soon.","A long rest gives back all slots, the free cannon, Misty Step, the Fey spell and Relentless Endurance.","PHB p.186"]
  ]}
 ];
 

@@ -77,6 +77,21 @@ a.big{display:block;text-align:center;font-size:1.2rem;font-weight:700;padding:1
 .stat b{font-size:1.2rem}
 @media print{header.top,.navbtns,details.steps,.prog,.bar{display:none}}
 
+/* ==== Skippy level 5 notice (task 6.39): uses the page colours, so the dark screen look repaints it ==== */
+.lv5{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:12px 14px;margin:0 0 14px}
+.lv5 .k{margin:0;font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:var(--muted)}
+.lv5 h2{margin:2px 0 6px;font-size:1.3rem;line-height:1.25;border:0;padding:0}
+.lv5 p{margin:6px 0}
+.lv5 .t{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:6px;margin:10px 0}
+.lv5 .t div{border:1px solid var(--line);border-radius:6px;padding:4px 8px;background:var(--bg)}
+.lv5 .t span{display:block;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.lv5 .t b{font-size:1.15rem}
+.lv5 .t i{display:block;font-size:.72rem;color:var(--muted);font-style:normal}
+.lv5 ul{margin:6px 0;padding-left:20px}
+.lv5 li{margin:3px 0}
+.lv5 .lk{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.lv5 .lk a.btn{min-height:44px;display:inline-flex;align-items:center;white-space:normal}
+
 /* ==== Shared look v1: see docs/DESIGN.md (same block on every page) ==== */
 nav.site{background:#16302e;display:flex;flex-wrap:wrap;align-items:center;gap:2px 2px;padding:6px 12px;font:600 14px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
 nav.site .brand{color:#fff;font-weight:700;margin-right:10px;padding:6px 0;letter-spacing:.02em;white-space:nowrap}
@@ -142,6 +157,33 @@ nav.site{background:#18222a;border-bottom:1px solid #2c3a45}nav.site a{color:#97
   <p>For the game table: <a href="skippy-ipad.html">Skippy iPad hub</a>, everything in one file, made for an iPad in landscape.</p>
 </header>
 <div class="wrap">
+<aside class="lv5" id="lv5" aria-label="Skippy is now level 5">
+  <p class="k">Update &middot; 17 Nov 2026</p>
+  <h2>Skippy is now level 5</h2>
+  <p>The steps below teach the <b>level-3 build</b>. That is how Skippy was made, and a new player can still follow it. So every number in the steps is a level-3 number. Skippy himself has moved on. This is what is true for him now.</p>
+  <div class="t">
+    <div><span>Level</span><b>5</b><i>6,900 XP</i></div>
+    <div><span>Hit points</span><b>38</b><i>was 24</i></div>
+    <div><span>Armor Class</span><b>17</b><i>22 with Shield</i></div>
+    <div><span>Spell save DC</span><b>15</b><i>was 13</i></div>
+    <div><span>Spell attack</span><b>+7</b><i>was +5</i></div>
+    <div><span>Proficiency</span><b>+3</b><i>was +2</i></div>
+  </div>
+  <ul>
+    <li><b>Level 4: the Fey Touched feat</b> (T p.79). Intelligence goes from 17 to 18. It also gives Misty Step, once free each long rest.</li>
+    <li><b>Level 5: Arcane Firearm.</b> His rod can be his firearm: +1d8 to one damage roll of his artificer spells. He has not bought the rod yet.</li>
+    <li><b>Armor:</b> a breastplate (14) + Dex (2) + Enhanced Defense (1) = AC 17, not studded leather.</li>
+    <li><b>Spells:</b> 4 first-level and 2 second-level slots. Cantrips: Shocking Grasp (2d8) and Fire Bolt (2d10). Prepared: Cure Wounds, Faerie Fire, False Life, Detect Magic, Absorb Elements, Heat Metal. Always ready: Shield, Thunderwave, Scorching Ray, Shatter.</li>
+    <li><b>Cannon:</b> AC 18, 25 HP (was 15), Flamethrower DC 15, Protector 1d8+4.</li>
+    <li><b>Infusions:</b> Enhanced Defense, Mind Sharpener, Homunculus Servant, Replicate Magic Item.</li>
+    <li><b>Gear and story:</b> Moon-touched dagger, Cloak of Billowing, 1,004 gp, and 1 renown with the Eyes Arcana.</li>
+  </ul>
+  <div class="lk">
+    <a class="btn" href="levelup-3-to-5.html">See the level 3 to 5 planner</a>
+    <a class="btn sec" href="skippy-iphone.html">Skippy iPhone hub</a>
+    <a class="btn sec" href="skippy-ipad.html">Skippy iPad hub</a>
+  </div>
+</aside>
   <div class="bar" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="100" id="bar"><i id="barfill"></i></div>
   <div class="prog"><span id="progtxt"></span><span id="progpart"></span></div>
   <details class="steps" id="stepsbox"><summary>All steps (tap to jump)</summary><div class="list" id="steplist"></div></details>
@@ -236,7 +278,7 @@ function chips(group,list){
 /* ---------- The three ready-made builds (numbers are worked out by code, and I also checked them by hand) ---------- */
 const mod=s=>Math.floor((s-10)/2), sg=n=>(n>=0?"+":"")+n;
 const BUILDS=[
- {id:"A",rec:true,short:"Skippy, Half-Orc Artillerist (cannon)",name:'Skippy, the powder monkey',tag:"Half-Orc Artillerist: the cannon pirate (your character)",
+ {id:"A",rec:true,short:"Skippy, Half-Orc Artillerist (cannon)",name:'Skippy, the powder monkey',tag:"Half-Orc Artillerist: the cannon pirate (your character, shown here at level 3)",
   race:"Half-Orc, customized with Tasha's rule (T p.7)",raceNote:"Half-Orc normally gives Strength +2 and Constitution +1. With Tasha's rule you move them: Intelligence +2 and Constitution +1.",
   size:"Medium",speed:30,bg:"Pirate (Sailor variant, PHB p.139)",spec:"Artillerist",align:"Chaotic neutral (a free spirit who keeps promises to the crew)",
   base:{int:15,dex:14,con:13,wis:10,cha:8,str:12},bonus:{int:2,con:1},
@@ -320,7 +362,7 @@ const cannonBox=()=>`<div class="why" style="background:#fff4e0;border-color:#e0
 <p><b>Powerful Build races</b> (web sources, 2014 books you do not own): Goliath, Bugbear, Firbolg and Orc. The Half-Orc in your Player's Handbook does <b>not</b> have it. I could not confirm the Eberron or Exandria versions.</p>
 <p><b>Three practical options</b></p>
 <ol>
-<li><b>Your Eldritch Cannon looks like a small ship's cannon (your choice, chosen).</b> It is free: you choose its look and legs (T p.17-18). It has AC 18, 15 HP, 2d8 damage, DC 13. Skippy's is Tiny with no legs: he carries it on his shoulder and fires it like a rocket launcher (a Tiny cannon can be held in one hand, T p.17). You take an action with your woodcarver's tools in hand, and it appears within 5 feet; lift it to your shoulder. Tell the table "Mourning Bell, the old gun of The Widow, shrunk by magic, appears at my feet and I swing it onto my shoulder."</li>
+<li><b>Your Eldritch Cannon looks like a small ship's cannon (your choice, chosen).</b> It is free: you choose its look and legs (T p.17-18). At level 3 it has AC 18, 15 HP, 2d8 damage, DC 13 (at level 5: 25 HP, DC 15). Skippy's is Tiny with no legs: he carries it on his shoulder and fires it like a rocket launcher (a Tiny cannon can be held in one hand, T p.17). You take an action with your woodcarver's tools in hand, and it appears within 5 feet; lift it to your shoulder. Tell the table "Mourning Bell, the old gun of The Widow, shrunk by magic, appears at my feet and I swing it onto my shoulder."</li>
 <li><b>A smaller real gun, if your DM allows it.</b> Your table has firearms (docs/TABLE-RULES.md). Under the DMG firearm rules a pistol is 1d10 piercing, range 30/90, and a musket is 1d12, range 40/120 (from memory, check with the DM). With Dex +2 and proficiency +2 a pistol is +4 to hit, 1d10+2 damage. Whether the artificer's firearm line (T p.10) works with your Gunslinger rules is the DM's call.</li>
 <li><b>A Powerful Build race with more Strength.</b> For example a Goliath with Strength 12: 12 x 15 x 2 = 360 lb carried, 12 x 30 x 2 = 720 lb to push, drag or lift. It costs you the Half-Orc darkvision, Menacing and Relentless Endurance, and the book is Volo's or Elemental Evil. It also does not make a real cannon liftable.</li>
 </ol>
@@ -499,7 +541,7 @@ add(1,"Proficiency: what you are trained in",`
 <div class="tw"><table><tr><th>Check</th><th>Math</th></tr>
 <tr><td>Arcana (trained), Int +3</td><td>d20 + 3 + 2 = <b>d20+5</b></td></tr>
 <tr><td>Persuasion (not trained), Cha -1</td><td>d20 - 1 = <b>d20-1</b></td></tr></table></div>
-<p class="hint">These are Skippy's numbers (Int 17, Cha 8).</p>
+<p class="hint">These were Skippy's numbers at level 3 (Int 17, Cha 8). At level 5 his Intelligence is 18 (Fey Touched, level 4).</p>
 <p>Passive checks: [[passive Perception|passive Perception]] is 10 + your Perception bonus. The DM uses it to see if you notice something without rolling. {{PHB p.175}}</p>
 ${why(`<p>Skills decide which things you are good at when the DM says "make a check". Part 2 will help you pick skills that fit a pirate. Your saving throws (Constitution and Intelligence) are strong against poison and mind tricks.</p>`)}
 `);
@@ -541,7 +583,7 @@ add(1,"Hit points, falling down, and death saves",`
 <p>A spell like <i>False life</i> gives you extra, temporary HP. They are lost first. They do not stack: if you get new ones, keep the bigger pile.</p>
 <h3>Your health at level 3</h3>
 <p>The artificer uses a d8. HP at level 1 is 8 + Constitution modifier. Each later level adds 5 + Con modifier (the book's fixed number, or you roll a d8; this table lets you reroll a 1).</p>
-${why(`<p>Constitution makes you harder to kill. With Con +2 you have <b>24 HP at level 3</b> (Skippy: 10 + 7 + 7). That is not much, so stay behind your friends and keep your armor good.</p>`)}
+${why(`<p>Constitution makes you harder to kill. With Con +2 you have <b>24 HP at level 3</b> (Skippy at level 3: 10 + 7 + 7; at level 5 he has 38). That is not much, so stay behind your friends and keep your armor good.</p>`)}
 `);
 
 add(1,"Resting",`
@@ -607,7 +649,7 @@ ${why(`<p>In a one-shot you have no time to learn slowly. That is why a ready-ma
 `);
 
 add(1,"A short example of play",`
-<p>This is a made-up scene. Skippy is an artificer with Intelligence +3, Perception +2, and a light crossbow at +5 to hit (it has the Repeating Shot infusion). The numbers are the same as in build A in Part 3.</p>
+<p>This is a made-up scene. Skippy (at level 3) is an artificer with Intelligence +3, Perception +2, and a light crossbow at +5 to hit (it has the Repeating Shot infusion). The numbers are the same as in build A in Part 3, the level-3 build.</p>
 <div class="say"><span class="who">DM:</span> You step off the boat onto a dark beach. A cave mouth gapes ahead. Something glints inside. What do you do?</div>
 <div class="say"><span class="who">The player (as Skippy):</span> I stay quiet and look inside. Do I see anything?</div>
 <div class="say"><span class="who">DM:</span> Make a Perception check.</div>
@@ -684,7 +726,7 @@ add(2,"Step 3: ability scores",`
 <tr><td>Modifier</td><td>+3</td><td>+2</td><td>+2</td><td>0</td><td>-1</td><td>+1</td></tr></table></div>
 <p class="hint">This is spread (a) of build A. The other spreads are in the side-by-side step in Part 3 (Str 8 with Wis 12 and Cha 10, or Half-Orc as written with Int 15). Change it if you pick them.</p>
 <p>Why 13 in Constitution and 14 in Dexterity? Because the +1 you get on Con makes it 14 and the modifier is +2. If you put the 14 in Con and the 13 in Dex, you would get Con 15 (still +2) but Dex 13 (+1 only). That wastes a point.</p>
-${why(`<p>This spread gives you: spell save DC 13, spell attack +5, AC 14 in studded leather (15 with Enhanced Defense), 24 HP, 4 prepared spells, and Strength +1. The price: Wisdom 10 (passive Perception 12) and Charisma 8 (-1). It is a strong, safe level-3 artificer.</p>`)}
+${why(`<p>At level 3, this spread gives you: spell save DC 13, spell attack +5, AC 14 in studded leather (15 with Enhanced Defense), 24 HP, 4 prepared spells, and Strength +1. The price: Wisdom 10 (passive Perception 12) and Charisma 8 (-1). It is a strong, safe level-3 artificer.</p>`)}
 `);
 
 add(2,"Step 4: where the +2 and +1 come from",`
@@ -820,7 +862,7 @@ add(2,"Step 9: equipment",`
 <div class="tw"><table><tr><th>Armor</th><th>AC with Dex +2</th><th>Note</th></tr>
 <tr><td>Studded leather (light)</td><td>12 + 2 = <b>14</b></td><td>No Dex limit, no Stealth penalty.</td></tr>
 <tr><td>Scale mail (medium)</td><td>14 + 2 = <b>16</b></td><td>Dex adds max +2. Disadvantage on Stealth.</td></tr></table></div>
-<p>{{PHB p.145}} Scale mail gives 2 more AC at Dex 14, but it costs you Stealth. <b>Skippy takes studded leather</b>: it is light armor, so you can still sneak, and your whole Dex bonus counts. A <b>shield</b> adds +2 AC, but your crossbow needs two hands and your tools need one, so many artificers skip it (my view).</p>
+<p>{{PHB p.145}} Scale mail gives 2 more AC at Dex 14, but it costs you Stealth. <b>At level 3 Skippy took studded leather</b> (at level 5 he wears a breastplate, AC 17 with Enhanced Defense): it is light armor, so you can still sneak, and your whole Dex bonus counts. A <b>shield</b> adds +2 AC, but your crossbow needs two hands and your tools need one, so many artificers skip it (my view).</p>
 <p>The infusion <b>Enhanced Defense</b> adds +1 AC to your armor. (T p.21)</p>
 <h3>Weapons and tools in play</h3>
 <ul>
@@ -863,7 +905,7 @@ add(2,"Step 11: everything you get (the summary table)",`
 <tr><td>Level 3 features</td><td><b>Artificer Specialist</b> (see below). <b>The Right Tool for the Job</b>: with thieves' tools or artisan's tools in hand, 1 hour of work (it can be during a rest) makes one set of artisan's tools. They are not magic, and they vanish when you use this feature again. (T p.13)</td></tr>
 <tr><td>Specialist (level 3)</td><td>Alchemist: Experimental Elixir. Armorer: Arcane Armor and an armor model. Artillerist: Eldritch Cannon. Battle Smith: Battle Ready and Steel Defender.</td></tr>
 </table></div>
-<p class="hint">Level 4 is not needed: your game is a one-shot, so you stop at level 3.</p>
+<p class="hint">Level 4 was not needed for the level-3 build. Skippy has since gone up to level 5: see the notice at the top of this page.</p>
 ${why(`<p>This table is your cheat sheet. If you print one page for the game, make it the character sheet from the creator. This table helps you understand what each line on the sheet means.</p>`)}
 `);
 
@@ -878,7 +920,7 @@ add(3,"Finish: open the creator",`
 <p style="text-align:center"><a href="exceptions.html">Why each exception is allowed</a> &middot; <a href="checklists.html">Checklists</a> &middot; <a href="combos.html">Combos</a></p>
 <h3>Your picks so far</h3>
 <div id="picksbox" class="note"></div>
-<h3>What to type into the creator (build A: Skippy)</h3>
+<h3>What to type into the creator (build A: Skippy at level 3)</h3>
 <ol>
 <li><b>Race:</b> Half-Orc. Tick <i>"Use Tasha's Customizing Your Origin"</i>. Put <b>+2 on Intelligence</b> and <b>+1 on Constitution</b>.</li>
 <li><b>Ability scores:</b> Standard Array. Int 15, Dex 14, Con 13, Str 12, Wis 10, Cha 8 (spread a). The creator adds your bonuses.</li>
@@ -888,7 +930,7 @@ add(3,"Finish: open the creator",`
 <li><b>Equipment:</b> studded leather, light crossbow and 20 bolts, spear and dagger.</li>
 <li><b>Spells and infusions:</b> cantrips Shocking grasp and Guidance. Prepare Cure wounds, Faerie fire, False life, Detect magic. Infusions: Enhanced Defense, Repeating Shot, Enhanced Weapon, Mind Sharpener.</li>
 <li><b>Specialist:</b> Artillerist.</li>
-<li><b>Check the sheet</b> shows: 24 HP, AC 15 (14 without Enhanced Defense on the studded leather), spell save DC 13, spell attack +5, initiative +2, passive Perception 12.</li>
+<li><b>Check the sheet</b> shows these level-3 numbers: 24 HP, AC 15 (14 without Enhanced Defense on the studded leather), spell save DC 13, spell attack +5, initiative +2, passive Perception 12. (Skippy now is level 5: 38 HP, AC 17, DC 15, +7. See the notice at the top.)</li>
 </ol>
 <p class="hint">For builds B or C, use the same steps with the choices shown on their pages.</p>
 <div class="note"><b>Change if you pick spread (b) or (c):</b> (b) Str 8, Wis 12, Cha 10; the sheet then shows passive Perception 13. (c) Do <b>not</b> tick Tasha's customizing. Use Int 15, Dex 14, Con 13, Wis 12, Cha 10, Str 8; the sheet then shows Int 15, Str 10, Con 14, spell save DC 12, spell attack +4, 3 prepared spells and passive Perception 13.</div>

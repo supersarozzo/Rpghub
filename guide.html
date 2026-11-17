@@ -70,6 +70,21 @@ details{margin:6px 0}
 summary{cursor:pointer;font-weight:600}
 @media(max-width:600px){.card table{display:block;overflow-x:auto;max-width:100%}}
 
+/* ==== Skippy level 5 notice (task 6.39): uses the page colours, so the dark screen look repaints it ==== */
+.lv5{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:12px 14px;margin:0 0 14px}
+.lv5 .k{margin:0;font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:var(--muted)}
+.lv5 h2{margin:2px 0 6px;font-size:1.3rem;line-height:1.25;border:0;padding:0}
+.lv5 p{margin:6px 0}
+.lv5 .t{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:6px;margin:10px 0}
+.lv5 .t div{border:1px solid var(--line);border-radius:6px;padding:4px 8px;background:var(--bg)}
+.lv5 .t span{display:block;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.lv5 .t b{font-size:1.15rem}
+.lv5 .t i{display:block;font-size:.72rem;color:var(--muted);font-style:normal}
+.lv5 ul{margin:6px 0;padding-left:20px}
+.lv5 li{margin:3px 0}
+.lv5 .lk{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.lv5 .lk a.btn{min-height:44px;display:inline-flex;align-items:center;white-space:normal}
+
 /* ==== Shared look v1: see docs/DESIGN.md (same block on every page) ==== */
 nav.site{background:#16302e;display:flex;flex-wrap:wrap;align-items:center;gap:2px 2px;padding:6px 12px;font:600 14px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
 nav.site .brand{color:#fff;font-weight:700;margin-right:10px;padding:6px 0;letter-spacing:.02em;white-space:nowrap}
@@ -124,6 +139,33 @@ nav.site{background:#18222a;border-bottom:1px solid #2c3a45}nav.site a{color:#97
   <h1>The Artificer: a beginner guide</h1>
   <p>D&amp;D 5th edition (2014) with Tasha's Cauldron of Everything. In my own words, with page numbers. Works offline.</p>
 </header>
+<aside class="lv5" id="lv5" aria-label="Skippy is now level 5">
+  <p class="k">Update &middot; 17 Nov 2026</p>
+  <h2>Skippy is now level 5</h2>
+  <p>The steps below teach the <b>level-3 build</b>. That is how Skippy was made, and a new player can still follow it. So every number in the steps is a level-3 number. Skippy himself has moved on. This is what is true for him now.</p>
+  <div class="t">
+    <div><span>Level</span><b>5</b><i>6,900 XP</i></div>
+    <div><span>Hit points</span><b>38</b><i>was 24</i></div>
+    <div><span>Armor Class</span><b>17</b><i>22 with Shield</i></div>
+    <div><span>Spell save DC</span><b>15</b><i>was 13</i></div>
+    <div><span>Spell attack</span><b>+7</b><i>was +5</i></div>
+    <div><span>Proficiency</span><b>+3</b><i>was +2</i></div>
+  </div>
+  <ul>
+    <li><b>Level 4: the Fey Touched feat</b> (T p.79). Intelligence goes from 17 to 18. It also gives Misty Step, once free each long rest.</li>
+    <li><b>Level 5: Arcane Firearm.</b> His rod can be his firearm: +1d8 to one damage roll of his artificer spells. He has not bought the rod yet.</li>
+    <li><b>Armor:</b> a breastplate (14) + Dex (2) + Enhanced Defense (1) = AC 17, not studded leather.</li>
+    <li><b>Spells:</b> 4 first-level and 2 second-level slots. Cantrips: Shocking Grasp (2d8) and Fire Bolt (2d10). Prepared: Cure Wounds, Faerie Fire, False Life, Detect Magic, Absorb Elements, Heat Metal. Always ready: Shield, Thunderwave, Scorching Ray, Shatter.</li>
+    <li><b>Cannon:</b> AC 18, 25 HP (was 15), Flamethrower DC 15, Protector 1d8+4.</li>
+    <li><b>Infusions:</b> Enhanced Defense, Mind Sharpener, Homunculus Servant, Replicate Magic Item.</li>
+    <li><b>Gear and story:</b> Moon-touched dagger, Cloak of Billowing, 1,004 gp, and 1 renown with the Eyes Arcana.</li>
+  </ul>
+  <div class="lk">
+    <a class="btn" href="levelup-3-to-5.html">See the level 3 to 5 planner</a>
+    <a class="btn sec" href="skippy-iphone.html">Skippy iPhone hub</a>
+    <a class="btn sec" href="skippy-ipad.html">Skippy iPad hub</a>
+  </div>
+</aside>
 <div class="bar"><div class="in">
   <div class="row">
     <a class="btn big" href="creator.html">Open the character creator</a>
@@ -705,7 +747,7 @@ function secCasting(){
   ["Rituals are free.","If a prepared spell has the ritual tag (like Detect magic), you can cast it as a ritual without a slot. It takes 10 minutes longer (T p.12; PHB p.202)."],
   ["Concentration.","Some spells need concentration. Taking damage can break it; you roll a Constitution save. A new concentration spell ends the old one (T p.5, rule 7)."]];
   let h=P("Step by step:")+'<ol>'+steps.map(s=>'<li data-s><b>'+esc(s[0])+'</b> '+gl(s[1])+'</li>').join("")+'</ol>';
-  h+='<div class="note">Example: Intelligence 17 (+3) at level 3. You prepare 4 spells (3 + 1). Say Cure wounds, Faerie fire, False life, Detect magic (this is Skippy\'s list). As an Artillerist like Skippy you also always have Shield and Thunderwave prepared for free (T p.17). A Battle Smith gets Heroism and Shield instead (T p.19).</div>';
+  h+='<div class="note">Example: Intelligence 17 (+3) at level 3. You prepare 4 spells (3 + 1). Say Cure wounds, Faerie fire, False life, Detect magic (this was Skippy\'s list at level 3; at level 5 he also prepares Absorb elements and Heat metal). As an Artillerist like Skippy you also always have Shield and Thunderwave prepared for free (T p.17); at level 5 you get Scorching ray and Shatter too. A Battle Smith gets Heroism and Shield instead (T p.19).</div>';
   return sec("casting","Spellcasting, step by step",h);
 }
 /* ---------- 4. features ---------- */
