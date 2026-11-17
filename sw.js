@@ -1,6 +1,6 @@
 // RPG Hub service worker (made by make-ipad.py --site). It keeps every file below on the device.
 // VERSION changes whenever any file changes, so a phone that has the old copy picks up the new one.
-const VERSION = "8b160828fc";
+const VERSION = "bbcc179312";
 const CACHE = "rpg-hub-" + VERSION;
 const FILES = [
  "./",
@@ -22,6 +22,7 @@ const FILES = [
  "landscape/Skippy-extras-landscape.pdf",
  "landscape/Skippy-roleplay-landscape.pdf",
  "landscape/Skippy-sheet-landscape.pdf",
+ "levelup-3-to-5.html",
  "manifest.webmanifest",
  "onering.html",
  "roleplay.html",
