@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="rpg-icon-180.png"><meta name="theme-color" content="#10171c">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tom Bin Odds</title>
+<style>
+/* Look: the Tom guides' look (same tokens as tom-combos.html; the website adds the hub's dark look). One file, no outside links.
+   Numbers: copied exactly from the One Ring project's hero\tom-chances.html (checked by the One Ring master), 2026-11-19. */
+:root{
+  --bg:#f4ecd8; --card:#fbf7ea; --subtle:#ece2c6; --line:#d4c7a0;
+  --ink:#2a241a; --muted:#5e5442;
+  --accent:#2f4a2a; --deep:#1e2f1c; --tint:#e6ecd6; --on:#ffffff; --navlink:#dfe8d2; --focus:#f5c542;
+  --strong-bg:#d3e2bf; --strong-fg:#1f4a17; --fair-bg:#f2de9a; --fair-fg:#6b4a00; --weak-bg:#ecc4b4; --weak-fg:#7a2412;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:12px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow-wrap:break-word}
+nav.site{background:var(--deep);display:flex;flex-wrap:wrap;align-items:center;gap:2px;padding:6px 12px;font:600 14px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+nav.site .brand{color:var(--on);font-weight:700;margin-right:10px;padding:6px 0;letter-spacing:.02em;white-space:nowrap}
+nav.site a{color:var(--navlink);text-decoration:none;padding:8px 10px;border-radius:6px;display:inline-flex;align-items:center;min-height:36px;white-space:nowrap}
+nav.site a[aria-current="page"]{background:var(--bg);color:var(--deep)}
+nav.site a:focus-visible,.toc a:focus-visible,.tw:focus-visible{outline:3px solid var(--focus);outline-offset:1px}
+header.top{background:var(--accent);color:var(--on);padding:14px 16px}
+header.top>div,.wrap{max-width:860px;margin:0 auto}
+header.top h1{margin:0;font-size:1.35rem;line-height:1.25}
+header.top p{margin:2px 0 0;font-size:.9rem}
+.wrap{padding:12px 16px 56px}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 14px}
+.toc a{padding:6px 10px;border:1px solid var(--line);background:var(--card);border-radius:999px;color:var(--accent);text-decoration:none;font-size:.9rem;min-height:36px;display:inline-flex;align-items:center}
+h2{margin:22px 0 6px;font-size:1.3rem;line-height:1.3;scroll-margin-top:12px}
+h3{margin:12px 0 4px;font-size:1.05rem;line-height:1.3}
+p{margin:6px 0}
+ul{margin:6px 0;padding-left:22px}
+li{margin:3px 0}
+a{color:var(--accent)}
+.lead{color:var(--muted);margin:2px 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0}
+.card h3{margin-top:0}
+.legend{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.9rem;margin:8px 0}
+.chip{display:inline-block;border-radius:999px;padding:2px 10px;font-weight:700;font-size:.85rem;white-space:nowrap}
+.strong{background:var(--strong-bg);color:var(--strong-fg)}
+.fair{background:var(--fair-bg);color:var(--fair-fg)}
+.weak{background:var(--weak-bg);color:var(--weak-fg)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin:8px 0}
+.cards .card{margin:0;border:0}
+.cards ul{padding-left:18px}
+.advice{padding:8px 12px;margin:10px 0 0;border-left:4px solid var(--accent);background:var(--tint);border-radius:0 6px 6px 0}
+.pg{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:0 6px;font-size:.78rem;font-weight:700;color:var(--muted);background:var(--card);white-space:nowrap}
+.tw{overflow-x:auto;max-width:100%;margin:8px 0;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.92rem;font-variant-numeric:tabular-nums}
+th,td{padding:6px 7px;text-align:center;vertical-align:middle;border-bottom:1px solid var(--line)}
+thead th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--subtle)}
+th.skill,td.skill{text-align:left;min-width:160px;position:sticky;left:0;z-index:1;background:var(--card)}
+thead th.skill{background:var(--subtle)}
+td.skill .use{display:block;color:var(--muted);font-size:.84rem;line-height:1.3}
+td.skill .tip{display:block;font-size:.8rem;color:var(--accent);font-weight:700}
+tbody tr:last-child td{border-bottom:0}
+td.p{min-width:70px}
+td.p b{display:block;font-size:1.05rem;line-height:1.15}
+td.p span{display:block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+td.great{color:var(--muted)}
+tr.group td{background:var(--subtle);text-align:left;font-weight:700;color:var(--accent)}
+.star{color:var(--accent)}
+.small{font-size:.9rem;color:var(--muted)}
+@media (max-width:640px){
+  nav.site{padding:4px 8px}
+  nav.site .brand{width:100%;padding:4px 2px 2px}
+  nav.site a{padding:6px 8px;font-size:13px}
+  .wrap{padding:8px 16px 40px}
+  table{min-width:0;font-size:.86rem}
+  th,td{padding:6px 4px}
+  th.skill,td.skill{min-width:118px;max-width:132px;padding-left:8px}
+  td.skill .use{font-size:.78rem}
+  td.p{min-width:54px}
+  td.p b{font-size:.98rem}
+  td.p span{font-size:.62rem}
+  thead th{font-size:.64rem;letter-spacing:.03em}
+}
+@media print{
+  @page{size:Letter portrait;margin:.6in}
+  nav.site,.toc{display:none!important}
+  body{background:#fff;color:#000;font-size:10.5pt}
+  header.top{background:#fff;color:#000;border-bottom:2px solid #000;padding:0 0 6px}
+  .tw{overflow:visible}
+  table,.card{break-inside:avoid}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+@media screen{:root{--bg:#10171c;--card:#18222a;--subtle:#212d36;--line:#2c3a45;--ink:#e7edf1;--muted:#97a8b4;--accent:#d0392f;--deep:#18222a;--tint:#212d36;--on:#ffffff;--navlink:#e7edf1;--focus:#f2c14e;--warn:#e7b65a;--warn-bg:#2b2619;--ex:#e7b65a;--ex-bg:#2b2619;--ex-rule:#e7b65a;--rune:#e7edf1;--eye:#f2695e;--icon:#e7b65a;--hope:#e7b65a;--shadow:#b9a7ea;--strong-bg:#1f3a2a;--strong-fg:#9fe0b0;--fair-bg:#3a3014;--fair-fg:#f0d98a;--weak-bg:#43201b;--weak-fg:#f3b8a4}body{background:#10171c;color:#e7edf1}a{color:#f2695e}nav.site{background:#18222a;border-bottom:1px solid #2c3a45}nav.site a[aria-current="page"]{background:#2c3a45;color:#ffffff}header.top{background:#18222a;color:#e7edf1;border-bottom:1px solid #2c3a45}h2{border-bottom-color:#3b4c58}.tag.book{background:#d0392f;border-color:#d0392f;color:#ffffff}.toc a{color:#f2695e}}</style>
+</head>
+<body><style>.rpg-sb{position:fixed;z-index:2147483647;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:#18222a;pointer-events:none}.rpg-back{display:flex;align-items:center;min-height:44px;padding:env(safe-area-inset-top,0px) calc(16px + env(safe-area-inset-right,0px)) 0 calc(16px + env(safe-area-inset-left,0px));box-sizing:content-box;background:#18222a;border-bottom:1px solid #2c3a45;color:#f2695e;font:700 13px/1 "Bahnschrift SemiCondensed","Arial Narrow",system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase;text-decoration:none}@media print{.rpg-back,.rpg-sb{display:none}}</style><div class="rpg-sb" aria-hidden="true"></div><a class="rpg-back" href="onering.html" onclick="try{var r=document.referrer,o=location.protocol+&#x27;//&#x27;+location.host+&#x27;/&#x27;;if(history.length&gt;1&amp;&amp;r&amp;&amp;r.indexOf(o)===0){history.back();return false}}catch(e){}">&lsaquo; Back</a>
+<nav class="site" aria-label="Tom Bin pages"><span class="brand">The One Ring &middot; Tom Bin</span><a href="tom-roleplay.html">Roleplay</a><a href="tom-combos.html">Combos</a><a href="tom-odds.html" aria-current="page">Odds</a><a href="tom-map.html">Map</a></nav>
+<header class="top"><div>
+  <h1>Tom Bin odds: the chance to succeed</h1>
+  <p>Tom Bin, Man of Bree, Treasure Hunter, age 21. What he can do, how good he is, and the chance to succeed.</p>
+</div></header>
+
+<main class="wrap">
+<nav class="toc" aria-label="On this page"><a href="#sum">Short version</a><a href="#how">How to read a roll</a><a href="#skills">Skills</a><a href="#shadow">Shadow tests</a><a href="#fight">Fighting</a></nav>
+
+<div class="legend" aria-label="How to read the colours"><span>Chance to succeed:</span>
+  <span class="chip strong">Strong 70%+</span><span class="chip fair">Fair 40&ndash;69%</span><span class="chip weak">Weak under 40%</span></div>
+
+<h2 id="sum">The short version</h2>
+<div class="cards">
+  <div class="card strong"><h3>Best at (Strong)</h3><ul><li><b>Stealth and Scan: 90%</b></li><li>Then Courtesy, Persuade, Riddle: 50&ndash;54%</li></ul></div>
+  <div class="card fair"><h3>Fair with Hope</h3><ul><li>Insight, Craft, Enhearten</li><li>Spend 1 Hope and they go from Weak to about 50&ndash;70%</li></ul></div>
+  <div class="card weak"><h3>Bad at (Weak)</h3><ul><li>Awe, Healing, Battle, Lore: 8%</li><li>Fighting: Spear 13&ndash;27%, Bow 8&ndash;10%, with no help</li></ul></div>
+</div>
+<p class="advice">Save Hope for the rolls that matter. Use Inspired with Burglary on sneaky rolls, and with Inquisitive on Insight, Riddle and Scan.</p>
+
+<h2 id="how">How to read a roll</h2>
+<div class="card"><ul>
+  <li><b>Target Number (TN)</b> = 20 minus the attribute. Strength 4 gives TN 16. Heart 4 gives TN 16. Wits 6 gives TN 13, because Prowess takes 1 off <span class="pg">p.18</span> <span class="pg">p.80</span>.</li>
+  <li><b>The roll:</b> one Feat die, plus one Success die for each skill rank. Add them up and reach the TN <span class="pg">p.17</span>.</li>
+  <li><b><span class="star">&#9733;</span> Favoured:</b> roll 2 Feat dice and keep the better one <span class="pg">p.20</span>.</li>
+  <li><b>Hope:</b> spend 1 Hope to add 1 die <span class="pg">p.20</span>.</li>
+  <li><b>Inspired:</b> if one of Tom's Distinctive Features fits (Rustic, Inquisitive, Burglary), 1 Hope adds 2 dice <span class="pg">p.20</span>.</li>
+  <li><b>Useful item:</b> outside a fight, a fitting item adds 1 die <span class="pg">p.49</span>. Wind-proof lantern for Scan. Homemade maps for Explore.</li>
+  <li><b>Weary</b> (Endurance 17 or less): Success dice showing 1&ndash;3 count as 0. Every chance below drops <span class="pg">p.23</span>.</li>
+  <li><b>Special results:</b> the Gandalf rune on the Feat die is an automatic success. The Eye counts as 0. A 6 on a Success die is an icon. A <b>great success</b> is a success with at least one 6.</li>
+</ul></div>
+
+<h2 id="skills">Skills</h2>
+<div class="tw" tabindex="0" role="region" aria-label="Skill chances table, scrolls sideways on small screens"><table>
+<thead><tr><th class="skill">Skill</th><th>Dice</th><th>TN</th><th>Normal</th><th>With Hope</th><th>Inspired</th><th>Great success</th></tr></thead><tbody><tr class="group"><td colspan="7">Strength (TN 16)</td></tr><tr><td class="skill"><b>Awe</b><span class="use">Scare or impress people with your presence.</span></td><td>0</td><td>16</td><td class="p weak"><b>8%</b><span>Weak</span></td><td class="p weak"><b>10%</b><span>Weak</span></td><td class="p weak"><b>27%</b><span>Weak</span></td><td class="great">0%</td></tr><tr><td class="skill"><b>Athletics</b><span class="use">Run, jump, climb, swim and throw.</span></td><td>1</td><td>16</td><td class="p weak"><b>10%</b><span>Weak</span></td><td class="p weak"><b>27%</b><span>Weak</span></td><td class="p fair"><b>54%</b><span>Fair</span></td><td class="great">3%</td></tr><tr><td class="skill"><b>Awareness</b><span class="use">Notice danger, tracks and small signs around you.</span></td><td>1</td><td>16</td><td class="p weak"><b>10%</b><span>Weak</span></td><td class="p weak"><b>27%</b><span>Weak</span></td><td class="p fair"><b>54%</b><span>Fair</span></td><td class="great">3%</td></tr><tr><td class="skill"><b>Hunting</b><span class="use">Track animals and find food in the wild.</span></td><td>1</td><td>16</td><td class="p weak"><b>10%</b><span>Weak</span></td><td class="p weak"><b>27%</b><span>Weak</span></td><td class="p fair"><b>54%</b><span>Fair</span></td><td class="great">3%</td></tr><tr><td class="skill"><b>Song</b><span class="use">Sing, play music and tell tales in verse.</span></td><td>1</td><td>16</td><td class="p weak"><b>10%</b><span>Weak</span></td><td class="p weak"><b>27%</b><span>Weak</span></td><td class="p fair"><b>54%</b><span>Fair</span></td><td class="great">3%</td></tr><tr><td class="skill"><b>Craft</b><span class="use">Make and mend things with your hands.</span></td><td>2</td><td>16</td><td class="p weak"><b>27%</b><span>Weak</span></td><td class="p fair"><b>54%</b><span>Fair</span></td><td class="p strong"><b>78%</b><span>Strong</span></td><td class="great">13%</td></tr><tr class="group"><td colspan="7">Heart (TN 16)</td></tr><tr><td class="skill"><b>Enhearten</b><span class="use">Lift friends' spirits and give them courage.</span></td><td>2</td><td>16</td><td class="p weak"><b>27%</b><span>Weak</span></td><td class="p fair"><b>54%</b><span>Fair</span></td><td class="p strong"><b>78%</b><span>Strong</span></td><td class="great">13%</td></tr><tr><td class="skill"><b>Travel</b><span class="use">Handle long journeys and keep the group moving.</span></td><td>1</td><td>16</td><td class="p weak"><b>10%</b><span>Weak</span></td><td class="p weak"><b>27%</b><span>Weak</span></td><td class="p fair"><b>54%</b><span>Fair</span></td><td class="great">3%</td></tr><tr><td class="skill"><b>Insight <span class="star" title="Favoured">&#9733;</span></b><span class="use">Read people's moods and spot when they lie.</span></td><td>2</td><td>16</td><td class="p fair"><b>44%</b><span>Fair</span></td><td class="p strong"><b>73%</b><span>Strong</span></td><td class="p strong"><b>91%</b><span>Strong</span></td><td class="great">20%</td></tr><tr><td class="skill"><b>Healing</b><span class="use">Treat wounds and sickness.</span></td><td>0</td><td>16</td><td class="p weak"><b>8%</b><span>Weak</span></td><td class="p weak"><b>10%</b><span>Weak</span></td><td class="p weak"><b>27%</b><span>Weak</span></td><td class="great">0%</td></tr><tr><td class="skill"><b>Courtesy</b><span class="use">Speak well to strangers, hosts and lords.</span></td><td>3</td><td>16</td><td class="p fair"><b>54%</b><span>Fair</span></td><td class="p strong"><b>78%</b><span>Strong</span></td><td class="p strong"><b>93%</b><span>Strong</span></td><td class="great">30%</td></tr><tr><td class="skill"><b>Battle</b><span class="use">Read a fight and know what to do in war.</span></td><td>0</td><td>16</td><td class="p weak"><b>8%</b><span>Weak</span></td><td class="p weak"><b>10%</b><span>Weak</span></td><td class="p weak"><b>27%</b><span>Weak</span></td><td class="great">0%</td></tr><tr class="group"><td colspan="7">Wits (TN 13)</td></tr><tr><td class="skill"><b>Persuade</b><span class="use">Argue, haggle and talk people round.</span></td><td>2</td><td>13</td><td class="p fair"><b>50%</b><span>Fair</span></td><td class="p strong"><b>76%</b><span>Strong</span></td><td class="p strong"><b>92%</b><span>Strong</span></td><td class="great">21%</td></tr><tr><td class="skill"><b>Stealth <span class="star" title="Favoured">&#9733;</span></b><span class="use">Sneak, hide and move unseen. Fits Burglary.</span></td><td>3</td><td>13</td><td class="p strong"><b>90%</b><span>Strong</span></td><td class="p strong"><b>98%</b><span>Strong</span></td><td class="p strong"><b>100%</b><span>Strong</span></td><td class="great">41%</td></tr><tr><td class="skill"><b>Scan <span class="star" title="Favoured">&#9733;</span></b><span class="use">Search a place closely for anything unusual.</span><span class="tip">With the lantern alone (normal roll): 98%</span></td><td>3</td><td>13</td><td class="p strong"><b>90%</b><span>Strong</span></td><td class="p strong"><b>98%</b><span>Strong</span></td><td class="p strong"><b>100%</b><span>Strong</span></td><td class="great">41%</td></tr><tr><td class="skill"><b>Explore</b><span class="use">Find paths and camps in the wild, with a map.</span><span class="tip">With the maps alone (normal roll): 50%</span></td><td>1</td><td>13</td><td class="p weak"><b>22%</b><span>Weak</span></td><td class="p fair"><b>50%</b><span>Fair</span></td><td class="p strong"><b>76%</b><span>Strong</span></td><td class="great">7%</td></tr><tr><td class="skill"><b>Riddle</b><span class="use">Solve puzzles and trade riddles.</span></td><td>2</td><td>13</td><td class="p fair"><b>50%</b><span>Fair</span></td><td class="p strong"><b>76%</b><span>Strong</span></td><td class="p strong"><b>92%</b><span>Strong</span></td><td class="great">21%</td></tr><tr><td class="skill"><b>Lore</b><span class="use">Recall old stories, history and legends.</span></td><td>0</td><td>13</td><td class="p weak"><b>8%</b><span>Weak</span></td><td class="p weak"><b>22%</b><span>Weak</span></td><td class="p fair"><b>50%</b><span>Fair</span></td><td class="great">0%</td></tr></tbody></table></div>
+<p class="small">Dice = Success dice (the skill rank). A skill at 0 can only succeed on the Gandalf rune (8%). A &#9733; skill rolls 2 Feat dice and keeps the better. The "great success" column is for a normal roll.</p>
+
+<h2 id="shadow">Shadow tests</h2>
+<p class="small">Tom rolls these to resist the pull of the Shadow <span class="pg">p.137</span>.</p>
+<div class="tw" tabindex="0" role="region" aria-label="Shadow test chances table"><table>
+<thead><tr><th class="skill">Test</th><th>Dice</th><th>TN</th><th>Normal</th><th>With Hope</th><th>Inspired</th><th>Great success</th></tr></thead><tbody><tr><td class="skill"><b>Valour</b><span class="use">Resist fear (Heart).</span></td><td>1</td><td>16</td><td class="p weak"><b>10%</b><span>Weak</span></td><td class="p weak"><b>27%</b><span>Weak</span></td><td class="p fair"><b>54%</b><span>Fair</span></td><td class="great">3%</td></tr><tr><td class="skill"><b>Wisdom</b><span class="use">Resist greed and dark spells (Wits).</span></td><td>1</td><td>13</td><td class="p weak"><b>22%</b><span>Weak</span></td><td class="p fair"><b>50%</b><span>Fair</span></td><td class="p strong"><b>76%</b><span>Strong</span></td><td class="great">7%</td></tr></tbody></table></div>
+
+<h2 id="fight">Fighting</h2>
+<p>To hit, Tom's attack TN is his Strength TN of 16 plus the enemy's Parry <span class="pg">p.65</span> <span class="pg">p.98</span>. A tougher enemy means a harder roll.</p>
+<h3>Spear (Spears 2)</h3>
+<div class="tw" tabindex="0" role="region" aria-label="Spear attack chances"><table>
+<thead><tr><th class="skill">Enemy</th><th>TN</th><th>Normal</th><th>Hope, or Forward stance</th><th>Hope + Forward, or Inspired</th></tr></thead><tbody><tr><td class="skill"><b>Goblin archer</b><span class="use">Parry +0</span></td><td>16</td><td class="p weak"><b>27%</b><span>Weak</span></td><td class="p fair"><b>54%</b><span>Fair</span></td><td class="p strong"><b>78%</b><span>Strong</span></td></tr><tr><td class="skill"><b>Orc soldier</b><span class="use">Parry +1</span></td><td>17</td><td class="p weak"><b>21%</b><span>Weak</span></td><td class="p fair"><b>46%</b><span>Fair</span></td><td class="p strong"><b>72%</b><span>Strong</span></td></tr><tr><td class="skill"><b>Orc guard</b><span class="use">Parry +2</span></td><td>18</td><td class="p weak"><b>16%</b><span>Weak</span></td><td class="p weak"><b>39%</b><span>Weak</span></td><td class="p fair"><b>65%</b><span>Fair</span></td></tr><tr><td class="skill"><b>Orc-chieftain</b><span class="use">Parry +3</span></td><td>19</td><td class="p weak"><b>13%</b><span>Weak</span></td><td class="p weak"><b>32%</b><span>Weak</span></td><td class="p fair"><b>58%</b><span>Fair</span></td></tr></tbody></table></div>
+<h3>Bow (Bows 1)</h3>
+<div class="tw" tabindex="0" role="region" aria-label="Bow attack chances"><table>
+<thead><tr><th class="skill">Enemy</th><th>TN</th><th>Normal</th><th>With Hope</th><th>Inspired</th></tr></thead><tbody><tr><td class="skill"><b>Goblin archer</b><span class="use">Parry +0</span></td><td>16</td><td class="p weak"><b>10%</b><span>Weak</span></td><td class="p weak"><b>27%</b><span>Weak</span></td><td class="p fair"><b>54%</b><span>Fair</span></td></tr><tr><td class="skill"><b>Orc soldier</b><span class="use">Parry +1</span></td><td>17</td><td class="p weak"><b>8%</b><span>Weak</span></td><td class="p weak"><b>21%</b><span>Weak</span></td><td class="p fair"><b>46%</b><span>Fair</span></td></tr><tr><td class="skill"><b>Orc guard</b><span class="use">Parry +2</span></td><td>18</td><td class="p weak"><b>8%</b><span>Weak</span></td><td class="p weak"><b>16%</b><span>Weak</span></td><td class="p weak"><b>39%</b><span>Weak</span></td></tr><tr><td class="skill"><b>Orc-chieftain</b><span class="use">Parry +3</span></td><td>19</td><td class="p weak"><b>8%</b><span>Weak</span></td><td class="p weak"><b>13%</b><span>Weak</span></td><td class="p weak"><b>32%</b><span>Weak</span></td></tr></tbody></table></div>
+<ul>
+  <li>Forward stance gives +1 die for close combat <span class="pg">p.96</span>. It also makes enemies hit Tom more easily.</li>
+  <li>Tom can use the bow only from Rearward stance.</li>
+  <li>Enemies need to beat Tom's Parry of 18 (with the buckler).</li>
+  <li>Enemy examples come from the book. Parry bonus: Goblin archer +0, Orc soldier +1, Orc guard +2, Orc-chieftain +3.</li>
+</ul>
+
+<p class="small">Chances are worked out by counting every possible roll, then rounded to whole numbers. Page numbers (p.) are the printed pages of The One Ring 2nd edition. Numbers assume Tom is not Weary.</p>
+</main>
+<script>if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol)){try{navigator.serviceWorker.register("sw.js").catch(function(){});}catch(e){}}</script></body>
+</html>
