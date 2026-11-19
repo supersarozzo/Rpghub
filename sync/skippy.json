@@ -2,8 +2,8 @@
  "app": "rpg-hub",
  "who": "skippy",
  "v": 1,
- "at": 1794912780322,
- "from": "iPad",
+ "at": 1795053765091,
+ "from": "iPhone",
  "st": {
   "hp": 38,
   "temp": 0,
@@ -14,7 +14,10 @@
    "4": {
     "h": 7,
     "m": "feat",
-    "f": "Fey Touched"
+    "f": "Fey Touched",
+    "p": [
+     3
+    ]
    },
    "5": {
     "h": 7
@@ -22,49 +25,11 @@
   },
   "note": "",
   "xp": 6900,
+  "d": 2,
   "play": {
    "u": {},
    "t": {},
-   "log": [
-    "10:53 · Healed to 38.",
-    "01:49 · Level 5 (Fey Touched, HP max 38, 6,900 XP), set on the computer.",
-    "01:49 · Took 5 damage (24 to 19).",
-    "01:44 · Healed to 24.",
-    "00:37 · Took 5 damage (24 to 19).",
-    "00:32 · Shield (my spell) removed.",
-    "00:32 · Opportunity attack: one melee attack.",
-    "00:32 · Shield: AC +5 until the start of your next turn. 1 slot ticked (0 left).",
-    "00:32 · Shield: AC +5 until the start of your next turn. 1 slot ticked (1 left).",
-    "00:32 · Shield: AC +5 until the start of your next turn. 1 slot ticked (2 left).",
-    "00:31 · Deafened removed.",
-    "00:31 · Blinded removed."
-   ]
-  },
-  "d": 2,
-  "ed": {
-   "arm": "breastplate",
-   "ca": [
-    "shocking-grasp",
-    "fire-bolt"
-   ],
-   "pr": [
-    "cure-wounds",
-    "faerie-fire",
-    "false-life",
-    "detect-magic",
-    "absorb-elements",
-    "heat-metal"
-   ],
-   "ik": [
-    "enhanced-defense",
-    "mind-sharpener",
-    "homunculus-servant",
-    "replicate-magic-item"
-   ],
-   "ia": {
-    "enhanced-defense": "breastplate",
-    "homunculus-servant": "100 gp gem"
-   }
+   "log": []
   }
  }
 }
