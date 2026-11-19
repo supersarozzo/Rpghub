@@ -44,7 +44,11 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;overflow:hidde
 /* viewer */
 .view{position:fixed;inset:0;overflow:hidden;background:#0b1013;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .view img{position:absolute;left:0;top:0;transform-origin:0 0;max-width:none;will-change:transform;-webkit-user-drag:none;pointer-events:none}
-.hint{position:fixed;z-index:4;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);padding:6px 12px;border-radius:999px;background:rgba(24,34,42,.9);color:var(--muted);font-size:13px;white-space:nowrap;transition:opacity .4s}
+/* bottom pill: centred, wraps long messages, never past the screen edges or under the home bar (2026-11-19) */
+.hint{position:fixed;z-index:4;left:0;right:0;margin:0 auto;width:-webkit-fit-content;width:fit-content;max-width:calc(100% - 32px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px));
+  bottom:calc(16px + env(safe-area-inset-bottom,0px));padding:6px 12px;border-radius:16px;background:rgba(24,34,42,.9);color:var(--muted);font-size:13px;line-height:1.35;text-align:center;transition:opacity .4s}
+.sa{position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;
+  padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
 .hint.off{opacity:0}
 @media (prefers-reduced-motion:reduce){.bar,.hint{transition:none}}
 </style>
@@ -67,10 +71,322 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;overflow:hidde
 </main>
 
 <div class="view hide" id="view" aria-label="Map. Pinch to zoom, drag to move, tap to show or hide the top bar."><img id="img" alt="Map"></div>
+<div class="sa" id="sa" aria-hidden="true"></div>
 <div class="hint off" id="hint">Pinch to zoom · drag to move · tap for the menu</div>
 
 <script>if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol)){try{navigator.serviceWorker.register("sw.js").catch(function(){});}catch(e){}}</script>
 <script>
+/*SYNC-CORE*/
+/* RPG Hub sync engine (task 6.42, 2026-11-19). One copy, embedded unchanged by the builders into both Skippy hubs (make-ipad.py),
+   Tom's page (make-hero.py) and the Map page (tom-map.html, between the SYNC-CORE markers). Tests: artificer/tests/sync.test.js (Node).
+   Each device keeps its own save; the private repo rpghub-data is the meeting point (GitHub contents API, the player's key, kept only
+   in this browser's storage under rpg.sync). Merge per item: the device remembers the last version both sides agreed on ("base");
+   each side's own changes since then are kept; only when both changed the same item does the newer one win, and the other value
+   goes into the backups (last 10, rpg.sync.bk.<save key>). Every send carries the sha it was merged with, so GitHub refuses a blind
+   overwrite (409) and the engine reads, merges and sends again. Only ONE web address is written in this file: the private repo's
+   API address (the build's secret-word check allows exactly that one). The hubs' one-time read of the old public sync file uses
+   the same API host with the website repo's name. */
+var RpgSync = (function () {
+  "use strict";
+  var VMAX = 1, OWN = "supersarozzo/rpghub-data", BASE = "https://api.github.com/repos/supersarozzo/rpghub-data/";
+  var KEYRE = /^(github_pat_|ghp_)[A-Za-z0-9_]{20,}$/, SEP = "\u0001", RETRY = [5000, 30000, 120000], NBK = 10, QUIET = 5000;
+  function api(repo) { return repo === OWN ? BASE : BASE.slice(0, BASE.length - OWN.length - 1) + repo + "/"; }
+  function isObj(v) { return v !== null && typeof v === "object" && !Array.isArray(v); }
+  function clone(v) { return v === undefined ? undefined : JSON.parse(JSON.stringify(v)); }
+  // the same JSON text for the same data, whatever the key order
+  function canon(v) {
+    if (v === undefined) return "~";
+    if (v === null || typeof v !== "object") return JSON.stringify(v);
+    if (Array.isArray(v)) { var a = []; for (var i = 0; i < v.length; i++) a.push(canon(v[i])); return "[" + a.join(",") + "]"; }
+    var ks = Object.keys(v).sort(), o = [];
+    for (var j = 0; j < ks.length; j++) if (v[ks[j]] !== undefined) o.push(JSON.stringify(ks[j]) + ":" + canon(v[ks[j]]));
+    return "{" + o.join(",") + "}";
+  }
+  function same(a, b) { return canon(a) === canon(b); }
+  // ---- items. spec = {groups: {name: [keys that move as one block]}, deep: [keys whose children are separate items], skip: [keys never synced; "deep.child" skips one child]}
+  function groupOf(spec, k) { var g = spec.groups || {}; for (var n in g) if (g.hasOwnProperty(n) && g[n].indexOf(k) >= 0) return n; return null; }
+  function split(o, spec) {
+    var u = {}, skip = spec.skip || [], deep = spec.deep || [];
+    if (!isObj(o)) return u;
+    for (var k in o) {
+      if (!o.hasOwnProperty(k) || o[k] === undefined || skip.indexOf(k) >= 0) continue;
+      var g = groupOf(spec, k);
+      if (g) { var gk = "g" + SEP + g; if (!u[gk]) u[gk] = {}; u[gk][k] = o[k]; }
+      else if (deep.indexOf(k) >= 0 && isObj(o[k])) {
+        u["d" + SEP + k] = 1;
+        for (var j in o[k]) if (o[k].hasOwnProperty(j) && o[k][j] !== undefined && skip.indexOf(k + "." + j) < 0) u["d" + SEP + k + SEP + j] = o[k][j];
+      } else u["k" + SEP + k] = o[k];
+    }
+    return u;
+  }
+  function join(u) {
+    var o = {};
+    for (var key in u) {
+      if (!u.hasOwnProperty(key) || u[key] === undefined) continue;
+      var p = key.split(SEP);
+      if (p[0] === "g") { for (var k in u[key]) if (u[key].hasOwnProperty(k)) o[k] = clone(u[key][k]); }
+      else if (p[0] === "k") o[p[1]] = clone(u[key]);
+      else if (p[0] === "d") { if (!isObj(o[p[1]])) o[p[1]] = {}; if (p.length === 3) o[p[1]][p[2]] = clone(u[key]); }
+    }
+    return o;
+  }
+  // three-way merge: base = last agreed version, loc = this device, rem = the sync file. localNewer decides a clash.
+  function merge3(base, loc, rem, spec, localNewer) {
+    var B = split(base, spec), L = split(loc, spec), R = split(rem, spec), all = {}, out = {}, lost = [], k;
+    for (k in B) all[k] = 1; for (k in L) all[k] = 1; for (k in R) all[k] = 1;
+    for (k in all) {
+      var cb = canon(B[k]), cl = canon(L[k]), cr = canon(R[k]);
+      if (cl === cr) out[k] = L[k];
+      else if (cl === cb) out[k] = R[k];
+      else if (cr === cb) out[k] = L[k];
+      else if (localNewer) { out[k] = L[k]; lost.push({ u: k.split(SEP).slice(1).join("."), side: "remote", v: clone(R[k]) }); }
+      else { out[k] = R[k]; lost.push({ u: k.split(SEP).slice(1).join("."), side: "local", v: clone(L[k]) }); }
+    }
+    return { st: join(out), lost: lost };
+  }
+  function okPay(o, who) { return isObj(o) && o.app === "rpg-hub" && o.who === who && isObj(o.st); }
+  function b64e(t) { return btoa(unescape(encodeURIComponent(t))); }
+  function b64d(t) { return decodeURIComponent(escape(atob(String(t).replace(/\s+/g, "")))); }
+  function hhmm(t) { var d = new Date(+t); return ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2); }
+
+  function create(o) {
+    var who = o.who, name = o.name || who, dev = o.dev || "device", store = o.store, F = o.fetch;
+    var now = o.now || function () { return Date.now(); }, ST = o.setTimeout || setTimeout, CT = o.clearTimeout || clearTimeout;
+    var REPO = api(o.repo), URL = REPO + "contents/" + o.path, RNAME = String(o.repo).split("/")[1];
+    var LEG = o.legacy ? api(o.legacy.repo) + "contents/" + o.legacy.path : null;
+    var KB = "rpg.sync.base." + o.localKey, KK = "rpg.sync.bk." + o.localKey, KS = "rpg.sync";
+    function eq(x, y) { return same(split(x, o.spec), split(y, o.spec)); }   // equal in everything that syncs (skipped parts do not count)
+    var busy = null, again = false, timer = null, retryN = 0, retryT = null, halt = null, choice = null, forced = null;
+    var last = { s: "idle", msg: "", wait: false, t: 0 };
+    function rd(k) { try { var v = store.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
+    function wr(k, v) { try { store.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+    function cfg() { var c = rd(KS); return isObj(c) ? c : {}; }
+    function key() { var k = cfg().k; return typeof k === "string" ? k : ""; }
+    function setKey(k) { k = String(k || "").replace(/\s+/g, ""); if (!KEYRE.test(k)) return false; var c = cfg(); c.k = k; if (!wr(KS, c)) return false; halt = null; retryN = 0; return true; }
+    function forgetKey() { var c = cfg(); delete c.k; wr(KS, c); halt = null; status("key"); }
+    function getBase() { var b = rd(KB); return isObj(b) && isObj(b.st) ? b : null; }
+    function setBase(b) { wr(KB, b); }
+    function mkBase(rem, st) { return { sha: rem.sha || null, st: clone(st || rem.pl.st), at: +rem.pl.at || 0, from: rem.pl.from || "", etag: rem.etag || null, t: now() }; }
+    function unsent() { var b = getBase(); return !b || !eq(o.pack(), b.st); }
+    // ---- backups: newest first, at most 10
+    function bkAll() { var a = rd(KK); return Array.isArray(a) ? a : []; }
+    function backup(st, why) {
+      var a = bkAll(); a.unshift({ t: now(), why: why, s: o.summary ? o.summary(st) : "", st: clone(st) });
+      if (a.length > NBK) a.length = NBK;
+      while (!wr(KK, a) && a.length > 1) a.pop();           // storage full: keep fewer, never fail the sync for it
+    }
+    function backups() { return bkAll().map(function (b) { return { t: b.t, why: b.why, s: b.s }; }); }
+    function restore(i) {
+      var b = bkAll()[i]; if (!b || !isObj(b.st)) return false;
+      backup(o.pack(), "This " + dev + "'s version, before you brought back an earlier one");
+      o.apply(clone(b.st), now(), { why: "restore" }); changed(); return true;
+    }
+    // ---- status for the page: s = ok | busy | wait | off | key | err | choose | new | bad
+    function status(s, x) {
+      x = x || {}; var b = getBase(), w = !!key() && unsent(), m = x.msg || "";
+      if (!m) m = s === "ok" ? "Synced at " + hhmm(b && b.t ? b.t : now()) + "."
+        : s === "busy" ? "Syncing…"
+        : s === "wait" ? "Changes on this " + dev + " sync in a few seconds."
+        : s === "off" ? (w ? "Offline: changes wait on this " + dev + ". They go when the internet is back." : "Offline. Sync checks again when the internet is back.")
+        : s === "key" ? "Needs your key: tap Paste key below. Changes stay on this " + dev + " until then."
+        : s === "choose" ? "This " + dev + " and the synced " + name + " are different. Pick the one that is right."
+        : s === "new" ? "The synced " + name + " was saved by a newer version of the app. Reload this page once online. Nothing was changed."
+        : s === "bad" ? "The sync file is not a " + name + " save. Nothing was changed. If this " + dev + " is right, use Send this " + dev + "'s version."
+        : "";
+      last = { s: s, msg: m, wait: s === "wait" ? true : w, t: b && b.t ? b.t : 0, choice: s === "choose" ? choice : null };
+      if (o.onStatus) try { o.onStatus(last); } catch (e) {}
+      return last;
+    }
+    // ---- GitHub calls (never a cached copy)
+    function hdr(k, extra) { var h = { "Accept": "application/vnd.github+json" }; if (k) h.Authorization = "Bearer " + k; for (var x in extra || {}) h[x] = extra[x]; return h; }
+    function getFile(k, etag) {
+      var h = hdr(k); if (etag) h["If-None-Match"] = etag;
+      return F(URL + "?ref=main", { cache: "no-store", headers: h }).then(function (r) {
+        if (r.status === 304) return { nm: 1 };
+        if (r.status === 404)                                  // no file, or the key cannot see the repo: ask the repo itself
+          return F(REPO.slice(0, -1), { cache: "no-store", headers: hdr(k) }).then(function (q) { return q.status === 200 ? { none: 1 } : { err: q.status, h: q.headers }; });
+        if (!r.ok) return { err: r.status, h: r.headers };
+        var et = r.headers.get("ETag");
+        return r.json().then(function (j) { var d = null; try { d = JSON.parse(b64d(j.content)); } catch (e) {} return { sha: j.sha, data: d, etag: et }; });
+      });
+    }
+    function getLegacy() {                                     // the old public file: read once, with no key
+      if (!LEG) return Promise.resolve(null);
+      return F(LEG + "?ref=main", { cache: "no-store", headers: { "Accept": "application/vnd.github+json" } }).then(function (r) {
+        if (!r.ok) return null;
+        return r.json().then(function (j) { try { var d = JSON.parse(b64d(j.content)); return okPay(d, who) && !(+d.v > VMAX) ? d : null; } catch (e) { return null; } });
+      }).catch(function () { return null; });
+    }
+    function putFile(k, st, at, sha) {
+      var pl = { app: "rpg-hub", who: who, v: VMAX, at: at || now(), from: dev, st: st };
+      var body = { message: "Sync " + name + " from the " + dev + (o.summary ? " (" + o.summary(st) + ")" : ""), content: b64e(JSON.stringify(pl, null, 1) + "\n"), branch: "main" };
+      if (sha) body.sha = sha;
+      if (o.mail) { body.committer = { name: "RPG Hub sync", email: o.mail }; body.author = body.committer; }
+      return F(URL, { method: "PUT", cache: "no-store", headers: hdr(k, { "Content-Type": "application/json" }), body: JSON.stringify(body) }).then(function (r) {
+        if (r.status === 200 || r.status === 201) return r.json().then(function (j) { return { ok: 1, sha: j && j.content ? j.content.sha : null }; });
+        return { err: r.status, h: r.headers };
+      });
+    }
+    function httpErr(k, r) {
+      var s = r.err, g = function (n) { return r.h && r.h.get ? r.h.get(n) : null; };
+      if (s === 401) halt = { k: k, msg: "GitHub does not accept the key: it is wrong or it has expired. Make a new one and paste it (Your GitHub key, below)." };
+      else if (s === 403 && g("x-ratelimit-remaining") === "0") { var rs = (+g("x-ratelimit-reset") || 0) * 1000; rs = rs > now() ? rs : now() + 900000;
+        halt = { k: k, until: rs, msg: "GitHub says: too many requests for now. Sync starts again by itself after " + hhmm(rs) + "." }; }
+      else if (s === 403) halt = { k: k, msg: "The key may not write to " + RNAME + ". On GitHub, give the key Contents: Read and write for " + RNAME + "." };
+      else if (s === 404) halt = { k: k, msg: "The key cannot see " + RNAME + ". On GitHub, add " + RNAME + " to the key's repository access." };
+      if (halt) return { s: "err", msg: halt.msg };
+      later();
+      return { s: "err", msg: "GitHub answered with error " + s + ". Sync tries again by itself." };
+    }
+    function later() { CT(retryT); if (retryN < RETRY.length) retryT = ST(function () { retryT = null; round(); }, RETRY[retryN++]); }
+    function push(k, n, st, at, sha, f) {
+      return putFile(k, st, at, sha).then(function (w) {
+        if (w.ok) { setBase({ sha: w.sha, st: clone(st), at: at, from: dev, etag: null, t: now() }); return { s: "ok" }; }
+        if (w.err === 409 || w.err === 422) {                  // someone else wrote first: read, merge and send again
+          if (n < 2) return attempt(k, n + 1, f);
+          later(); return { s: "err", msg: "Another device kept changing " + name + " at the same moment. Sync tries again by itself." };
+        }
+        return httpErr(k, w);
+      });
+    }
+    function decide(k, n, b, rem, f) {
+      var loc = o.pack(), lat = +o.at() || 0, from = rem ? rem.pl.from || "other device" : "";
+      if (f === "mine") {
+        if (rem) backup(rem.pl.st, "The synced version (from the " + from + "), replaced by this " + dev + "'s");
+        choice = null; return push(k, n, loc, lat || now(), rem ? rem.sha : null, f);
+      }
+      if (f === "theirs") {
+        if (!rem) return { s: "err", msg: "There is no synced " + name + " yet. Nothing was changed." };
+        backup(loc, "This " + dev + "'s version, before you loaded the synced one");
+        o.apply(clone(rem.pl.st), +rem.pl.at || now(), { why: "load", from: from }); choice = null;
+        if (rem.legacy) return push(k, n, rem.pl.st, +rem.pl.at || now(), null, null);
+        setBase(mkBase(rem)); return { s: "ok" };
+      }
+      if (!b) {                                                // first meeting: no version agreed yet (o.norm = the page's own clean-up of an older file)
+        if (!rem) return push(k, n, loc, lat || now(), null, null);
+        if (eq(loc, rem.pl.st) || (o.norm && eq(loc, o.norm(clone(rem.pl.st))))) { if (rem.legacy) return push(k, n, loc, lat || now(), null, null); setBase(mkBase(rem)); return { s: "ok" }; }
+        if (o.fresh()) {
+          o.apply(clone(rem.pl.st), +rem.pl.at || now(), { why: "first", from: from });
+          if (rem.legacy) return push(k, n, rem.pl.st, +rem.pl.at || now(), null, null);
+          setBase(mkBase(rem)); return { s: "ok" };
+        }
+        choice = { from: from, at: +rem.pl.at || 0, s: o.summary ? o.summary(rem.pl.st) : "", mine: o.summary ? o.summary(loc) : "" };
+        return { s: "choose" };
+      }
+      if (!rem) return push(k, n, loc, lat || now(), null, null);   // the file was removed: put it back
+      if (eq(loc, b.st) && eq(rem.pl.st, b.st)) { b.sha = rem.sha; if (rem.etag) b.etag = rem.etag; b.t = now(); setBase(b); return { s: "ok" }; }
+      var ra = +rem.pl.at || 0, m = merge3(b.st, loc, rem.pl.st, o.spec, lat > ra);
+      var mat = eq(m.st, loc) ? lat : (eq(m.st, rem.pl.st) ? ra : now());
+      var remLost = m.lost.some(function (x) { return x.side === "remote"; });
+      if (remLost) backup(rem.pl.st, "The " + from + "'s version (both devices changed the same thing; this " + dev + "'s change was newer)");
+      if (!eq(m.st, loc)) {
+        backup(loc, "This " + dev + "'s version, before changes from the " + from);
+        o.apply(clone(m.st), mat, { why: "merge", from: from, lost: m.lost.length });
+      }
+      if (eq(m.st, rem.pl.st)) { setBase(mkBase(rem, m.st)); return { s: "ok" }; }
+      return push(k, n, m.st, mat, rem.sha, null);
+    }
+    function attempt(k, n, f) {
+      var b = getBase();
+      return getFile(k, b && b.etag && !f ? b.etag : "").then(function (r) {
+        if (r.err) return httpErr(k, r);
+        if (r.nm) return decide(k, n, b, { pl: { st: b.st, at: b.at, from: b.from }, sha: b.sha, etag: b.etag }, f);
+        if (r.none) {
+          if (!b && LEG) return getLegacy().then(function (lp) { return decide(k, n, b, lp ? { pl: lp, sha: null, legacy: 1 } : null, f); });
+          return decide(k, n, b, null, f);
+        }
+        if (!okPay(r.data, who)) { if (f === "mine") { choice = null; return push(k, n, o.pack(), +o.at() || now(), r.sha, f); } return { s: "bad" }; }
+        if (+r.data.v > VMAX) return { s: "new" };
+        return decide(k, n, b, { pl: r.data, sha: r.sha, etag: r.etag }, f);
+      });
+    }
+    function round() {
+      if (busy) { again = true; return busy; }
+      var k = key();
+      if (!k) return Promise.resolve(status("key"));
+      if (halt && halt.k === k && (!halt.until || now() < halt.until)) return Promise.resolve(status("err", { msg: halt.msg }));
+      if (choice && !forced) return Promise.resolve(status("choose"));
+      halt = null; CT(retryT); retryT = null;
+      var f = forced; forced = null;
+      status("busy");
+      busy = attempt(k, 0, f).then(function (res) {
+        busy = null; if (res.s === "ok") retryN = 0; status(res.s, res);
+        if (again) { again = false; return round(); }
+        return last;
+      }, function () {                                          // no network (fetch failed)
+        busy = null; again = false; status("off"); later(); return last;
+      });
+      return busy;
+    }
+    function changed() {
+      CT(timer); timer = ST(function () { timer = null; round(); }, QUIET);
+      if (!busy && key() && !(halt && halt.k === key()) && !choice) status("wait");
+    }
+    function force(which) { forced = which === "mine" ? "mine" : "theirs"; halt = null; if (busy) { again = true; return busy.then(function () { return busy || last; }); } return round(); }
+    function idle() { return busy || Promise.resolve(last); }
+    function start(win, doc) {
+      round();
+      if (doc && doc.addEventListener) doc.addEventListener("visibilitychange", function () {
+        if (doc.visibilityState === "visible") round();
+        else if (key() && unsent()) { CT(timer); timer = null; round(); }   // leaving the app: send what waits
+      });
+      if (win && win.addEventListener) {
+        win.addEventListener("online", function () { retryN = 0; round(); });
+        win.addEventListener("pageshow", function (e) { if (e && e.persisted) round(); });
+      }
+      if (win && win.setInterval) win.setInterval(function () { if (!doc || doc.visibilityState === "visible") round(); }, 60000);
+    }
+    return { round: round, changed: changed, force: force, idle: idle, start: start, unsent: unsent,
+      status: function () { return last; }, choice: function () { return choice; },
+      backups: backups, restore: restore, key: key, setKey: setKey, forgetKey: forgetKey };
+  }
+
+  // the map picture in the private repo: downloaded once with the key (raw file), then only "changed since?" (ETag)
+  function mapCheck(m) {
+    if (!m.key) return Promise.resolve({ status: "nokey" });
+    var h = { "Accept": "application/vnd.github.raw+json", "Authorization": "Bearer " + m.key };
+    if (m.etag) h["If-None-Match"] = m.etag;
+    return m.fetch(api(m.repo) + "contents/" + m.path + "?ref=main", { cache: "no-store", headers: h }).then(function (r) {
+      if (r.status === 304) return { status: "same" };
+      if (r.status === 404) return { status: "none" };
+      if (!r.ok) return { status: "err", code: r.status };
+      var et = r.headers.get("ETag") || "";
+      return r.blob().then(function (b) { return { status: "new", blob: b, etag: et }; });
+    }, function () { return { status: "off" }; });
+  }
+
+  // the app version and the Update button (the player 2026-11-19): the site build writes version.json (never in the offline copy).
+  // Same version: nothing changes. Newer: the offline copy (service worker) is asked to update, and the page reloads when the new
+  // copy takes over (or after 8 seconds). On opening (auto), it reloads only if the player has not touched anything yet; otherwise it
+  // gets the new copy ready and says so. Offline or a broken version file: "cannot check", never a reload.
+  function appUpdate(o) {
+    var now = o.now || function () { return Date.now(); }, ST = o.setTimeout || setTimeout;
+    function getReg() { try { return o.sw && o.sw.getRegistration ? o.sw.getRegistration().then(function (r) { return r || null; }, function () { return null; }) : Promise.resolve(null); } catch (e) { return Promise.resolve(null); } }
+    function upd(r) { try { var p = r && r.update ? r.update() : null; if (p && p.catch) p.catch(function () {}); } catch (e) {} }
+    return o.fetch("version.json?t=" + now(), { cache: "no-store" }).then(function (r) {
+      if (!r || !r.ok) return null;
+      return r.json().then(function (j) { return j && typeof j.v === "string" && j.v ? j.v : null; }, function () { return null; });
+    }, function () { return null; }).then(function (v) {
+      if (!v) return { status: "off" };
+      if (v === o.current) return getReg().then(function (r) { upd(r); return { status: "same", v: v }; });
+      if (o.auto && o.touched && o.touched()) return getReg().then(function (r) { upd(r); return { status: "new", v: v }; });
+      return getReg().then(function (r) {
+        if (!r) { o.reload(); return { status: "reloading", v: v }; }
+        return new Promise(function (res) {
+          var done = false;
+          function go() { if (done) return; done = true; o.reload(); res({ status: "reloading", v: v }); }
+          try { o.sw.addEventListener("controllerchange", go); } catch (e) {}
+          ST(go, 8000);
+          upd(r);
+        });
+      });
+    });
+  }
+
+  return { VMAX: VMAX, REPO: OWN, canon: canon, same: same, split: split, join: join, merge3: merge3, okPay: okPay, create: create, mapCheck: mapCheck, appUpdate: appUpdate };
+})();
+if (typeof module !== "undefined" && module.exports) module.exports = RpgSync;
+/*/SYNC-CORE*/
 (function () {
   "use strict";
   var $ = function (id) { return document.getElementById(id); };
@@ -145,12 +461,20 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;overflow:hidde
   }
   function vw() { return view.clientWidth || innerWidth; }
   function vh() { return view.clientHeight || innerHeight; }
-  function reset() { if (!W) return; fit = Math.min(vw() / W, vh() / H); s = fit; x = (vw() - W * s) / 2; y = (vh() - H * s) / 2; draw(); }
+  // the safe area: the screen minus the clock row, the home bar and side notches. The map fits inside it, so no edge of the
+  // map hides under them (iPad landscape and iPhone portrait, 2026-11-19); zoomed in, it can be moved so each edge reaches it.
+  var A = { l: 0, t: 0, w: 0, h: 0 };
+  function area() {
+    var p = { t: 0, r: 0, b: 0, l: 0 };
+    try { var cs = getComputedStyle($("sa")); p = { t: parseFloat(cs.paddingTop) || 0, r: parseFloat(cs.paddingRight) || 0, b: parseFloat(cs.paddingBottom) || 0, l: parseFloat(cs.paddingLeft) || 0 }; } catch (e) {}
+    A = { l: p.l, t: p.t, w: Math.max(1, vw() - p.l - p.r), h: Math.max(1, vh() - p.t - p.b) };
+  }
+  function reset() { if (!W) return; area(); fit = Math.min(A.w / W, A.h / H); s = fit; x = A.l + (A.w - W * s) / 2; y = A.t + (A.h - H * s) / 2; draw(); }
   function clamp() {
     s = Math.max(fit, Math.min(s, Math.max(fit * 8, 2)));
-    var w = W * s, h = H * s, cw = vw(), ch = vh();
-    x = w <= cw ? (cw - w) / 2 : Math.min(0, Math.max(cw - w, x));
-    y = h <= ch ? (ch - h) / 2 : Math.min(0, Math.max(ch - h, y));
+    var w = W * s, h = H * s;
+    x = w <= A.w ? A.l + (A.w - w) / 2 : Math.min(A.l, Math.max(A.l + A.w - w, x));
+    y = h <= A.h ? A.t + (A.h - h) / 2 : Math.min(A.t, Math.max(A.t + A.h - h, y));
   }
   function draw() { clamp(); img.style.transform = "translate(" + x + "px," + y + "px) scale(" + s + ")"; }
   function zoomAt(px, py, ns) { var k = ns / s; x = px - (px - x) * k; y = py - (py - y) * k; s = ns; draw(); }
@@ -194,12 +518,40 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;overflow:hidde
   view.addEventListener("pointerup", up); view.addEventListener("pointercancel", up);
   view.addEventListener("wheel", function (e) { e.preventDefault(); zoomAt(e.clientX, e.clientY, s * (e.deltaY < 0 ? 1.15 : 1 / 1.15)); }, { passive: false });
   ["gesturestart", "gesturechange"].forEach(function (n) { document.addEventListener(n, function (e) { e.preventDefault(); }, { passive: false }); });
-  addEventListener("resize", function () { if (W) { var c = s / fit; fit = Math.min(vw() / W, vh() / H); s = fit * c; draw(); } });
+  addEventListener("resize", function () { if (W) { var c = s / fit; area(); fit = Math.min(A.w / W, A.h / H); s = fit * c; draw(); } });
 
   function flash(t) { hint.textContent = t; hint.classList.remove("off"); setTimeout(function () { hint.classList.add("off"); }, 4000); }
 
-  // ---- start: open the saved map straight away, or show the empty screen
-  load(function (blob) { if (blob) show(blob, function (ok) { if (!ok) setBar(true); }); });
+  // ---- task 6.42: the map from the private repo rpghub-data. With the sync key saved in this app (Settings › Sync and version on Tom's
+  //      page), it is downloaded once (about 5 MB), kept here, and then only checked ("changed since?"). Load map stays as the fallback.
+  function etagGet(cb) { db(function (d) { if (!d) return cb(""); try { var g = d.transaction(STORE, "readonly").objectStore(STORE).get("etag");
+    g.onsuccess = function () { cb(g.result || ""); }; g.onerror = function () { cb(""); }; } catch (e) { cb(""); } }); }
+  function etagPut(v) { db(function (d) { if (!d) return; try { d.transaction(STORE, "readwrite").objectStore(STORE).put(v, "etag"); } catch (e) {} }); }
+  function syncKey() { try { var c = JSON.parse(localStorage.getItem("rpg.sync") || "{}"); return c && typeof c.k === "string" ? c.k : ""; } catch (e) { return ""; } }
+  function remote(had) {
+    if (typeof RpgSync === "undefined" || !window.fetch || !window.Promise) return;
+    var k = syncKey();
+    if (!k) { if (!had) msg.textContent = "Tip: save your sync key once in Tom's Settings › Sync and version, and the map comes by itself."; return; }
+    if (!had) msg.textContent = "Getting your map… (about 5 MB, only the first time)";
+    etagGet(function (et) {
+      RpgSync.mapCheck({ repo: "supersarozzo/rpghub-data", path: "one-ring-map.jpg", key: k, etag: had ? et : "", fetch: function (u, o) { return fetch(u, o); } }).then(function (r) {
+        if (r.status === "new") {
+          var b = r.blob; try { b = new Blob([r.blob], { type: "image/jpeg" }); } catch (e) {}
+          show(b, function (ok) {
+            if (!ok) { if (!had) msg.textContent = "The map from the sync repo could not be opened. Tap Load map instead."; return; }
+            save(b, function (stored) { if (stored) etagPut(r.etag); else flash("Shown now, but this device would not keep it: it downloads again next time."); });
+          });
+        } else if (!had) {
+          msg.textContent = r.status === "off" ? "No internet: the map comes next time you open this page online. Or tap Load map."
+            : r.status === "none" ? "The map is not in the sync repo yet. Tap Load map to pick it from this device."
+            : r.status === "err" ? "GitHub did not give the map (error " + r.code + "). Check the key in Tom's Settings, or tap Load map." : "";
+        }
+      });
+    });
+  }
+
+  // ---- start: open the saved map straight away (or show the empty screen), then check the sync repo for it
+  load(function (blob) { if (blob) show(blob, function (ok) { if (!ok) setBar(true); }); remote(!!blob); });
 })();
 </script>
 </body>
