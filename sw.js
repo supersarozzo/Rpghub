@@ -1,6 +1,6 @@
 // RPG Hub service worker (made by make-ipad.py --site). It keeps every file below on the device.
 // VERSION changes whenever any file changes, so a phone that has the old copy picks up the new one.
-const VERSION = "214d8bf137";
+const VERSION = "d53a82fd3a";
 const CACHE = "rpg-hub-" + VERSION;
 const FILES = [
  "./",
@@ -14,6 +14,14 @@ const FILES = [
  "creator.html",
  "dnd.html",
  "exceptions.html",
+ "fonts/Baskervville-latin-italic.woff2",
+ "fonts/Baskervville-latin-roman.woff2",
+ "fonts/Figtree-latin.woff2",
+ "fonts/Metamorphous-latin.woff2",
+ "fonts/OFL-baskervville.txt",
+ "fonts/OFL-figtree.txt",
+ "fonts/OFL-metamorphous.txt",
+ "fonts/aniron-bold.ttf",
  "guide.html",
  "index.html",
  "landscape/Skippy-abilities-landscape.pdf",
